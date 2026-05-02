@@ -1,10 +1,10 @@
 [
-    { "name": "TNE", "batch": "B-2311", "labLink": "YOUR_LAB_LINK_HERE", "p100": 220, "stock100": 15, "p1k": 1400, "s1k": 1 },
-    { "name": "TP",  "batch": "B-2312", "labLink": "YOUR_LAB_LINK_HERE", "p100": 240, "stock100": 8,  "p1k": 1450, "s1k": 1 },
-    { "name": "TC",  "batch": "B-2313", "labLink": "YOUR_LAB_LINK_HERE", "p100": 260, "stock100": 20, "p1k": 1500, "s1k": 1 },
-    { "name": "TE",  "batch": "B-2314", "labLink": "YOUR_LAB_LINK_HERE", "p100": 260, "stock100": 12, "p1k": 1500, "s1k": 1 },
-    { "name": "TD",  "batch": "B-2315", "labLink": "YOUR_LAB_LINK_HERE", "p100": 300, "stock100": 5,  "p1k": 1600, "s1k": 1 },
-    { "name": "TUD", "batch": "B-2316", "labLink": "YOUR_LAB_LINK_HERE", "p100": 300, "stock100": 0,  "p1k": 1650, "s1k": 1 },
-    { "name": "ND",  "batch": "B-2317", "labLink": "YOUR_LAB_LINK_HERE", "p100": 450, "stock100": 10, "p1k": 2300, "s1k": 1 },
-    { "name": "NPP", "batch": "B-2318", "labLink": "YOUR_LAB_LINK_HERE", "p100": 400, "stock100": 25, "p1k": 2300, "s1k": 1 }
+    { "name": "TNE", "batch": "B-2311", "labLink": "YOUR_LAB_LINK_HERE", "p100": 220, "stock100": 5, "p1k": 1400, "s1k": 1 },
+    { "name": "TP",  "batch": "B-2312", "labLink": "YOUR_LAB_LINK_HERE", "p100": 230, "stock100": 0,  "p1k": 1450, "s1k": 1 },
+    { "name": "TC",  "batch": "B-2313", "labLink": "YOUR_LAB_LINK_HERE", "p100": 240, "stock100": 16, "p1k": 1500, "s1k": 1 },
+    { "name": "TE",  "batch": "B-2314", "labLink": "YOUR_LAB_LINK_HERE", "p100": 240, "stock100": 0, "p1k": 1500, "s1k": 1 },
+    { "name": "TD",  "batch": "B-2315", "labLink": "YOUR_LAB_LINK_HERE", "p100": 260, "stock100": 10,  "p1k": 1600, "s1k": 0 },
+    { "name": "TUD", "batch": "B-2316", "labLink": "YOUR_LAB_LINK_HERE", "p100": 280, "stock100": 0,  "p1k": 1650, "s1k": 1 },
+    { "name": "ND",  "batch": "B-2317", "labLink": "YOUR_LAB_LINK_HERE", "p100": 450, "stock100": 0, "p1k": 2300, "s1k": 1 },
+    { "name": "NPP", "batch": "B-2318", "labLink": "YOUR_LAB_LINK_HERE", "p100": 400, "stock100": 10, "p1k": 2300, "s1k": 1 }
 ]
