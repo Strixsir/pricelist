@@ -258,7 +258,7 @@
                     <th>Batch No</th>
                     <th>Lab Test</th>
                     <th>Stock (100G)</th>
-                    <th class="header-red">Price (100G)</th>
+                    <th class="header-red">Retail (100G)</th>
                     <th></th>
                     <th class="header-red">Pre_order (KG)</th>
                     <th></th>
@@ -324,19 +324,19 @@
         let cart = [];
         let currentOrderNum = 0;
 
-        // Fallback data for preview environment
+        // Fallback data for preview environment (now includes "labResult" property)
         const fallbackProducts = [
-            { "name": "TNE", "batch": "B-2311", "labLink": "YOUR_LAB_LINK_HERE", "p100": 220, "stock100": 15, "p1k": 1400, "s1k": 1 },
-            { "name": "TP",  "batch": "B-2312", "labLink": "YOUR_LAB_LINK_HERE", "p100": 240, "stock100": 8,  "p1k": 1450, "s1k": 1 },
-            { "name": "TC",  "batch": "B-2313", "labLink": "YOUR_LAB_LINK_HERE", "p100": 260, "stock100": 20, "p1k": 1500, "s1k": 1 },
-            { "name": "TE",  "batch": "B-2314", "labLink": "YOUR_LAB_LINK_HERE", "p100": 260, "stock100": 12, "p1k": 1500, "s1k": 1 },
-            { "name": "TD",  "batch": "B-2315", "labLink": "YOUR_LAB_LINK_HERE", "p100": 300, "stock100": 5,  "p1k": 1600, "s1k": 1 },
-            { "name": "TUD", "batch": "B-2316", "labLink": "YOUR_LAB_LINK_HERE", "p100": 300, "stock100": 0,  "p1k": 1650, "s1k": 1 },
-            { "name": "ND",  "batch": "B-2317", "labLink": "YOUR_LAB_LINK_HERE", "p100": 450, "stock100": 10, "p1k": 2300, "s1k": 1 },
-            { "name": "NPP", "batch": "B-2318", "labLink": "YOUR_LAB_LINK_HERE", "p100": 400, "stock100": 25, "p1k": 2300, "s1k": 1 }
+            { "name": "TNE", "batch": "Sent to jano", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "#1", "p100": 220, "stock100": 5, "p1k": 1400, "s1k": 1 },
+            { "name": "TP",  "batch": "yet to see", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "#1", "p100": 230, "stock100": 0, "p1k": 1450, "s1k": 1 },
+            { "name": "TC",  "batch": "TTC-FP-125", "labLink": "https://verify.janoshik.com/tests/132664-Sample_1_873E5VFUEAZ8", "labResult": "94.63%", "p100": 240, "stock100": 16, "p1k": 1500, "s1k": 1 },
+            { "name": "TE",  "batch": "TTE-FP-125", "labLink": "https://verify.janoshik.com/tests/148722-Sample_1_7PVJ4SXQXMFJ", "labResult": "92.99%", "p100": 240, "stock100": 0, "p1k": 1500, "s1k": 1 },
+            { "name": "TD",  "batch": "TTD-FP-126", "labLink": "https://verify.janoshik.com/tests/150503-Sample_1_VJ34B4VFFRC2", "labResult": "92.18%", "p100": 260, "stock100": 10, "p1k": 1600, "s1k": 0 },
+            { "name": "TUD", "batch": "Yet to see", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "#1", "p100": 280, "stock100": 0, "p1k": 1650, "s1k": 1 },
+            { "name": "ND",  "batch": "yet to see", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "#1", "p100": 450, "stock100": 0, "p1k": 2300, "s1k": 1 },
+            { "name": "NPP", "batch": "TTD-FP-125", "labLink": "https://verify.janoshik.com/tests/150504-Sample_2_VKVA7I3GJEZH", "labResult": "87.24%", "p100": 400, "stock100": 10, "p1k": 2300, "s1k": 1 }
         ];
 
-        // Fetch the inventory from the JSON file on GitHub
+        // Fetch the inventory from the JSON file on GitHub/Vercel
         async function loadInventory() {
             try {
                 const response = await fetch('products.json');
@@ -354,7 +354,7 @@
                 <tr>
                     <td class="compound-name">${item.name}</td>
                     <td class="batch-no">${item.batch}</td>
-                    <td><a href="${item.labLink}" target="_blank" class="lab-link">#1</a></td>
+                    <td><a href="${item.labLink}" target="_blank" class="lab-link">${item.labResult || "View Lab"}</a></td>
                     <td style="font-weight: bold; color: ${item.stock100 > 0 ? '#34a853' : '#d93025'};">
                         ${item.stock100 > 0 ? item.stock100 : '0'}
                     </td>
