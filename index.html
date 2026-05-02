@@ -292,7 +292,7 @@
             
             <div class="modal-instruction" style="margin-bottom: 20px; background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #eee;">
                 <p style="margin: 0 0 8px 0; font-size: 1.05rem;">Send order to: <strong style="color: var(--primary-red);">strixsir1@gmail.com</strong></p>
-                <p style="margin: 0; font-size: 0.85rem; color: #555;">You will Receive a USDT TRC Crypto address in 12 Hours.</p>
+                <p style="margin: 0; font-size: 0.85rem; color: #555;">You will Receive a crypto payment address in 12 Hours.</p>
             </div>
             
             <div class="form-group">
@@ -301,7 +301,16 @@
             </div>
             <div class="form-group">
                 <label>Shipping Address:</label>
+                <div style="color: var(--primary-red); font-size: 0.8rem; margin-bottom: 5px;">* Only enter Real name and address, Else parcel will be lost</div>
                 <textarea id="ship-address" class="form-input" style="height: 60px" placeholder="Street, City, State, ZIP, Country" oninput="updateOrderText()"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Select Crypto Network:</label>
+                <div style="display: flex; gap: 15px; margin-top: 5px; font-size: 0.9rem;">
+                    <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="USDT TRC 20" checked onchange="updateOrderText()"> USDT TRC 20</label>
+                    <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="USDT ERC 20" onchange="updateOrderText()"> USDT ERC 20</label>
+                </div>
             </div>
 
             <div class="copy-group">
@@ -428,6 +437,7 @@
         function updateOrderText() {
             const name = document.getElementById('ship-name').value.trim();
             const addr = document.getElementById('ship-address').value.trim();
+            const cryptoNetwork = document.querySelector('input[name="crypto-network"]:checked').value;
             
             const itemsText = cart.map(i => {
                 return `- ${i.name} [Batch: ${i.batch}] (${i.size}): $${i.price}`;
@@ -442,8 +452,8 @@ SHIPPING INFO:
 Name: ${name || "[REQUIRED]"}
 Address: ${addr || "[REQUIRED]"}
 ----------------------------
-USDT TRC ADDRESS REQUESTED
-You will Receive a USDT TRC Crypto address in 12 Hours.
+${cryptoNetwork} ADDRESS REQUESTED
+You will Receive a ${cryptoNetwork} address in 12 Hours.
 * Note: For Pre-Orders, 50% payment upfront and 50% when parcelled.
 * Order Total (including $30 shipping) will be confirmed in our reply.`;
             
