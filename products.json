@@ -1,5 +1,5 @@
 [
-    { "name": "Test No base", "batch": "Sent to Jano", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "--", "p100": 220, "stock100": 5, "p1k": 1400, "s1k": 1 },
+    { "name": "Test No base", "batch": "Sent to Jano", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "--", "p100": 210, "stock100": 5, "p1k": 1300, "s1k": 1 },
     { "name": "Test Prop",  "batch": "--", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "--", "p100": 230, "stock100": 0, "p1k": 1450, "s1k": 1 },
     { "name": "Test Cyp",  "batch": "TTC-FP-125", "labLink": "https://verify.janoshik.com/tests/132664-Sample_1_873E5VFUEAZ8", "labResult": "94.63%", "p100": 240, "stock100": 16, "p1k": 1500, "s1k": 1 },
     { "name": "Test Ent",  "batch": "TTE-FP-125", "labLink": "https://verify.janoshik.com/tests/148722-Sample_1_7PVJ4SXQXMFJ", "labResult": "92.99%", "p100": 240, "stock100": 0, "p1k": 1500, "s1k": 1 },
