@@ -247,7 +247,13 @@
     <h1>Product Catalog</h1>
 
     <div class="note">
-        <strong>How Pre-Orders Work:</strong>On Monday, I send a person to Gujarat for pickup and parceling. Reaches me Thursday, tracking by Saturday. 50% upfront, 50% after parceling.
+        <strong style="font-size: 1.05rem;">What is this Pre-order thing?</strong><br> 
+        This is made for Sources, for KGs amount, I need to source the raws first as I don’t keep large stock on hand.<br>
+        On Monday, I send a person to Gujarat to buy the Pre-ordered Amount. It reaches me by Thursday and is then Parcelled.<br>
+        <strong>50% upfront, 50% after Parceling.</strong>
+        <div style="margin-top: 15px; padding: 10px; background-color: white; border: 2px dashed var(--primary-red); border-radius: 6px; font-weight: 800; color: var(--primary-red); font-size: 0.95rem; box-shadow: 0 2px 4px rgba(217, 48, 37, 0.1);">
+            ⚡ Retail Stock can go out of stock, but Pre-orders are ALWAYS available!
+        </div>
     </div>
 
     <div class="table-wrapper">
@@ -256,7 +262,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Batch No</th>
-                    <th>Janoshik Test Links</th>
+                    <th>Lab Test</th>
                     <th>Stock (100G)</th>
                     <th class="header-red">Retail (100G)</th>
                     <th></th>
@@ -277,8 +283,25 @@
         </ul>
         
         <div id="cart-summary" class="total-summary" style="display: none;">
-            <div class="total-row" style="color: #555; font-size: 0.95rem; text-align: center; display: block; font-style: italic;">
-                Total amount (including $30 shipping) will be calculated and confirmed by us via email to ensure accuracy.
+            <div class="total-row">
+                <span>Subtotal:</span>
+                <span>$<span id="cart-subtotal">0</span></span>
+            </div>
+            <div class="total-row">
+                <span>Shipping:</span>
+                <span>$30</span>
+            </div>
+            <div class="total-row grand-total" style="font-size: 1.25rem; font-weight: bold; margin-top: 10px; padding-top: 10px; border-top: 2px solid #eee;">
+                <span>Grand Total:</span>
+                <span>$<span id="cart-total">0</span></span>
+            </div>
+            <div class="total-row" style="color: var(--primary-red); margin-top: 10px;">
+                <span>Amount Due Now:</span>
+                <span>$<span id="cart-upfront">0</span></span>
+            </div>
+            <div class="total-row" style="color: #666; font-size: 0.9rem;">
+                <span>Remaining Balance (Pre-orders):</span>
+                <span>$<span id="cart-remaining">0</span></span>
             </div>
         </div>
 
@@ -291,7 +314,7 @@
             <h3 style="margin-top:0">Complete Your Order</h3>
             
             <div class="modal-instruction" style="margin-bottom: 20px; background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #eee;">
-                <p style="margin: 0 0 8px 0; font-size: 1.05rem;">Send order to: <strong style="color: var(--primary-red);">strixsir@proton.me</strong></p>
+                <p style="margin: 0 0 8px 0; font-size: 1.05rem;">Send order to: <strong style="color: var(--primary-red);">strixsir1@gmail.com</strong></p>
                 <p style="margin: 0; font-size: 0.85rem; color: #555;">You will Receive a crypto payment address in 12 Hours.</p>
             </div>
             
@@ -398,6 +421,10 @@
 
         function updateCartUI() {
             const list = document.getElementById('cart-items');
+            const subtotalDisplay = document.getElementById('cart-subtotal');
+            const totalDisplay = document.getElementById('cart-total');
+            const upfrontDisplay = document.getElementById('cart-upfront');
+            const remainingDisplay = document.getElementById('cart-remaining');
             const summaryDiv = document.getElementById('cart-summary');
 
             if (cart.length === 0) {
@@ -407,7 +434,21 @@
             }
 
             summaryDiv.style.display = 'block';
+            let subtotal = 0;
+            let upfront = 0;
+            let remaining = 0;
+
             list.innerHTML = cart.map((item, index) => {
+                subtotal += item.price;
+                
+                // Pre-order split logic (1kg items)
+                if (item.size === '1kg') {
+                    upfront += item.price / 2;
+                    remaining += item.price / 2;
+                } else {
+                    upfront += item.price;
+                }
+
                 return `
                     <li class="cart-item">
                         <span>${item.name} (${item.size})</span>
@@ -415,6 +456,11 @@
                     </li>
                 `;
             }).join('');
+
+            subtotalDisplay.innerText = subtotal.toLocaleString();
+            totalDisplay.innerText = (subtotal + SHIPPING_COST).toLocaleString();
+            upfrontDisplay.innerText = (upfront + SHIPPING_COST).toLocaleString();
+            remainingDisplay.innerText = remaining.toLocaleString();
         }
 
         function removeItem(index) {
@@ -439,23 +485,45 @@
             const addr = document.getElementById('ship-address').value.trim();
             const cryptoNetwork = document.querySelector('input[name="crypto-network"]:checked').value;
             
+            let subtotal = 0;
+            let upfront = 0;
+            let remaining = 0;
+
             const itemsText = cart.map(i => {
+                subtotal += i.price;
+                
+                if (i.size === '1kg') {
+                    upfront += i.price / 2;
+                    remaining += i.price / 2;
+                } else {
+                    upfront += i.price;
+                }
+
                 return `- ${i.name} [Batch: ${i.batch}] (${i.size}): $${i.price}`;
             }).join("\n");
+
+            const grandTotal = subtotal + SHIPPING_COST;
+            const amountDueNow = upfront + SHIPPING_COST;
 
             const fullText = `ORDER REFERENCE: #${currentOrderNum}
 ----------------------------
 ITEMS:
 ${itemsText}
 ----------------------------
+SUBTOTAL: $${subtotal}
+SHIPPING: $${SHIPPING_COST}
+----------------------------
+GRAND TOTAL: $${grandTotal}
+----------------------------
+AMOUNT DUE NOW: $${amountDueNow}
+REMAINING BALANCE: $${remaining} (Due when parcelled)
+----------------------------
 SHIPPING INFO:
 Name: ${name || "[REQUIRED]"}
 Address: ${addr || "[REQUIRED]"}
 ----------------------------
 ${cryptoNetwork} ADDRESS REQUESTED
-You will Receive a ${cryptoNetwork} address in 12 Hours.
-* Note: For Pre-Orders, 50% payment upfront and 50% when parcelled.
-* Order Total (including $30 shipping) will be confirmed in our reply.`;
+You will Receive a ${cryptoNetwork} address in 12 Hours.`;
             
             document.getElementById('order-text-area').value = fullText;
             
