@@ -288,10 +288,8 @@
         <div class="discount-tiers">
             <span class="discount-tier">200g: 10% Off</span>
             <span class="discount-tier">300g: 15% Off</span>
-            <span class="discount-tier">400g: 20% Off</span>
-            <span class="discount-tier">500g: 25% Off</span>
         </div>
-        <div style="font-size: 0.8rem; margin-top: 10px;">*Applies automatically in cart (Max 500g per item). For more, use 1KG Pre-order.</div>
+        <div style="font-size: 0.8rem; margin-top: 10px;">*Applies automatically in cart (Max 300g per item). For more, use 1KG Pre-order.</div>
     </div>
 
     <div class="table-wrapper">
@@ -463,9 +461,9 @@
                     return;
                 }
                 
-                // Enforce 500g max limit rule for retail discount
-                if (size === '100g' && existingItem.qty >= 5) {
-                    alert("Maximum 500g (5 units) allowed for retail bulk discount. For larger amounts, please use the 1KG Pre-order option!");
+                // Enforce 300g max limit rule for retail discount
+                if (size === '100g' && existingItem.qty >= 3) {
+                    alert("Maximum 300g (3 units) allowed for retail bulk discount. For larger amounts, please use the 1KG Pre-order option!");
                     return;
                 }
                 
@@ -484,8 +482,6 @@
             if (item.size === '100g') {
                 if (item.qty === 2) discountPercent = 0.10;      // 200g = 10% off
                 else if (item.qty === 3) discountPercent = 0.15; // 300g = 15% off
-                else if (item.qty === 4) discountPercent = 0.20; // 400g = 20% off
-                else if (item.qty === 5) discountPercent = 0.25; // 500g = 25% off
             }
             
             let finalTotal = baseTotal * (1 - discountPercent);
