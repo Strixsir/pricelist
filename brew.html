@@ -67,6 +67,7 @@
             font-weight: 700;
             font-size: 1.5rem;
             text-align: center;
+            transition: color 0.3s ease;
         }
 
         .sub-stat {
@@ -118,6 +119,11 @@
         input[type="checkbox"] {
             accent-color: var(--accent-red);
         }
+        
+        input[type="range"] {
+            accent-color: var(--accent-red);
+            height: 4px;
+        }
 
         /* Tooltip Styles */
         .tooltip-icon {
@@ -149,7 +155,7 @@
     <div class="max-w-6xl mx-auto">
         <!-- Header -->
         <div class="text-center mb-10">
-            <h1 class="text-3xl font-bold tracking-tight mb-1" id="mainTitle">Dinfar Brew Calc V 1.01</h1>
+            <h1 class="text-3xl font-bold tracking-tight mb-1" id="mainTitle">Dinfar Brew Calc V 1.04</h1>
             <p class="text-gray-400 text-sm" id="mainSubtitle">Single compound steroid solution calculator</p>
             
             <div class="flex flex-wrap justify-center gap-3 mt-6">
@@ -524,12 +530,21 @@
             <!-- Right Panel: Results -->
             <div class="lg:col-span-7 flex flex-col gap-4">
                 
-                <!-- Feature 4: Smart Warnings (Invisible by default) -->
+                <!-- Smart Warnings -->
                 <div id="warningAlert" class="hidden border border-yellow-700/50 bg-yellow-900/20 p-4 rounded-lg flex items-start gap-3 shadow-lg">
                     <svg class="w-5 h-5 text-yellow-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                     <div>
                         <h4 class="text-sm font-bold text-yellow-500 mb-1">Brew Warning</h4>
                         <p class="text-xs text-yellow-200/80 leading-relaxed" id="warningText">Warning message goes here.</p>
+                    </div>
+                </div>
+
+                <!-- Error Alert -->
+                <div id="errorAlert" class="hidden border border-red-700/50 bg-red-900/20 p-4 rounded-lg flex items-start gap-3 shadow-lg">
+                    <svg class="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div>
+                        <h4 class="text-sm font-bold text-red-500 mb-1">Calculation Error</h4>
+                        <p class="text-xs text-red-200/80 leading-relaxed" id="errorText">Total target volume exceeded.</p>
                     </div>
                 </div>
 
@@ -630,12 +645,19 @@
 
                 <!-- Viscosity Estimation Banner -->
                 <div class="stat-card mt-2 p-4 text-center" style="background: linear-gradient(180deg, #111 0%, #050505 100%); border-color: #333;">
-                    <span class="stat-label text-gray-400">Est. Solution Viscosity & Flow</span>
+                    <div class="flex justify-between items-center w-full mb-3 px-2">
+                        <span class="stat-label text-gray-400 m-0">Dynamic Solution Viscosity</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] text-gray-500 font-bold uppercase">Temp:</span>
+                            <span id="tempVal" class="text-[10px] text-white font-bold bg-zinc-800 px-2 py-0.5 rounded">25°C</span>
+                        </div>
+                    </div>
+                    <input type="range" id="tempSlider" min="15" max="40" value="25" class="w-full mb-4 cursor-pointer">
                     <div class="flex items-baseline justify-center gap-2 mt-1">
                         <span class="font-bold text-xl transition-colors duration-300" id="outViscosityVal">0.0 cP</span>
                         <span class="text-sm font-semibold transition-colors duration-300" id="outViscosityRating">N/A</span>
                     </div>
-                    <span class="text-[9px] text-gray-600 mt-2 uppercase tracking-wider">*Approximation (Base Oil + Solvent Blend + Powder Thickening)</span>
+                    <span class="text-[8px] text-gray-600 mt-2 uppercase tracking-widest block">*Thermodynamic Model: Grunberg-Nissan Blending + Arrhenius Decay + Solute Thickening</span>
                 </div>
 
                 <!-- Chart & Protocol Button -->
@@ -651,7 +673,6 @@
                         <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-[#e879f9]"></div>Carrier Oil</div>
                     </div>
 
-                    <!-- Feature 1: Generate Protocol Button -->
                     <button id="btnGenerateProtocol" class="mt-8 px-6 py-2 bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 rounded-lg text-sm font-bold text-white transition-all flex items-center gap-2 shadow-lg">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                         Generate Lab Protocol
@@ -674,7 +695,7 @@
         </div>
     </div>
 
-    <!-- Feature 1: Protocol Modal -->
+    <!-- Protocol Modal -->
     <div id="protocolModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-[#0a0a0a] border border-[#333] rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
             <div class="sticky top-0 bg-[#0a0a0a] p-5 border-b border-[#222] flex justify-between items-center">
@@ -728,16 +749,24 @@
             guaiacol: 1.129, peg400: 1.128, dmso: 1.10, water: 1, none: 1.0
         };
 
-        const viscosities = {
-            ba: 5.5, bb: 8.5, castor: 650, gso: 50, sesame: 45,
-            mct: 28, mig840: 25, mig812: 30, eo: 5.5, 'ethyl-lactate': 3,
-            guaiacol: 5, peg400: 90, dmso: 2, water: 1, none: 1.0
+        // Viscosity at baseline 25°C (cP)
+        const baseViscosity = {
+            ba: 5.4, bb: 8.2, castor: 680, gso: 48, sesame: 42,
+            mct: 27, mig840: 24, mig812: 28, eo: 3.9, 'ethyl-lactate': 2.8,
+            guaiacol: 4.5, peg400: 85, dmso: 2.1, water: 0.89, none: 1.0
+        };
+
+        // Temperature decay coefficients (Alpha)
+        const tempCoeff = {
+            ba: 0.015, bb: 0.018, castor: 0.06, gso: 0.035, sesame: 0.035,
+            mct: 0.03, mig840: 0.028, mig812: 0.03, eo: 0.02, 'ethyl-lactate': 0.015,
+            guaiacol: 0.015, peg400: 0.04, dmso: 0.015, water: 0.02, none: 0.02
         };
 
         // App State
         let isBlendMode = false;
         let calcMode = 'volume';
-        let latestCalculations = {}; // Store for the protocol generator
+        let latestCalculations = {}; 
 
         // Clone select options for compound 2, 3, and 4
         const options = document.getElementById('compound1Select').innerHTML;
@@ -745,8 +774,9 @@
         document.getElementById('compound3Select').innerHTML = options;
         document.getElementById('compound4Select').innerHTML = options;
 
-        // DOM Elements
         const inputs = {
+            tempSlider: document.getElementById('tempSlider'),
+            tempVal: document.getElementById('tempVal'),
             finalVolume: document.getElementById('finalVolume'),
             availablePowder: document.getElementById('availablePowder'),
             btnModeVol: document.getElementById('btnModeVol'),
@@ -844,10 +874,11 @@
             costPerVial: document.getElementById('outCostPerVial'),
             
             warningAlert: document.getElementById('warningAlert'),
-            warningText: document.getElementById('warningText')
+            warningText: document.getElementById('warningText'),
+            errorAlert: document.getElementById('errorAlert'),
+            errorText: document.getElementById('errorText')
         };
 
-        // --- UX Toggles ---
         inputs.toggleVialMath.addEventListener('click', () => {
             inputs.vialMathGroup.classList.toggle('hidden');
             inputs.toggleVialMath.textContent = inputs.vialMathGroup.classList.contains('hidden') ? 'Show Vial & Overfill Estimator' : 'Hide Vial Estimator';
@@ -1082,10 +1113,19 @@
             const extraSolventVol = totalBrewVol * (extraSolventPct / 100);
 
             const remainingVol = totalBrewVol - totalCompoundVol - baVol - bbVol - extraSolventVol;
-            const carrierMixPct = inputs.secondCarrier.checked ? (parseFloat(inputs.carrierMixPct.value) || 0) : 0;
             
-            const mainCarrierVol = remainingVol * ((100 - carrierMixPct) / 100);
-            const secondCarrierVol = remainingVol * (carrierMixPct / 100);
+            let mainCarrierVol = 0;
+            let secondCarrierVol = 0;
+
+            if (remainingVol < 0) {
+                outputs.errorAlert.classList.remove('hidden');
+                outputs.errorText.textContent = `Recipe impossible. Solvents and powder displace ${(totalCompoundVol + baVol + bbVol + extraSolventVol).toFixed(2)}ml, exceeding target batch of ${totalBrewVol.toFixed(2)}ml. Lower concentration or reduce BB.`;
+            } else {
+                outputs.errorAlert.classList.add('hidden');
+                const carrierMixPct = inputs.secondCarrier.checked ? (parseFloat(inputs.carrierMixPct.value) || 0) : 0;
+                mainCarrierVol = remainingVol * ((100 - carrierMixPct) / 100);
+                secondCarrierVol = remainingVol * (carrierMixPct / 100);
+            }
 
             let mainDens = densities[inputs.carrierDensity.value] || 0.92;
             if(inputs.carrierDensity.value === 'custom') mainDens = parseFloat(inputs.customMainCarrierDensity.value) || 0.92;
@@ -1109,7 +1149,6 @@
             outputs.powder3.textContent = `${pow3.toFixed(3)} g`;
             outputs.powder4.textContent = `${pow4.toFixed(3)} g`;
             
-            // Feature 7: Active API Yield
             const apiRatio1 = activeAPI[inputs.c1.value] || 1.0; outputs.activeApi1.textContent = `Active Hormone: ~${(c1Mg * apiRatio1).toFixed(0)}mg/ml`;
             const apiRatio2 = activeAPI[inputs.c2.value] || 1.0; outputs.activeApi2.textContent = `Active Hormone: ~${(c2Mg * apiRatio2).toFixed(0)}mg/ml`;
             const apiRatio3 = activeAPI[inputs.c3.value] || 1.0; outputs.activeApi3.textContent = `Active Hormone: ~${(c3Mg * apiRatio3).toFixed(0)}mg/ml`;
@@ -1126,195 +1165,3 @@
             outputs.carrierWeight.textContent = `${mainCarrierWeightG.toFixed(3)} g`;
             outputs.secondCarrierVol.textContent = `${secondCarrierVol.toFixed(2)} ml`;
             outputs.secondCarrierWeight.textContent = `${secondCarrierWeightG.toFixed(3)} g`;
-
-            outputs.compoundVol.textContent = `${totalCompoundVol.toFixed(3)} ml`;
-            outputs.totalVol.textContent = `${totalBrewVol.toFixed(2)} ml`;
-            outputs.volCheck.textContent = `${checkSum.toFixed(2)} ml`;
-            outputs.totalMass.textContent = `${totalMassG.toFixed(3)} g`;
-            
-            const finalYieldText = `${desiredYield.toFixed(2)} ml`;
-            outputs.finalYield.textContent = finalYieldText;
-            outputs.mobileYield.textContent = finalYieldText;
-
-            // Feature 2: Vial Math
-            const vialS = parseFloat(inputs.vialSize.value) || 10;
-            const vialO = parseFloat(inputs.vialOverfill.value) || 0.5;
-            const actualVialVol = vialS + vialO;
-            const numVials = Math.floor(desiredYield / actualVialVol);
-            const remaining = (desiredYield % actualVialVol).toFixed(1);
-            outputs.vialOutput.innerHTML = `Will yield approx <span class="font-bold text-white">${numVials}</span> vials (with ${remaining}ml leftover).`;
-
-            // Feature 5: Economics
-            const pCost = parseFloat(inputs.costPowder.value) || 0; // per 10g
-            const oCost = parseFloat(inputs.costOil.value) || 0; // per 100ml
-            const sCost = parseFloat(inputs.costSolvent.value) || 0; // per 100ml
-            const vCost = parseFloat(inputs.costVial.value) || 0; // misc per vial
-            
-            const totalPowder = pow1 + pow2 + pow3 + pow4;
-            const batchCostPowder = (totalPowder / 10) * pCost;
-            const batchCostOil = ((mainCarrierVol + secondCarrierVol) / 100) * oCost;
-            const batchCostSolvents = ((baVol + bbVol + extraSolventVol) / 100) * sCost;
-            
-            const totalBatchCost = batchCostPowder + batchCostOil + batchCostSolvents;
-            let estCostPerVial = 0;
-            if (numVials > 0) estCostPerVial = (totalBatchCost / numVials) + vCost;
-            outputs.costPerVial.textContent = `$${estCostPerVial.toFixed(2)}`;
-
-            // Feature 4: Smart Warnings
-            let warnings = [];
-            let totalConc = c1Mg + c2Mg + c3Mg + c4Mg;
-            
-            if (baPct > 3) warnings.push("BA > 3% greatly increases Post Injection Pain (PIP). 1-2% is standard.");
-            
-            // Basic crash logic based on high concentration + low solvent
-            if (!isBlendMode) {
-                let cType = inputs.c1.value;
-                if (cType === "test-c" && c1Mg >= 250 && bbPct < 18) warnings.push("Test C >= 250mg/ml with low BB has a high crash risk. Recommend 18-20% BB or EO.");
-                if (cType === "test-e" && c1Mg >= 300 && bbPct < 20) warnings.push("Test E >= 300mg/ml requires high BB (20%+) to prevent crashing.");
-                if (cType === "tren-a" && c1Mg >= 150 && bbPct < 20) warnings.push("Tren A at high concentrations usually requires Guaiacol or EO to hold.");
-            } else {
-                if (totalConc > 400 && extraSolventPct === 0) warnings.push("Total blend concentration > 400mg/ml. Extremely high crash risk without EO, Guaiacol, or PEG.");
-            }
-
-            if (warnings.length > 0) {
-                outputs.warningAlert.classList.remove('hidden');
-                outputs.warningText.innerHTML = warnings.join("<br><br>");
-            } else {
-                outputs.warningAlert.classList.add('hidden');
-            }
-
-            // Viscosity
-            const totalLiqVol = baVol + bbVol + extraSolventVol + mainCarrierVol + secondCarrierVol;
-            if (totalLiqVol > 0) {
-                let vMain = viscosities[inputs.carrierDensity.value] || 50;
-                let vSec = viscosities[inputs.secondCarrierSelect.value] || 50;
-                let vExtra = viscosities[inputs.extraSolventType.value] || 5;
-
-                let lnV = 0;
-                if (baVol > 0) lnV += (baVol / totalLiqVol) * Math.log(viscosities.ba);
-                if (bbVol > 0) lnV += (bbVol / totalLiqVol) * Math.log(viscosities.bb);
-                if (extraSolventVol > 0) lnV += (extraSolventVol / totalLiqVol) * Math.log(vExtra);
-                if (mainCarrierVol > 0) lnV += (mainCarrierVol / totalLiqVol) * Math.log(vMain);
-                if (secondCarrierVol > 0) lnV += (secondCarrierVol / totalLiqVol) * Math.log(vSec);
-
-                let baseCp = Math.exp(lnV);
-                let powderMultiplier = 1 + (totalConc / 100) * 0.15;
-                let estCp = baseCp * powderMultiplier;
-
-                let rating = ""; let colorClass = "";
-                if (estCp < 15) { rating = "Very Thin (29G-31G)"; colorClass = "#4ade80"; }
-                else if (estCp < 35) { rating = "Thin (27G-29G)"; colorClass = "#a3e635"; }
-                else if (estCp < 65) { rating = "Medium (25G-27G)"; colorClass = "#facc15"; }
-                else if (estCp < 150) { rating = "Thick (23G-25G)"; colorClass = "#fb923c"; }
-                else { rating = "Syrup (21G+ or Heat)"; colorClass = "#ef4444"; }
-
-                outputs.viscosityVal.textContent = `~${estCp.toFixed(1)} cP`;
-                outputs.viscosityVal.style.color = colorClass;
-                outputs.viscosityRating.textContent = rating;
-                outputs.viscosityRating.style.color = colorClass;
-                outputs.mobileViscosity.textContent = rating;
-                outputs.mobileViscosity.style.color = colorClass;
-            }
-
-            // Chart
-            if (brewChart) {
-                const carrierTotal = mainCarrierVol + secondCarrierVol;
-                brewChart.data.datasets[0].data = [totalCompoundVol, baVol, bbVol, inputs.extraSolvent.checked ? extraSolventVol : 0, carrierTotal];
-                brewChart.update();
-            }
-
-            // Save data for Feature 1 (Protocol)
-            latestCalculations = {
-                comp1Name: inputs.c1.options[inputs.c1.selectedIndex].text,
-                pow1: pow1.toFixed(2),
-                baVol: baVol.toFixed(2), bbVol: bbVol.toFixed(2),
-                baWeight: baWeightG.toFixed(2), bbWeight: bbWeightG.toFixed(2),
-                mainCarrierVol: mainCarrierVol.toFixed(2), mainOilName: inputs.carrierDensity.options[inputs.carrierDensity.selectedIndex].text,
-                mainCarrierWeight: mainCarrierWeightG.toFixed(2),
-                totalBrewVol: totalBrewVol.toFixed(2),
-                totalMass: totalMassG.toFixed(2),
-                filterName: inputs.filterLoss.options[inputs.filterLoss.selectedIndex].text,
-                isBlend: isBlendMode,
-                extraSolvents: extraSolventVol > 0 ? `${extraSolventVol.toFixed(2)}ml (${extraSolventWeightG.toFixed(2)}g) of ${inputs.extraSolventType.options[inputs.extraSolventType.selectedIndex].text}` : null,
-                secondCarrier: secondCarrierVol > 0 ? `${secondCarrierVol.toFixed(2)}ml (${secondCarrierWeightG.toFixed(2)}g) of ${inputs.secondCarrierSelect.options[inputs.secondCarrierSelect.selectedIndex].text}` : null,
-                comp2: (isBlendMode && inputs.enableC2.checked) ? { name: inputs.c2.options[inputs.c2.selectedIndex].text, pow: pow2.toFixed(2) } : null,
-                comp3: (isBlendMode && inputs.enableC3.checked) ? { name: inputs.c3.options[inputs.c3.selectedIndex].text, pow: pow3.toFixed(2) } : null,
-                comp4: (isBlendMode && inputs.enableC4.checked) ? { name: inputs.c4.options[inputs.c4.selectedIndex].text, pow: pow4.toFixed(2) } : null,
-            };
-        }
-
-        // Feature 1: Generate Protocol
-        document.getElementById('btnGenerateProtocol').addEventListener('click', () => {
-            const lc = latestCalculations;
-            let html = `
-                <div class="mb-4 text-white border-b border-[#333] pb-4">
-                    <h3 class="text-lg font-bold text-red-500">Gravimetric Protocol (Highly Accurate)</h3>
-                    <p class="text-gray-400 text-xs mt-1">This protocol uses a digital scale (mass) instead of volumetric beakers to completely eliminate thermal expansion and transfer loss errors.</p>
-                </div>
-                
-                <div class="flex items-start gap-3">
-                    <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
-                    <div><span class="font-bold text-white">Step 1: Prep & Tare</span><br>Place your primary beaker on a high-precision digital scale and <b>TARE (zero)</b> it.</div>
-                </div>
-                <div class="flex items-start gap-3">
-                    <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
-                    <div><span class="font-bold text-white">Step 2: Powder Measurement</span><br>Add exactly <span class="text-red-400 font-bold">${lc.pow1}g</span> of ${lc.comp1Name} into the beaker.</div>
-                </div>`;
-            
-            if (lc.isBlend) {
-                if(lc.comp2) html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-red-400 font-bold">${lc.comp2.pow}g</span> of ${lc.comp2.name} into the beaker.</div></div>`;
-                if(lc.comp3) html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-red-400 font-bold">${lc.comp3.pow}g</span> of ${lc.comp3.name} into the beaker.</div></div>`;
-                if(lc.comp4) html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-red-400 font-bold">${lc.comp4.pow}g</span> of ${lc.comp4.name} into the beaker.</div></div>`;
-            }
-
-            html += `
-                <div class="flex items-start gap-3">
-                    <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
-                    <div><span class="font-bold text-white">Step 3: Add Solvents</span><br>Leave beaker on scale. Add Benzyl Alcohol until scale increases by <span class="text-green-400 font-bold">${lc.baWeight}g</span> (${lc.baVol}ml). Then add Benzyl Benzoate until scale increases by another <span class="text-yellow-400 font-bold">${lc.bbWeight}g</span> (${lc.bbVol}ml).</div>
-                </div>`;
-
-            if (lc.extraSolvents) {
-                html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-orange-400 font-bold">${lc.extraSolvents}</span> to the solution.</div></div>`;
-            }
-
-            html += `
-                <div class="flex items-start gap-3">
-                    <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
-                    <div><span class="font-bold text-white">Step 4: Dissolve (Covered)</span><br>Remove beaker, cover top with foil/silicone (to prevent evaporation), and place on a hot plate or warm water bath (do not exceed 60°C). Swirl gently until powder is entirely dissolved and clear.</div>
-                </div>
-                <div class="flex items-start gap-3">
-                    <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
-                    <div><span class="font-bold text-white">Step 5: Gravimetric Top-Off (Crucial)</span><br>Remove from heat and wipe any water off the outside of the beaker. Place beaker back on the scale. <b>DO NOT TARE.</b> Pour ${lc.mainOilName} directly into the beaker until the scale reads EXACTLY <span class="text-purple-400 font-bold text-lg">${lc.totalMass}g</span>. Mix thoroughly.</div>
-                </div>`;
-
-            let filterText = lc.filterName.includes("No") ? "Proceed directly to sterilization/vialing as no filter loss was accounted for." : `Draw the warm solution into a sterile syringe. Attach the ${lc.filterName} and filter directly into a sterile, sealed vial.`;
-
-            html += `
-                <div class="flex items-start gap-3 pb-6">
-                    <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
-                    <div><span class="font-bold text-white">Step 6: Filtration & Vialing</span><br>${filterText}</div>
-                </div>`;
-
-            document.getElementById('protocolContent').innerHTML = html;
-            document.getElementById('protocolModal').classList.remove('hidden');
-        });
-
-        // Global Listeners
-        document.body.addEventListener('input', (e) => {
-            if(e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
-                if(e.target.id !== 'presetSelect') calculateBrew();
-            }
-        });
-        document.body.addEventListener('change', (e) => {
-            if(e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
-                if(e.target.id !== 'presetSelect') calculateBrew();
-            }
-        });
-
-        // Initialize immediately
-        initChart();
-        calculateBrew();
-
-    </script>
-</body>
-</html>
