@@ -67,7 +67,6 @@
             font-weight: 700;
             font-size: 1.5rem;
             text-align: center;
-            transition: color 0.3s ease;
         }
 
         .sub-stat {
@@ -120,12 +119,10 @@
             accent-color: var(--accent-red);
         }
         
-        input[type="range"] {
+        input[type=range] {
             accent-color: var(--accent-red);
-            height: 4px;
         }
 
-        /* Tooltip Styles */
         .tooltip-icon {
             display: inline-flex; align-items: center; justify-content: center;
             width: 14px; height: 14px; border-radius: 50%;
@@ -144,7 +141,6 @@
         }
         .has-tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
 
-        /* Modal Styles */
         #protocolModal {
             backdrop-filter: blur(5px);
         }
@@ -153,7 +149,6 @@
 <body class="p-4 md:p-8 pb-24 md:pb-8 relative">
 
     <div class="max-w-6xl mx-auto">
-        <!-- Header -->
         <div class="text-center mb-10">
             <h1 class="text-3xl font-bold tracking-tight mb-1" id="mainTitle">Dinfar Brew Calc V 1.05</h1>
             <p class="text-gray-400 text-sm" id="mainSubtitle">Single compound steroid solution calculator</p>
@@ -170,7 +165,6 @@
             <!-- Left Panel: Inputs -->
             <div class="lg:col-span-5 space-y-6">
                 
-                <!-- PRESETS CARD -->
                 <div id="presetCard" class="p-5 border border-red-900/40 bg-[#0a0a0a] rounded-lg shadow-[0_0_15px_rgba(139,0,0,0.05)] relative overflow-hidden transition-all duration-300">
                     <div class="absolute top-0 left-0 w-1 h-full bg-red-800"></div>
                     <label class="text-[11px] font-bold text-gray-300 mb-2 uppercase tracking-wider flex items-center gap-2">
@@ -208,19 +202,15 @@
                     </select>
                 </div>
 
-                <!-- CORE BREW CARD -->
                 <div class="p-5 border border-[#222] bg-[#0a0a0a] rounded-lg space-y-5">
-                    
                     <div class="flex justify-between items-center border-b border-[#222] pb-2">
                         <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Core Brew Profile</h3>
-                        <!-- Calc Mode Toggle -->
                         <div class="bg-[#000] border border-[#222] p-[2px] rounded flex text-[9px] font-bold text-gray-500 w-[150px]" id="calcModeToggle">
                             <button id="btnModeVol" class="flex-1 py-1 rounded bg-[#d32f2f] text-white shadow transition-all">Target Vol</button>
                             <button id="btnModePowder" class="flex-1 py-1 rounded hover:text-gray-300 transition-all">Fixed Powder</button>
                         </div>
                     </div>
                     
-                    <!-- Compound 1 (Top) -->
                     <div class="pt-2">
                         <label class="text-[11px] font-bold text-gray-300 mb-1.5 block" id="lblComp1">Compound</label>
                         <select id="compound1Select" class="w-full input-box p-3 rounded text-sm cursor-pointer mb-4">
@@ -263,3 +253,115 @@
                             <option value="dbol">Dianabol (Methandrostenolone) - Injectable</option>
                             <option value="anadrol">Anadrol (Oxymetholone) - Injectable</option>
                             <option value="anavar">Anavar (Oxandrolone) - Injectable</option>
+                            <option value="tbol">Turinabol (Chlorodehydromethyltestosterone) - Injectable</option>
+                            <option value="sdrol">Superdrol (Methasterone) - Injectable</option>
+                            <option value="proviron">Proviron (Mesterolone) - Injectable</option>
+                            <option value="yk11">YK-11 - Injectable</option>
+                            <option value="l-carn">L-Carnitine Base</option>
+                            <option value="glut">Glutathione Base</option>
+                        </select>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div>
+                                <label class="text-[10px] font-semibold text-gray-400 mb-1 block">Conc (mg/ml)</label>
+                                <input type="number" id="mgml1" value="300" step="10" class="w-full input-box p-2.5 rounded text-sm">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-semibold text-gray-400 mb-1 block">Disp (ml/g)</label>
+                                <input type="number" id="disp1" value="0.909" step="0.001" class="w-full input-box p-2.5 rounded text-sm">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-semibold text-gray-400 mb-1 block">Purity (%)</label>
+                                <input type="number" id="purity1" value="100" step="0.1" class="w-full input-box p-2.5 rounded text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="inputVolumeGroup" class="pt-4 border-t border-[#111]">
+                        <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block">Desired Final Yield (ml)</label>
+                        <input type="number" id="finalVolume" value="50" step="1" class="w-full input-box p-3 rounded text-sm">
+                        
+                        <div class="mt-2 text-right">
+                            <button id="toggleVialMath" class="text-[10px] text-gray-500 hover:text-gray-300 underline underline-offset-2 transition-colors">Show Vial & Overfill Estimator</button>
+                        </div>
+                        <div id="vialMathGroup" class="hidden grid grid-cols-2 gap-3 mt-3 p-3 bg-[#000] border border-[#222] rounded">
+                            <div>
+                                <label class="text-[9px] font-semibold text-gray-400 mb-1 block">Vial Size (ml)</label>
+                                <input type="number" id="vialSize" value="10" step="1" class="w-full input-box p-2 rounded text-sm">
+                            </div>
+                            <div>
+                                <label class="text-[9px] font-semibold text-gray-400 mb-1 block">Overfill/Vial (ml)</label>
+                                <input type="number" id="vialOverfill" value="0.5" step="0.1" class="w-full input-box p-2 rounded text-sm">
+                            </div>
+                            <div class="col-span-2 text-[10px] text-gray-400 text-center pt-1" id="vialOutput">
+                                Will yield approx <span class="font-bold text-white">0</span> vials.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="inputPowderGroup" class="hidden pt-4 border-t border-[#111]">
+                        <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block has-tooltip">
+                            Available Raw Powder (g) <span class="tooltip-icon">?</span>
+                            <span class="tooltip-text">Calculates the total volume based on a fixed amount of raw powder.</span>
+                        </label>
+                        <input type="number" id="availablePowder" value="10" step="0.1" class="w-full input-box p-3 rounded text-sm">
+                    </div>
+
+                    <div id="blendSection" class="hidden space-y-4 pt-4 border-t border-[#222]">
+                        <!-- Compound 2 -->
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="enableCompound2" class="w-4 h-4 rounded border-gray-600 bg-gray-800 cursor-pointer">
+                            <label for="enableCompound2" class="text-xs font-bold text-gray-300 cursor-pointer">Add Compound 2</label>
+                        </div>
+                        <div id="compound2Group" class="hidden p-3 border border-[#333] bg-[#000] rounded-lg">
+                            <label class="text-[10px] font-semibold text-gray-400 mb-1 block">Compound Selection</label>
+                            <select id="compound2Select" class="w-full input-box p-2.5 rounded text-sm cursor-pointer mb-3"></select>
+                            <div class="grid grid-cols-3 gap-3">
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Conc (mg/ml)</label><input type="number" id="mgml2" value="150" class="w-full input-box p-2 rounded text-sm"></div>
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Disp (ml/g)</label><input type="number" id="disp2" value="0.909" step="0.001" class="w-full input-box p-2 rounded text-sm"></div>
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Purity (%)</label><input type="number" id="purity2" value="100" class="w-full input-box p-2 rounded text-sm"></div>
+                            </div>
+                        </div>
+
+                        <!-- Compound 3 -->
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="enableCompound3" class="w-4 h-4 rounded border-gray-600 bg-gray-800 cursor-pointer">
+                            <label for="enableCompound3" class="text-xs font-bold text-gray-300 cursor-pointer">Add Compound 3</label>
+                        </div>
+                        <div id="compound3Group" class="hidden p-3 border border-[#333] bg-[#000] rounded-lg">
+                            <label class="text-[10px] font-semibold text-gray-400 mb-1 block">Compound Selection</label>
+                            <select id="compound3Select" class="w-full input-box p-2.5 rounded text-sm cursor-pointer mb-3"></select>
+                            <div class="grid grid-cols-3 gap-3">
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Conc (mg/ml)</label><input type="number" id="mgml3" value="150" class="w-full input-box p-2 rounded text-sm"></div>
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Disp (ml/g)</label><input type="number" id="disp3" value="0.909" step="0.001" class="w-full input-box p-2 rounded text-sm"></div>
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Purity (%)</label><input type="number" id="purity3" value="100" class="w-full input-box p-2 rounded text-sm"></div>
+                            </div>
+                        </div>
+
+                        <!-- Compound 4 -->
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="enableCompound4" class="w-4 h-4 rounded border-gray-600 bg-gray-800 cursor-pointer">
+                            <label for="enableCompound4" class="text-xs font-bold text-gray-300 cursor-pointer">Add Compound 4</label>
+                        </div>
+                        <div id="compound4Group" class="hidden p-3 border border-[#333] bg-[#000] rounded-lg">
+                            <label class="text-[10px] font-semibold text-gray-400 mb-1 block">Compound Selection</label>
+                            <select id="compound4Select" class="w-full input-box p-2.5 rounded text-sm cursor-pointer mb-3"></select>
+                            <div class="grid grid-cols-3 gap-3">
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Conc (mg/ml)</label><input type="number" id="mgml4" value="150" class="w-full input-box p-2 rounded text-sm"></div>
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Disp (ml/g)</label><input type="number" id="disp4" value="0.909" step="0.001" class="w-full input-box p-2 rounded text-sm"></div>
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Purity (%)</label><input type="number" id="purity4" value="100" class="w-full input-box p-2 rounded text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-5 border border-[#222] bg-[#0a0a0a] rounded-lg space-y-5">
+                    <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest border-b border-[#222] pb-2">Solvents</h3>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block has-tooltip">BA % <span class="tooltip-icon">?</span><span class="tooltip-text">Benzyl Alcohol. Preservative. Standard is 1-2%.</span></label>
+                            <input type="number" id="baPercent" value="2" step="0.1" class="w-full input-box p-3 rounded text-sm">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block has-tooltip">BB % <span class="tooltip-icon">?</span><span class="tooltip-text">Benzyl Benzoate. Co-solvent. Standard is 15-20%.</span></label>
+                            <input type="number" id="bbPercent" value="18" step="0.5" class="w-full input-box p-3 rounded text-sm
