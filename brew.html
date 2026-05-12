@@ -1165,3 +1165,214 @@
             outputs.carrierWeight.textContent = `${mainCarrierWeightG.toFixed(3)} g`;
             outputs.secondCarrierVol.textContent = `${secondCarrierVol.toFixed(2)} ml`;
             outputs.secondCarrierWeight.textContent = `${secondCarrierWeightG.toFixed(3)} g`;
+
+            outputs.compoundVol.textContent = `${totalCompoundVol.toFixed(3)} ml`;
+            outputs.totalVol.textContent = `${totalBrewVol.toFixed(2)} ml`;
+            outputs.volCheck.textContent = `${checkSum.toFixed(2)} ml`;
+            outputs.totalMass.textContent = `${totalMassG.toFixed(3)} g`;
+            
+            const finalYieldText = `${desiredYield.toFixed(2)} ml`;
+            outputs.finalYield.textContent = finalYieldText;
+            outputs.mobileYield.textContent = finalYieldText;
+
+            // Vial Math
+            const vialS = parseFloat(inputs.vialSize.value) || 10;
+            const vialO = parseFloat(inputs.vialOverfill.value) || 0.5;
+            const actualVialVol = vialS + vialO;
+            const numVials = Math.floor(desiredYield / actualVialVol);
+            const remaining = (desiredYield % actualVialVol).toFixed(1);
+            outputs.vialOutput.innerHTML = `Will yield approx <span class="font-bold text-white">${numVials}</span> vials (with ${remaining}ml leftover).`;
+
+            // Economics
+            const pCost = parseFloat(inputs.costPowder.value) || 0; // per 10g
+            const oCost = parseFloat(inputs.costOil.value) || 0; // per 100ml
+            const sCost = parseFloat(inputs.costSolvent.value) || 0; // per 100ml
+            const vCost = parseFloat(inputs.costVial.value) || 0; // misc per vial
+            
+            const totalPowder = pow1 + pow2 + pow3 + pow4;
+            const batchCostPowder = (totalPowder / 10) * pCost;
+            const batchCostOil = ((mainCarrierVol + secondCarrierVol) / 100) * oCost;
+            const batchCostSolvents = ((baVol + bbVol + extraSolventVol) / 100) * sCost;
+            
+            const totalBatchCost = batchCostPowder + batchCostOil + batchCostSolvents;
+            let estCostPerVial = 0;
+            if (numVials > 0) estCostPerVial = (totalBatchCost / numVials) + vCost;
+            outputs.costPerVial.textContent = `$${estCostPerVial.toFixed(2)}`;
+
+            // Smart Warnings
+            let warnings = [];
+            let totalConc = c1Mg + c2Mg + c3Mg + c4Mg;
+            
+            if (baPct > 3) warnings.push("BA > 3% greatly increases Post Injection Pain (PIP). 1-2% is standard.");
+            
+            // Basic crash logic based on high concentration + low solvent
+            if (!isBlendMode) {
+                let cType = inputs.c1.value;
+                if (cType === "test-c" && c1Mg >= 250 && bbPct < 18) warnings.push("Test C >= 250mg/ml with low BB has a high crash risk. Recommend 18-20% BB or EO.");
+                if (cType === "test-e" && c1Mg >= 300 && bbPct < 20) warnings.push("Test E >= 300mg/ml requires high BB (20%+) to prevent crashing.");
+                if (cType === "tren-a" && c1Mg >= 150 && bbPct < 20) warnings.push("Tren A at high concentrations usually requires Guaiacol or EO to hold.");
+            } else {
+                if (totalConc > 400 && extraSolventPct === 0) warnings.push("Total blend concentration > 400mg/ml. Extremely high crash risk without EO, Guaiacol, or PEG.");
+            }
+
+            if (warnings.length > 0) {
+                outputs.warningAlert.classList.remove('hidden');
+                outputs.warningText.innerHTML = warnings.join("<br><br>");
+            } else {
+                outputs.warningAlert.classList.add('hidden');
+            }
+
+            // --- THERMODYNAMIC VISCOSITY MODEL ---
+            const totalLiqVol = baVol + bbVol + extraSolventVol + mainCarrierVol + secondCarrierVol;
+            const tempC = parseFloat(inputs.tempSlider?.value) || 25;
+            if (inputs.tempVal) inputs.tempVal.textContent = `${tempC}°C`;
+
+            if (totalLiqVol > 0 && remainingVol >= 0) {
+                // 1. Arrhenius Temperature Decay: mu(T) = mu_25 * e^(-k * (T - 25))
+                const getTempAdjVisc = (key) => {
+                    const muRef = baseViscosity[key] || 50;
+                    const alpha = tempCoeff[key] || 0.03;
+                    return muRef * Math.exp(-alpha * (tempC - 25));
+                };
+
+                const muBA = getTempAdjVisc('ba');
+                const muBB = getTempAdjVisc('bb');
+                const muEx = getTempAdjVisc(inputs.extraSolventType.value);
+                const muMain = getTempAdjVisc(inputs.carrierDensity.value);
+                const muSec = getTempAdjVisc(inputs.secondCarrierSelect.value);
+
+                // 2. Grunberg-Nissan Logarithmic Blending
+                let lnV = 0;
+                if (baVol > 0) lnV += (baVol / totalLiqVol) * Math.log(muBA);
+                if (bbVol > 0) lnV += (bbVol / totalLiqVol) * Math.log(muBB);
+                if (extraSolventVol > 0) lnV += (extraSolventVol / totalLiqVol) * Math.log(muEx);
+                if (mainCarrierVol > 0) lnV += (mainCarrierVol / totalLiqVol) * Math.log(muMain);
+                if (secondCarrierVol > 0) lnV += (secondCarrierVol / totalLiqVol) * Math.log(muSec);
+
+                let mixedVisc = Math.exp(lnV);
+
+                // 3. Solute (Powder) Exponential Thickening
+                const powderFactor = Math.exp(totalConc / 1100); 
+                let estCp = mixedVisc * powderFactor;
+
+                let rating = ""; let colorClass = "";
+                if (estCp < 12) { rating = "Fluid (29G+)"; colorClass = "#4ade80"; }
+                else if (estCp < 25) { rating = "Smooth (27G-29G)"; colorClass = "#a3e635"; }
+                else if (estCp < 55) { rating = "Standard (25G-27G)"; colorClass = "#facc15"; }
+                else if (estCp < 120) { rating = "Heavy (23G-25G)"; colorClass = "#fb923c"; }
+                else { rating = "Viscous (21G-23G)"; colorClass = "#ef4444"; }
+
+                outputs.viscosityVal.textContent = `~${estCp.toFixed(1)} cP`;
+                outputs.viscosityVal.style.color = colorClass;
+                outputs.viscosityRating.textContent = rating;
+                outputs.viscosityRating.style.color = colorClass;
+                outputs.mobileViscosity.textContent = rating;
+                outputs.mobileViscosity.style.color = colorClass;
+            } else if (remainingVol < 0) {
+                outputs.viscosityVal.textContent = `ERR`;
+                outputs.viscosityRating.textContent = "Saturation Exceeded";
+                outputs.viscosityVal.style.color = "#ef4444";
+                outputs.viscosityRating.style.color = "#ef4444";
+            }
+
+            // Chart
+            if (brewChart) {
+                const carrierTotal = mainCarrierVol + secondCarrierVol;
+                brewChart.data.datasets[0].data = [totalCompoundVol, baVol, bbVol, inputs.extraSolvent.checked ? extraSolventVol : 0, carrierTotal];
+                brewChart.update();
+            }
+
+            // Save data for Feature 1 (Protocol)
+            latestCalculations = {
+                comp1Name: inputs.c1.options[inputs.c1.selectedIndex].text,
+                pow1: pow1.toFixed(2),
+                baVol: baVol.toFixed(2), bbVol: bbVol.toFixed(2),
+                baWeight: baWeightG.toFixed(2), bbWeight: bbWeightG.toFixed(2),
+                mainCarrierVol: mainCarrierVol.toFixed(2), mainOilName: inputs.carrierDensity.options[inputs.carrierDensity.selectedIndex].text,
+                mainCarrierWeight: mainCarrierWeightG.toFixed(2),
+                totalBrewVol: totalBrewVol.toFixed(2),
+                totalMass: totalMassG.toFixed(2),
+                filterName: inputs.filterLoss.options[inputs.filterLoss.selectedIndex].text,
+                isBlend: isBlendMode,
+                extraSolvents: extraSolventVol > 0 ? `${extraSolventVol.toFixed(2)}ml (${extraSolventWeightG.toFixed(2)}g) of ${inputs.extraSolventType.options[inputs.extraSolventType.selectedIndex].text}` : null,
+                secondCarrier: secondCarrierVol > 0 ? `${secondCarrierVol.toFixed(2)}ml (${secondCarrierWeightG.toFixed(2)}g) of ${inputs.secondCarrierSelect.options[inputs.secondCarrierSelect.selectedIndex].text}` : null,
+                comp2: (isBlendMode && inputs.enableC2.checked) ? { name: inputs.c2.options[inputs.c2.selectedIndex].text, pow: pow2.toFixed(2) } : null,
+                comp3: (isBlendMode && inputs.enableC3.checked) ? { name: inputs.c3.options[inputs.c3.selectedIndex].text, pow: pow3.toFixed(2) } : null,
+                comp4: (isBlendMode && inputs.enableC4.checked) ? { name: inputs.c4.options[inputs.c4.selectedIndex].text, pow: pow4.toFixed(2) } : null,
+            };
+        }
+
+        document.getElementById('btnGenerateProtocol').addEventListener('click', () => {
+            const lc = latestCalculations;
+            let html = `
+                <div class="mb-4 text-white border-b border-[#333] pb-4">
+                    <h3 class="text-lg font-bold text-red-500">Gravimetric Protocol (Highly Accurate)</h3>
+                    <p class="text-gray-400 text-xs mt-1">This protocol uses a digital scale (mass) instead of volumetric beakers to completely eliminate thermal expansion and transfer loss errors.</p>
+                </div>
+                
+                <div class="flex items-start gap-3">
+                    <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                    <div><span class="font-bold text-white">Step 1: Prep & Tare</span><br>Place your primary beaker on a high-precision digital scale and <b>TARE (zero)</b> it.</div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                    <div><span class="font-bold text-white">Step 2: Powder Measurement</span><br>Add exactly <span class="text-red-400 font-bold">${lc.pow1}g</span> of ${lc.comp1Name} into the beaker.</div>
+                </div>`;
+            
+            if (lc.isBlend) {
+                if(lc.comp2) html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-red-400 font-bold">${lc.comp2.pow}g</span> of ${lc.comp2.name} into the beaker.</div></div>`;
+                if(lc.comp3) html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-red-400 font-bold">${lc.comp3.pow}g</span> of ${lc.comp3.name} into the beaker.</div></div>`;
+                if(lc.comp4) html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-red-400 font-bold">${lc.comp4.pow}g</span> of ${lc.comp4.name} into the beaker.</div></div>`;
+            }
+
+            html += `
+                <div class="flex items-start gap-3">
+                    <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                    <div><span class="font-bold text-white">Step 3: Add Solvents</span><br>Leave beaker on scale. Add Benzyl Alcohol until scale increases by <span class="text-green-400 font-bold">${lc.baWeight}g</span> (${lc.baVol}ml). Then add Benzyl Benzoate until scale increases by another <span class="text-yellow-400 font-bold">${lc.bbWeight}g</span> (${lc.bbVol}ml).</div>
+                </div>`;
+
+            if (lc.extraSolvents) {
+                html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-orange-400 font-bold">${lc.extraSolvents}</span> to the solution.</div></div>`;
+            }
+
+            html += `
+                <div class="flex items-start gap-3">
+                    <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                    <div><span class="font-bold text-white">Step 4: Dissolve (Covered)</span><br>Remove beaker, cover top with foil/silicone (to prevent evaporation), and place on a hot plate or warm water bath (do not exceed 60°C). Swirl gently until powder is entirely dissolved and clear.</div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                    <div><span class="font-bold text-white">Step 5: Gravimetric Top-Off (Crucial)</span><br>Remove from heat and wipe any water off the outside of the beaker. Place beaker back on the scale. <b>DO NOT TARE.</b> Pour ${lc.mainOilName} directly into the beaker until the scale reads EXACTLY <span class="text-purple-400 font-bold text-lg">${lc.totalMass}g</span>. Mix thoroughly.</div>
+                </div>`;
+
+            let filterText = lc.filterName.includes("No") ? "Proceed directly to sterilization/vialing as no filter loss was accounted for." : `Draw the warm solution into a sterile syringe. Attach the ${lc.filterName} and filter directly into a sterile, sealed vial.`;
+
+            html += `
+                <div class="flex items-start gap-3 pb-6">
+                    <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                    <div><span class="font-bold text-white">Step 6: Filtration & Vialing</span><br>${filterText}</div>
+                </div>`;
+
+            document.getElementById('protocolContent').innerHTML = html;
+            document.getElementById('protocolModal').classList.remove('hidden');
+        });
+
+        // Global Listeners
+        document.body.addEventListener('input', (e) => {
+            if(e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+                if(e.target.id !== 'presetSelect') calculateBrew();
+            }
+        });
+        document.body.addEventListener('change', (e) => {
+            if(e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+                if(e.target.id !== 'presetSelect') calculateBrew();
+            }
+        });
+
+        // Initialize immediately
+        initChart();
+        calculateBrew();
+
+    </script>
+</body>
+</html>
