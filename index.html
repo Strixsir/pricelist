@@ -437,7 +437,7 @@
         // Fetch the inventory from the JSON file on GitHub/Vercel
         async function loadInventory() {
             try {
-                const response = await fetch('products.json');
+                const response = await fetch('products.json?v=' + new Date().getTime());
                 if (!response.ok) throw new Error('Failed to load inventory');
                 products = await response.json();
             } catch (error) {
