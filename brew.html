@@ -156,6 +156,7 @@
             <div class="flex flex-wrap justify-center gap-3 mt-6">
                 <button id="navSingle" class="btn-active px-5 py-2 rounded text-xs font-bold">Single Compound</button>
                 <button id="navBlend" class="btn-outline px-5 py-2 rounded text-xs font-bold">Blend Calculator</button>
+                <button id="navOral" class="btn-outline px-5 py-2 rounded text-xs font-bold">Oral Powder Blend</button>
                 <button class="btn-outline px-5 py-2 rounded text-xs font-bold" onclick="window.open('https://thinksteroids.com/community/threads/homebrew-calculator.134440620/', '_blank')">Meso Thread</button>
             </div>
         </div>
@@ -165,6 +166,7 @@
             <!-- Left Panel: Inputs -->
             <div class="lg:col-span-5 space-y-6">
                 
+                <!-- PRESETS CARD (Hidden in Oral Mode) -->
                 <div id="presetCard" class="p-5 border border-red-900/40 bg-[#0a0a0a] rounded-lg shadow-[0_0_15px_rgba(139,0,0,0.05)] relative overflow-hidden transition-all duration-300">
                     <div class="absolute top-0 left-0 w-1 h-full bg-red-800"></div>
                     <label class="text-[11px] font-bold text-gray-300 mb-2 uppercase tracking-wider flex items-center gap-2">
@@ -202,7 +204,8 @@
                     </select>
                 </div>
 
-                <div class="p-5 border border-[#222] bg-[#0a0a0a] rounded-lg space-y-5">
+                <!-- LIQUID INJECTABLE INPUT PANEL -->
+                <div id="liquidInputSection" class="p-5 border border-[#222] bg-[#0a0a0a] rounded-lg space-y-5">
                     <div class="flex justify-between items-center border-b border-[#222] pb-2">
                         <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Core Brew Profile</h3>
                         <div class="bg-[#000] border border-[#222] p-[2px] rounded flex text-[9px] font-bold text-gray-500 w-[150px]" id="calcModeToggle">
@@ -354,9 +357,9 @@
                     </div>
                 </div>
 
-                <div class="p-5 border border-[#222] bg-[#0a0a0a] rounded-lg space-y-5">
+                <!-- SOLVENTS PANEL (Liquid only) -->
+                <div id="solventsSection" class="p-5 border border-[#222] bg-[#0a0a0a] rounded-lg space-y-5">
                     <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest border-b border-[#222] pb-2">Solvents</h3>
-                    
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block has-tooltip">BA % <span class="tooltip-icon">?</span><span class="tooltip-text">Benzyl Alcohol. Preservative. Standard is 1-2%.</span></label>
@@ -367,12 +370,10 @@
                             <input type="number" id="bbPercent" value="18" step="0.5" class="w-full input-box p-3 rounded text-sm">
                         </div>
                     </div>
-
                     <div class="flex items-center gap-2 pt-2">
                         <input type="checkbox" id="extraSolvent" class="w-4 h-4 rounded border-gray-600 bg-gray-800 cursor-pointer">
                         <label for="extraSolvent" class="text-xs font-semibold text-gray-300 cursor-pointer">Add Extra Solvent (Guaiacol, PEG, etc.)</label>
                     </div>
-
                     <div id="extraSolventGroup" class="hidden space-y-4 p-4 border border-[#333] bg-[#000] rounded-lg mt-2">
                         <div>
                             <label class="text-[11px] font-semibold text-gray-400 mb-1.5 block">Extra Solvent %</label>
@@ -396,14 +397,11 @@
                     </div>
                 </div>
 
-                <div class="p-5 border border-[#222] bg-[#0a0a0a] rounded-lg space-y-5">
+                <!-- CARRIER OILS PANEL (Liquid only) -->
+                <div id="carrierSection" class="p-5 border border-[#222] bg-[#0a0a0a] rounded-lg space-y-5">
                     <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest border-b border-[#222] pb-2">Carrier Oils & Filtration</h3>
-                    
                     <div>
-                        <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block has-tooltip">
-                            Sterile Filter Pore Size <span class="tooltip-icon">?</span>
-                            <span class="tooltip-text">Compensates for oil lost in the filter by adding extra carrier oil and solvents to starting mix.</span>
-                        </label>
+                        <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block has-tooltip">Sterile Filter Pore Size <span class="tooltip-icon">?</span><span class="tooltip-text">Compensates for oil lost in the filter by adding extra carrier oil and solvents to starting mix.</span></label>
                         <select id="filterLoss" class="w-full input-box p-3 rounded text-sm cursor-pointer">
                             <option value="none">No Loss Comp.</option>
                             <option value="0.45">0.45µm (~1.0ml loss)</option>
@@ -412,12 +410,10 @@
                             <option value="custom">Custom Loss (ml)</option>
                         </select>
                     </div>
-
                     <div id="customLossField" class="hidden">
                         <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block">Custom Filter Loss (ml)</label>
                         <input type="number" id="customLoss" value="1.5" step="0.1" class="w-full input-box p-3 rounded text-sm">
                     </div>
-
                     <div>
                         <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block">Main Carrier Oil</label>
                         <select id="carrierDensity" class="w-full input-box p-3 rounded text-sm cursor-pointer">
@@ -432,17 +428,14 @@
                             <option value="custom">Custom (manual density)</option>
                         </select>
                     </div>
-
                     <div id="customMainCarrierField" class="hidden">
                         <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block">Custom Main Carrier Density (g/ml)</label>
                         <input type="number" id="customMainCarrierDensity" value="0.92" step="0.001" class="w-full input-box p-3 rounded text-sm">
                     </div>
-
                     <div class="flex items-center gap-2 pt-2">
                         <input type="checkbox" id="secondCarrier" class="w-4 h-4 rounded border-gray-600 bg-gray-800 cursor-pointer">
                         <label for="secondCarrier" class="text-xs font-semibold text-gray-300 cursor-pointer">Mix with Second Carrier Oil</label>
                     </div>
-
                     <div id="secondCarrierGroup" class="hidden space-y-4 p-4 border border-[#333] bg-[#000] rounded-lg mt-2">
                         <div>
                             <label class="text-[11px] font-semibold text-gray-400 mb-1.5 block">Carrier Mix % (second oil)</label>
@@ -470,7 +463,81 @@
                     </div>
                 </div>
 
-                <div class="p-5 border border-[#222] bg-[#0a0a0a] rounded-lg space-y-4">
+                <!-- NEW: ORAL POWDER INPUT PANEL -->
+                <div id="oralInputSection" class="hidden p-5 border border-[#222] bg-[#0a0a0a] rounded-lg space-y-5">
+                    <div class="flex justify-between items-center border-b border-[#222] pb-2">
+                        <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Oral Dry Mixture Profile</h3>
+                        <div class="bg-[#000] border border-[#222] p-[2px] rounded flex text-[9px] font-bold text-gray-500 w-[160px]" id="oralModeToggle">
+                            <button id="btnOralModeWeight" class="flex-1 py-1 rounded bg-[#d32f2f] text-white shadow transition-all">By Weight</button>
+                            <button id="btnOralModeCapsule" class="flex-1 py-1 rounded hover:text-gray-300 transition-all">Capsule Mode</button>
+                        </div>
+                    </div>
+
+                    <!-- Common API Weight Block -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-[11px] font-semibold text-gray-300 mb-1 block" id="lblOralApiAmt">API Weight</label>
+                            <input type="number" id="oralApiAmount" value="2.5" step="0.1" class="w-full input-box p-2.5 rounded text-sm">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-semibold text-gray-300 mb-1 block">API Unit</label>
+                            <select id="oralApiUnit" class="w-full input-box p-2.5 rounded text-sm cursor-pointer">
+                                <option value="mg">mg</option>
+                                <option value="g" selected>g</option>
+                                <option value="kg">kg</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Target Config for By Weight Mode -->
+                    <div id="oralWeightGroup" class="space-y-4">
+                        <div class="bg-[#000] border border-[#222] p-[2px] rounded flex text-[9px] font-bold text-gray-500 w-full" id="oralWeightTargetToggle">
+                            <button id="btnOralTargetBatch" class="flex-1 py-1 px-1 rounded hover:text-gray-300 transition-all">Target Batch</button>
+                            <button id="btnOralTargetFiller" class="flex-1 py-1 px-1 rounded hover:text-gray-300 transition-all">Fixed Filler</button>
+                            <button id="btnOralTargetConc" class="flex-1 py-1 px-1 rounded bg-[#d32f2f] text-white transition-all">Target Conc/g</button>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-semibold text-gray-300 mb-1 block" id="lblOralWeightTarget">Target Conc per Gram (mg/g)</label>
+                            <input type="number" id="oralWeightTargetVal" value="50" step="1" class="w-full input-box p-3 rounded text-sm">
+                        </div>
+                    </div>
+
+                    <!-- Target Config for Capsule Mode -->
+                    <div id="oralCapsuleGroup" class="hidden space-y-4">
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="col-span-1">
+                                <label class="text-[10px] font-semibold text-gray-400 mb-1 block">API / Cap (mg)</label>
+                                <input type="number" id="oralCapApiPerCapsule" value="25" step="1" class="w-full input-box p-2 rounded text-xs">
+                            </div>
+                            <div class="col-span-1">
+                                <label class="text-[10px] font-semibold text-gray-400 mb-1 block">Cap Count</label>
+                                <input type="number" id="oralCapCount" value="100" step="5" class="w-full input-box p-2 rounded text-xs">
+                            </div>
+                            <div class="col-span-1">
+                                <label class="text-[10px] font-semibold text-gray-400 mb-1 block">Fill Wt/Cap (mg)</label>
+                                <input type="number" id="oralCapFillWeight" value="500" step="10" class="w-full input-box p-2 rounded text-xs">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dilution Control -->
+                    <div class="pt-2 border-t border-[#111] grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-[10px] font-semibold text-gray-400 mb-1 block">Dilution Steps</label>
+                            <select id="oralStepsMode" class="w-full input-box p-2.5 rounded text-sm cursor-pointer">
+                                <option value="auto">Automatic</option>
+                                <option value="custom">Manual Step Cap</option>
+                            </select>
+                        </div>
+                        <div id="oralCustomStepsField" class="hidden">
+                            <label class="text-[10px] font-semibold text-gray-400 mb-1 block">Max Steps Allowed</label>
+                            <input type="number" id="oralMaxSteps" value="5" min="1" max="15" class="w-full input-box p-2.5 rounded text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ECONOMICS PANEL -->
+                <div id="economicsCard" class="p-5 border border-[#222] bg-[#0a0a0a] rounded-lg space-y-4">
                     <div class="flex items-center justify-between cursor-pointer group" id="toggleEcoBtn">
                         <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2 group-hover:text-green-500 transition-colors">
                             <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -505,18 +572,18 @@
                 </div>
             </div>
 
+            <!-- Right Panel: Dynamic Outputs -->
             <div class="lg:col-span-7 flex flex-col gap-4">
                 
-                <!-- Advanced Error Box -->
+                <!-- Errors and Warnings Box -->
                 <div id="errorAlert" class="hidden border border-red-700/50 bg-red-900/20 p-4 rounded-lg flex items-start gap-3 shadow-lg">
                     <svg class="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                     <div>
-                        <h4 class="text-sm font-bold text-red-500 mb-1">Saturation Exceeded</h4>
-                        <p class="text-xs text-red-200/80 leading-relaxed" id="errorText">The selected powder and solvents require more volume than your Target Volume allows. The math is impossible. Please increase Target Volume or reduce concentration.</p>
+                        <h4 class="text-sm font-bold text-red-500 mb-1">Configuration Bound Error</h4>
+                        <p class="text-xs text-red-200/80 leading-relaxed" id="errorText">The math setup is impossible. Please adjust parameters.</p>
                     </div>
                 </div>
 
-                <!-- Warning Box -->
                 <div id="warningAlert" class="hidden border border-yellow-700/50 bg-yellow-900/20 p-4 rounded-lg flex items-start gap-3 shadow-lg">
                     <svg class="w-5 h-5 text-yellow-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                     <div>
@@ -525,8 +592,8 @@
                     </div>
                 </div>
 
-                <!-- Data Grid -->
-                <div class="grid grid-cols-2 gap-4">
+                <!-- MAIN DYNAMIC DATA DISPLAY GRID -->
+                <div id="liquidOutputGrid" class="grid grid-cols-2 gap-4">
                     <div class="stat-card">
                         <span class="stat-label" id="lblOutPowder1">Powder Weight</span>
                         <span class="stat-value val-red" id="outPowderWeight">0.000 g</span>
@@ -612,13 +679,36 @@
                     </div>
                 </div>
 
-                <!-- Final Yield Banner -->
-                <div class="stat-card yield-card mt-2">
-                    <span class="stat-label">Final Yield</span>
-                    <span class="stat-value val-red text-2xl" id="outFinalYield">0.00 ml</span>
+                <!-- NEW: ORAL POWDER BLEND OUTPUT GRID -->
+                <div id="oralOutputGrid" class="hidden grid grid-cols-2 gap-4">
+                    <div class="stat-card">
+                        <span class="stat-label">Total API Amount</span>
+                        <span class="stat-value val-red" id="outOralTotalApi">0.000 g</span>
+                        <div class="sub-stat" id="outOralApiCapsuleEquivalent">--</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Total Filler Required</span>
+                        <span class="stat-value val-yellow" id="outOralTotalFiller">0.000 g</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">API Mass Concentration</span>
+                        <span class="stat-value val-green" id="outOralApiPercentage">0.00 %</span>
+                        <div class="sub-stat">Percentage Content</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Concentration Per Gram</span>
+                        <span class="stat-value val-purple" id="outOralConcPerGram">0.00 mg/g</span>
+                        <div class="sub-stat">Per 1000mg Blend</div>
+                    </div>
+                    <div class="stat-card col-span-2 yield-card">
+                        <span class="stat-label text-gray-300">Total Target Blend Weight</span>
+                        <span class="stat-value val-red text-2xl" id="outOralTotalBatchSize">0.000 g</span>
+                        <div class="sub-stat">Finished Dry Mixture Weight</div>
+                    </div>
                 </div>
 
-                <div class="stat-card mt-2 p-4 text-center" style="background: linear-gradient(180deg, #111 0%, #050505 100%); border-color: #333;">
+                <!-- VISCOSITY & FLOW (Hidden in Oral Mode) -->
+                <div id="viscosityBanner" class="stat-card p-4 text-center" style="background: linear-gradient(180deg, #111 0%, #050505 100%); border-color: #333;">
                     <div class="flex justify-between items-center w-full mb-3 px-4">
                         <span class="text-xs font-bold text-gray-400">Temp: <span id="tempVal" class="text-red-400">25°C</span></span>
                         <input type="range" id="tempSlider" min="15" max="40" value="25" step="1" class="w-1/2">
@@ -631,17 +721,29 @@
                     <span class="text-[9px] text-gray-600 mt-2 uppercase tracking-wider">*Approximation (Thermodynamic Blending Model)</span>
                 </div>
 
-                <!-- Chart & Protocol Button -->
-                <div class="stat-card mt-2 p-6 flex flex-col items-center justify-center relative min-h-[250px]">
-                    <div class="w-full max-w-[220px]">
+                <!-- CHART PANEL & SCHEDULE LOGS -->
+                <div class="stat-card p-6 flex flex-col items-center justify-center relative min-h-[250px]">
+                    <!-- Chart Subpanel -->
+                    <div id="chartContainer" class="w-full max-w-[220px] flex flex-col items-center">
                         <canvas id="brewChart"></canvas>
+                        <div class="flex flex-wrap justify-center gap-4 mt-6 text-xs font-semibold text-gray-400" id="chartLegend">
+                            <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-[#ff3333]"></div>Compound(s)</div>
+                            <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-[#4ade80]"></div>BA</div>
+                            <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-[#facc15]"></div>BB</div>
+                            <div id="legendExtra" class="items-center gap-1.5 hidden"><div class="w-3 h-3 rounded-full bg-[#f97316]"></div>Extra Solvent</div>
+                            <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-[#e879f9]"></div>Carrier Oil</div>
+                        </div>
                     </div>
-                    <div class="flex flex-wrap justify-center gap-4 mt-6 text-xs font-semibold text-gray-400" id="chartLegend">
-                        <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-[#ff3333]"></div>Compound(s)</div>
-                        <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-[#4ade80]"></div>BA</div>
-                        <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-[#facc15]"></div>BB</div>
-                        <div id="legendExtra" class="items-center gap-1.5 hidden"><div class="w-3 h-3 rounded-full bg-[#f97316]"></div>Extra Solvent</div>
-                        <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-[#e879f9]"></div>Carrier Oil</div>
+
+                    <!-- Geometric Dilution Text Schedule Subpanel -->
+                    <div id="oralScheduleContainer" class="hidden w-full text-left space-y-3">
+                        <h4 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-[#222] pb-2 flex items-center gap-2">
+                            <svg class="w-3.5 h-3.5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                            Geometric Dilution Blend Schedule
+                        </h4>
+                        <div id="oralDilutionStepsRaw" class="text-xs space-y-2 max-h-[280px] overflow-y-auto pr-1">
+                            <!-- Populated via engine JS -->
+                        </div>
                     </div>
 
                     <button id="btnGenerateProtocol" class="mt-8 px-6 py-2 bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 rounded-lg text-sm font-bold text-white transition-all flex items-center gap-2 shadow-lg">
@@ -656,11 +758,11 @@
     <!-- Mobile Sticky Banner -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 bg-[#0a0a0a] border-t border-[#333] p-3 px-5 flex justify-between items-center z-40 shadow-[0_-10px_20px_rgba(0,0,0,0.8)]">
         <div>
-            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Est. Flow</div>
+            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider" id="mobileLabelLeft">Est. Flow</div>
             <div class="text-sm font-bold truncate max-w-[150px]" id="mobileViscosity">-- cP</div>
         </div>
         <div class="text-right">
-            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Final Yield</div>
+            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider" id="mobileLabelRight">Final Yield</div>
             <div class="text-lg font-bold text-[#ff3333]" id="mobileYield">0.00 ml</div>
         </div>
     </div>
@@ -669,7 +771,7 @@
     <div id="protocolModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-[#0a0a0a] border border-[#333] rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
             <div class="sticky top-0 bg-[#0a0a0a] p-5 border-b border-[#222] flex justify-between items-center">
-                <h2 class="text-xl font-bold text-white uppercase tracking-wider">Lab Protocol</h2>
+                <h2 class="text-xl font-bold text-white uppercase tracking-wider" id="modalTitle">Lab Protocol</h2>
                 <button onclick="document.getElementById('protocolModal').classList.add('hidden')" class="text-gray-400 hover:text-white transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
@@ -707,7 +809,8 @@
             "tren-base": 1.00, "tren-a": 0.87, "tren-e": 0.68, "tren-hex": 0.65,
             "nandrolone-base": 1.00, "deca": 0.64, "npp": 0.67, "eq": 0.61, "bold-cyp": 0.69,
             "masteron-p": 0.80, "masteron-e": 0.68, "primo-e": 0.70, "dhb": 0.69, "trestolone-a": 0.86, 
-            "trestolone": 1.00, "winstrol": 1.00, "dbol": 1.00, "anadrol": 1.00, "anavar": 1.00
+            "trestolone": 1.00, "winstrol": 1.00, "dbol": 1.00, "anadrol": 1.00, "anavar": 1.00,
+            "est-val": 0.76, "est-cyp": 0.70, "dhea": 1.00
         };
 
         const densities = {
@@ -716,7 +819,6 @@
             guaiacol: 1.129, peg400: 1.128, dmso: 1.10, water: 1, none: 1.0
         };
 
-        // Thermodynamic Viscosity Constants
         const baseViscosity = {
             ba: 5.5, bb: 8.5, castor: 650, gso: 50, sesame: 45,
             mct: 28, mig840: 25, mig812: 30, eo: 5.5, 'ethyl-lactate': 3,
@@ -728,12 +830,15 @@
             guaiacol: 0.01, peg400: 0.04, dmso: 0.01, water: 0.01, none: 0, custom: 0.03
         };
 
-        // App State
-        let isBlendMode = false;
-        let calcMode = 'volume';
+        // App State Engine
+        let currentTab = 'single'; // single, blend, oral
+        let calcMode = 'volume'; // liquid volume calculation mode: volume vs powder
+        let oralMode = 'weight'; // oral calculation sub-mode: weight vs capsule
+        let oralWeightTarget = 'conc'; // oral submode target option: batch, filler, or conc
         let latestCalculations = {}; 
+        let oralCalculations = {};
 
-        // Clone select options securely
+        // Clone select options safely
         const comp1HTML = document.getElementById('compound1Select').innerHTML;
         if(document.getElementById('compound2Select')) document.getElementById('compound2Select').innerHTML = comp1HTML;
         if(document.getElementById('compound3Select')) document.getElementById('compound3Select').innerHTML = comp1HTML;
@@ -758,7 +863,13 @@
             carrierMixPct: getEl('carrierMixPct'), secondCarrierSelect: getEl('secondCarrierSelect'),
             customSecondCarrierDensity: getEl('customSecondCarrierDensity'), presetSelect: getEl('presetSelect'),
             costPowder: getEl('costPowder'), costOil: getEl('costOil'), costSolvent: getEl('costSolvent'), costVial: getEl('costVial'),
-            tempSlider: getEl('tempSlider'), tempVal: getEl('tempVal')
+            tempSlider: getEl('tempSlider'), tempVal: getEl('tempVal'),
+            
+            // Oral Components Elements
+            oralApiAmount: getEl('oralApiAmount'), oralApiUnit: getEl('oralApiUnit'),
+            oralWeightTargetVal: getEl('oralWeightTargetVal'), oralCapApiPerCapsule: getEl('oralCapApiPerCapsule'),
+            oralCapCount: getEl('oralCapCount'), oralCapFillWeight: getEl('oralCapFillWeight'),
+            oralStepsMode: getEl('oralStepsMode'), oralMaxSteps: getEl('oralMaxSteps')
         };
 
         const outputs = {
@@ -776,13 +887,19 @@
             mobileViscosity: getEl('mobileViscosity'), mobileYield: getEl('mobileYield'),
             vialOutput: getEl('vialOutput'), costPerVial: getEl('outCostPerVial'),
             warningAlert: getEl('warningAlert'), warningText: getEl('warningText'),
-            errorAlert: getEl('errorAlert')
+            errorAlert: getEl('errorAlert'),
+            
+            // Oral Outputs Elements
+            outOralTotalApi: getEl('outOralTotalApi'), outOralTotalFiller: getEl('outOralTotalFiller'),
+            outOralApiPercentage: getEl('outOralApiPercentage'), outOralConcPerGram: getEl('outOralConcPerGram'),
+            outOralTotalBatchSize: getEl('outOralTotalBatchSize'), outOralApiCapsuleEquivalent: getEl('outOralApiCapsuleEquivalent'),
+            oralDilutionStepsRaw: getEl('oralDilutionStepsRaw')
         };
 
-        // Utility safely updates text
         const safeSetText = (el, text) => { if(el) el.textContent = text; };
         const safeSetHTML = (el, html) => { if(el) el.innerHTML = html; };
 
+        // Event Handling Hooks
         if(inputs.toggleVialMath) {
             inputs.toggleVialMath.addEventListener('click', () => {
                 inputs.vialMathGroup.classList.toggle('hidden');
@@ -800,37 +917,82 @@
             });
         }
 
-        function switchMode(mode) {
-            isBlendMode = (mode === 'blend');
-            const singleBtn = getEl('navSingle'); const blendBtn = getEl('navBlend');
-            if (isBlendMode) {
-                if(blendBtn) blendBtn.classList.replace('btn-outline', 'btn-active');
-                if(singleBtn) singleBtn.classList.replace('btn-active', 'btn-outline');
-                safeSetText(getEl('mainTitle'), "Dinfar Blend Calc");
-                safeSetText(getEl('mainSubtitle'), "Blend steroid solution calculator (up to 4 compounds)");
-                if(getEl('blendSection')) getEl('blendSection').classList.remove('hidden');
-                safeSetText(getEl('lblComp1'), "Compound 1");
-                safeSetText(getEl('lblOutPowder1'), "Compound 1 Powder");
-                safeSetText(getEl('lblOutCompVol'), "Total Compound Vol");
-                if(inputs.calcModeToggle) inputs.calcModeToggle.classList.add('hidden');
-                if (calcMode === 'powder' && inputs.btnModeVol) inputs.btnModeVol.click();
-            } else {
-                if(singleBtn) singleBtn.classList.replace('btn-outline', 'btn-active');
-                if(blendBtn) blendBtn.classList.replace('btn-active', 'btn-outline');
-                safeSetText(getEl('mainTitle'), "Dinfar Brew Calc V 1.05");
-                safeSetText(getEl('mainSubtitle'), "Single compound steroid solution calculator");
-                if(getEl('blendSection')) getEl('blendSection').classList.add('hidden');
-                safeSetText(getEl('lblComp1'), "Compound");
-                safeSetText(getEl('lblOutPowder1'), "Powder Weight");
-                safeSetText(getEl('lblOutCompVol'), "Compound Volume");
-                if(inputs.calcModeToggle) inputs.calcModeToggle.classList.remove('hidden');
+        function switchTab(tab) {
+            currentTab = tab;
+            const singleBtn = getEl('navSingle'); 
+            const blendBtn = getEl('navBlend');
+            const oralBtn = getEl('navOral');
+
+            // Reset tab active indicators classes
+            [singleBtn, blendBtn, oralBtn].forEach(b => {
+                if(b) b.classList.replace('btn-active', 'btn-outline');
+            });
+
+            // Dom toggle panels structures
+            if (tab === 'single' || tab === 'blend') {
+                getEl('presetCard').classList.remove('hidden');
+                getEl('liquidInputSection').classList.remove('hidden');
+                getEl('solventsSection').classList.remove('hidden');
+                getEl('carrierSection').classList.remove('hidden');
+                getEl('viscosityBanner').classList.remove('hidden');
+                getEl('chartContainer').classList.remove('hidden');
+                
+                getEl('oralInputSection').classList.add('hidden');
+                getEl('oralOutputGrid').classList.add('hidden');
+                getEl('liquidOutputGrid').classList.remove('hidden');
+                getEl('oralScheduleContainer').classList.add('hidden');
+                
+                safeSetText(getEl('mobileLabelLeft'), "Est. Flow");
+                safeSetText(getEl('mobileLabelRight'), "Final Yield");
+
+                if (tab === 'blend') {
+                    blendBtn.classList.replace('btn-outline', 'btn-active');
+                    safeSetText(getEl('mainTitle'), "Dinfar Blend Calc");
+                    safeSetText(getEl('mainSubtitle'), "Blend steroid solution calculator (up to 4 compounds)");
+                    getEl('blendSection').classList.remove('hidden');
+                    safeSetText(getEl('lblComp1'), "Compound 1");
+                    safeSetText(getEl('lblOutPowder1'), "Compound 1 Powder");
+                    safeSetText(getEl('lblOutCompVol'), "Total Compound Vol");
+                    inputs.calcModeToggle.classList.add('hidden');
+                    if (calcMode === 'powder' && inputs.btnModeVol) inputs.btnModeVol.click();
+                } else {
+                    singleBtn.classList.replace('btn-outline', 'btn-active');
+                    safeSetText(getEl('mainTitle'), "Dinfar Brew Calc V 1.05");
+                    safeSetText(getEl('mainSubtitle'), "Single compound steroid solution calculator");
+                    getEl('blendSection').classList.add('hidden');
+                    safeSetText(getEl('lblComp1'), "Compound");
+                    safeSetText(getEl('lblOutPowder1'), "Powder Weight");
+                    safeSetText(getEl('lblOutCompVol'), "Compound Volume");
+                    inputs.calcModeToggle.classList.remove('hidden');
+                }
+            } else if (tab === 'oral') {
+                oralBtn.classList.replace('btn-outline', 'btn-active');
+                safeSetText(getEl('mainTitle'), "Dinfar Oral Powder Calc");
+                safeSetText(getEl('mainSubtitle'), "Dry blend & automated geometric dilution matrix schedule");
+                
+                getEl('presetCard').classList.add('hidden');
+                getEl('liquidInputSection').classList.add('hidden');
+                getEl('solventsSection').classList.add('hidden');
+                getEl('carrierSection').classList.add('hidden');
+                getEl('viscosityBanner').classList.add('hidden');
+                getEl('chartContainer').classList.add('hidden');
+                
+                getEl('oralInputSection').classList.remove('hidden');
+                getEl('oralOutputGrid').classList.remove('hidden');
+                getEl('liquidOutputGrid').classList.add('hidden');
+                getEl('oralScheduleContainer').classList.remove('hidden');
+                
+                safeSetText(getEl('mobileLabelLeft'), "Composition");
+                safeSetText(getEl('mobileLabelRight'), "Total Blend");
             }
-            calculateBrew();
+            calculateBatch();
         }
 
-        if(getEl('navSingle')) getEl('navSingle').addEventListener('click', () => switchMode('single'));
-        if(getEl('navBlend')) getEl('navBlend').addEventListener('click', () => switchMode('blend'));
+        if(getEl('navSingle')) getEl('navSingle').addEventListener('click', () => switchTab('single'));
+        if(getEl('navBlend')) getEl('navBlend').addEventListener('click', () => switchTab('blend'));
+        if(getEl('navOral')) getEl('navOral').addEventListener('click', () => switchTab('oral'));
 
+        // Liquid Submode Subtoggles
         if(inputs.btnModeVol) {
             inputs.btnModeVol.addEventListener('click', () => {
                 calcMode = 'volume';
@@ -838,10 +1000,9 @@
                 inputs.btnModePowder.classList.remove('bg-[#d32f2f]', 'text-white');
                 inputs.inputVolumeGroup.classList.remove('hidden');
                 inputs.inputPowderGroup.classList.add('hidden');
-                calculateBrew();
+                calculateBatch();
             });
         }
-
         if(inputs.btnModePowder) {
             inputs.btnModePowder.addEventListener('click', () => {
                 calcMode = 'powder';
@@ -849,7 +1010,70 @@
                 inputs.btnModeVol.classList.remove('bg-[#d32f2f]', 'text-white');
                 inputs.inputPowderGroup.classList.remove('hidden');
                 inputs.inputVolumeGroup.classList.add('hidden');
-                calculateBrew();
+                calculateBatch();
+            });
+        }
+
+        // Oral Powder Submode Toggles hooks
+        if(getEl('btnOralModeWeight')) {
+            getEl('btnOralModeWeight').addEventListener('click', () => {
+                oralMode = 'weight';
+                getEl('btnOralModeWeight').classList.add('bg-[#d32f2f]', 'text-white');
+                getEl('btnOralModeCapsule').classList.remove('bg-[#d32f2f]', 'text-white');
+                getEl('oralWeightGroup').classList.remove('hidden');
+                getEl('oralCapsuleGroup').classList.add('hidden');
+                safeSetText(getEl('lblOralApiAmt'), "API Weight");
+                calculateBatch();
+            });
+        }
+        if(getEl('btnOralModeCapsule')) {
+            getEl('btnOralModeCapsule').addEventListener('click', () => {
+                oralMode = 'capsule';
+                getEl('btnOralModeCapsule').classList.add('bg-[#d32f2f]', 'text-white');
+                getEl('btnOralModeWeight').classList.remove('bg-[#d32f2f]', 'text-white');
+                getEl('oralCapsuleGroup').classList.remove('hidden');
+                getEl('oralWeightGroup').classList.add('hidden');
+                safeSetText(getEl('lblOralApiAmt'), "API Hand-Weighed Bulk Overfill (Optional)");
+                calculateBatch();
+            });
+        }
+
+        // Oral Targets Toggle Configuration Hooks
+        if(getEl('btnOralTargetBatch')) {
+            getEl('btnOralTargetBatch').addEventListener('click', () => {
+                oralWeightTarget = 'batch';
+                getEl('btnOralTargetBatch').classList.add('bg-[#d32f2f]', 'text-white');
+                getEl('btnOralTargetFiller').classList.remove('bg-[#d32f2f]', 'text-white');
+                if(getEl('btnOralTargetConc')) getEl('btnOralTargetConc').classList.remove('bg-[#d32f2f]', 'text-white');
+                safeSetText(getEl('lblOralWeightTarget'), "Final Batch Size (g)");
+                calculateBatch();
+            });
+        }
+        if(getEl('btnOralTargetFiller')) {
+            getEl('btnOralTargetFiller').addEventListener('click', () => {
+                oralWeightTarget = 'filler';
+                getEl('btnOralTargetFiller').classList.add('bg-[#d32f2f]', 'text-white');
+                getEl('btnOralTargetBatch').classList.remove('bg-[#d32f2f]', 'text-white');
+                if(getEl('btnOralTargetConc')) getEl('btnOralTargetConc').classList.remove('bg-[#d32f2f]', 'text-white');
+                safeSetText(getEl('lblOralWeightTarget'), "Filler Amount to Add (g)");
+                calculateBatch();
+            });
+        }
+        if(getEl('btnOralTargetConc')) {
+            getEl('btnOralTargetConc').addEventListener('click', () => {
+                oralWeightTarget = 'conc';
+                getEl('btnOralTargetConc').classList.add('bg-[#d32f2f]', 'text-white');
+                getEl('btnOralTargetBatch').classList.remove('bg-[#d32f2f]', 'text-white');
+                getEl('btnOralTargetFiller').classList.remove('bg-[#d32f2f]', 'text-white');
+                safeSetText(getEl('lblOralWeightTarget'), "Target Conc per Gram (mg/g)");
+                calculateBatch();
+            });
+        }
+
+        if(inputs.oralStepsMode) {
+            inputs.oralStepsMode.addEventListener('change', (e) => {
+                getEl('oralCustomStepsField').classList.toggle('hidden', e.target.value !== 'custom');
+                calculateBatch();
             });
         }
 
@@ -859,22 +1083,22 @@
                 const data = JSON.parse(e.target.value);
                 
                 if (data.blend) {
-                    if (!isBlendMode) getEl('navBlend').click();
+                    if (currentTab !== 'blend') switchTab('blend');
                     if(inputs.c1) inputs.c1.value = data.c1; if(inputs.mg1) inputs.mg1.value = data.mg1;
-                    if (data.c2) { if(inputs.enableC2) inputs.enableC2.checked = true; if(inputs.c2) inputs.c2.value = data.c2; if(inputs.mg2) inputs.mg2.value = data.mg2; } else if(inputs.enableC2) inputs.enableC2.checked = false;
-                    if (data.c3) { if(inputs.enableC3) inputs.enableC3.checked = true; if(inputs.c3) inputs.c3.value = data.c3; if(inputs.mg3) inputs.mg3.value = data.mg3; } else if(inputs.enableC3) inputs.enableC3.checked = false;
-                    if (data.c4) { if(inputs.enableC4) inputs.enableC4.checked = true; if(inputs.c4) inputs.c4.value = data.c4; if(inputs.mg4) inputs.mg4.value = data.mg4; } else if(inputs.enableC4) inputs.enableC4.checked = false;
+                    if (data.c2) { inputs.enableC2.checked = true; inputs.c2.value = data.c2; inputs.mg2.value = data.mg2; } else inputs.enableC2.checked = false;
+                    if (data.c3) { inputs.enableC3.checked = true; inputs.c3.value = data.c3; inputs.mg3.value = data.mg3; } else inputs.enableC3.checked = false;
+                    if (data.c4) { inputs.enableC4.checked = true; inputs.c4.value = data.c4; inputs.mg4.value = data.mg4; } else inputs.enableC4.checked = false;
                 } else {
-                    if (isBlendMode) getEl('navSingle').click();
+                    if (currentTab !== 'single') switchTab('single');
                     if(inputs.c1) inputs.c1.value = data.c; if(inputs.mg1) inputs.mg1.value = data.mg;
-                    if(inputs.enableC2) inputs.enableC2.checked = false; if(inputs.enableC3) inputs.enableC3.checked = false; if(inputs.enableC4) inputs.enableC4.checked = false;
+                    inputs.enableC2.checked = false; inputs.enableC3.checked = false; inputs.enableC4.checked = false;
                 }
 
                 if(inputs.baPercent) inputs.baPercent.value = data.ba;
                 if(inputs.bbPercent) inputs.bbPercent.value = data.bb;
                 if(inputs.carrierDensity) inputs.carrierDensity.value = data.oil;
-                if(inputs.extraSolvent) inputs.extraSolvent.checked = false;
-                if(inputs.secondCarrier) inputs.secondCarrier.checked = false;
+                inputs.extraSolvent.checked = false;
+                inputs.secondCarrier.checked = false;
                 
                 updateDisplacement(1);
                 if (data.blend) {
@@ -894,7 +1118,7 @@
             if (select && dispInput && select.value !== "custom" && displacements[select.value]) {
                 dispInput.value = displacements[select.value].toFixed(3);
             }
-            calculateBrew();
+            calculateBatch();
         }
 
         if(inputs.c1) inputs.c1.addEventListener('change', () => updateDisplacement(1));
@@ -903,33 +1127,34 @@
         if(inputs.c4) inputs.c4.addEventListener('change', () => updateDisplacement(4));
 
         function toggleVisibility() {
+            const isBlendMode = (currentTab === 'blend');
             const showC2 = isBlendMode && inputs.enableC2 && inputs.enableC2.checked;
-            if(getEl('compound2Group')) getEl('compound2Group').classList.toggle('hidden', !showC2);
-            if(getEl('outPowder2Card')) getEl('outPowder2Card').classList.toggle('hidden', !showC2);
+            getEl('compound2Group').classList.toggle('hidden', !showC2);
+            getEl('outPowder2Card').classList.toggle('hidden', !showC2);
             
             const showC3 = isBlendMode && inputs.enableC3 && inputs.enableC3.checked;
-            if(getEl('compound3Group')) getEl('compound3Group').classList.toggle('hidden', !showC3);
-            if(getEl('outPowder3Card')) getEl('outPowder3Card').classList.toggle('hidden', !showC3);
+            getEl('compound3Group').classList.toggle('hidden', !showC3);
+            getEl('outPowder3Card').classList.toggle('hidden', !showC3);
 
             const showC4 = isBlendMode && inputs.enableC4 && inputs.enableC4.checked;
-            if(getEl('compound4Group')) getEl('compound4Group').classList.toggle('hidden', !showC4);
-            if(getEl('outPowder4Card')) getEl('outPowder4Card').classList.toggle('hidden', !showC4);
+            getEl('compound4Group').classList.toggle('hidden', !showC4);
+            getEl('outPowder4Card').classList.toggle('hidden', !showC4);
 
-            const showExtra = inputs.extraSolvent && inputs.extraSolvent.checked;
-            if(getEl('extraSolventGroup')) getEl('extraSolventGroup').classList.toggle('hidden', !showExtra);
-            if(getEl('outExtraSolventVolCard')) getEl('outExtraSolventVolCard').classList.toggle('hidden', !showExtra);
-            if(getEl('outExtraSolventWeightCard')) getEl('outExtraSolventWeightCard').classList.toggle('hidden', !showExtra);
-            if(getEl('legendExtra')) getEl('legendExtra').style.display = showExtra ? 'flex' : 'none';
+            const showExtra = inputs.extraSolvent && inputs.extraSolvent.checked && currentTab !== 'oral';
+            getEl('extraSolventGroup').classList.toggle('hidden', !showExtra);
+            getEl('outExtraSolventVolCard').classList.toggle('hidden', !showExtra);
+            getEl('outExtraSolventWeightCard').classList.toggle('hidden', !showExtra);
+            getEl('legendExtra').style.display = showExtra ? 'flex' : 'none';
 
-            const showSecond = inputs.secondCarrier && inputs.secondCarrier.checked;
-            if(getEl('secondCarrierGroup')) getEl('secondCarrierGroup').classList.toggle('hidden', !showSecond);
-            if(getEl('outSecondCarrierVolCard')) getEl('outSecondCarrierVolCard').classList.toggle('hidden', !showSecond);
-            if(getEl('outSecondCarrierWeightCard')) getEl('outSecondCarrierWeightCard').classList.toggle('hidden', !showSecond);
+            const showSecond = inputs.secondCarrier && inputs.secondCarrier.checked && currentTab !== 'oral';
+            getEl('secondCarrierGroup').classList.toggle('hidden', !showSecond);
+            getEl('outSecondCarrierVolCard').classList.toggle('hidden', !showSecond);
+            getEl('outSecondCarrierWeightCard').classList.toggle('hidden', !showSecond);
 
-            if(getEl('customLossField')) getEl('customLossField').classList.toggle('hidden', !inputs.filterLoss || inputs.filterLoss.value !== 'custom');
-            if(getEl('customExtraSolventDensityField')) getEl('customExtraSolventDensityField').classList.toggle('hidden', !(inputs.extraSolventType && inputs.extraSolventType.value === 'custom' && showExtra));
-            if(getEl('customMainCarrierField')) getEl('customMainCarrierField').classList.toggle('hidden', !inputs.carrierDensity || inputs.carrierDensity.value === 'custom');
-            if(getEl('customSecondCarrierField')) getEl('customSecondCarrierField').classList.toggle('hidden', !(inputs.secondCarrierSelect && inputs.secondCarrierSelect.value === 'custom' && showSecond));
+            getEl('customLossField').classList.toggle('hidden', !inputs.filterLoss || inputs.filterLoss.value !== 'custom');
+            getEl('customExtraSolventDensityField').classList.toggle('hidden', !(inputs.extraSolventType && inputs.extraSolventType.value === 'custom' && showExtra));
+            getEl('customMainCarrierField').classList.toggle('hidden', !inputs.carrierDensity || inputs.carrierDensity.value === 'custom');
+            getEl('customSecondCarrierField').classList.toggle('hidden', !(inputs.secondCarrierSelect && inputs.secondCarrierSelect.value === 'custom' && showSecond));
         }
 
         let brewChart = null;
@@ -958,9 +1183,18 @@
             });
         }
 
-        function calculateBrew() {
+        // UNIVERSAL CALCULATION CONTROLLER
+        function calculateBatch() {
             toggleVisibility();
+            if (currentTab === 'oral') {
+                calculateOralPowder();
+            } else {
+                calculateLiquidBrew();
+            }
+        }
 
+        // TAB 1 & 2 ENGINE: LIQUID INJECTABLES
+        function calculateLiquidBrew() {
             let filterLoss = 0;
             const fType = inputs.filterLoss ? inputs.filterLoss.value : 'none';
             if (fType === '0.45') filterLoss = 1.0;
@@ -973,8 +1207,13 @@
 
             const c1Mg = parseFloat(inputs.mg1 ? inputs.mg1.value : 0) || 0;
             const c1Disp = parseFloat(inputs.disp1 ? inputs.disp1.value : 0) || 0;
-            const c1Pur = parseFloat(inputs.purity1 ? inputs.purity1.value : 100) || 100;
+            
+            // Guard Division-by-Zero / Negative Purity securely
+            let c1Pur = parseFloat(inputs.purity1 ? inputs.purity1.value : 100);
+            if (isNaN(c1Pur) || c1Pur <= 0) c1Pur = 0.1;
+
             let pow1 = 0;
+            const isBlendMode = (currentTab === 'blend');
 
             if (calcMode === 'volume') {
                 desiredYield = parseFloat(inputs.finalVolume ? inputs.finalVolume.value : 0) || 0;
@@ -994,7 +1233,8 @@
             let pow2 = 0, vol2 = 0, c2Mg = 0;
             if (isBlendMode && inputs.enableC2 && inputs.enableC2.checked) {
                 c2Mg = parseFloat(inputs.mg2.value) || 0;
-                pow2 = (totalBrewVol * c2Mg / 1000) / ((parseFloat(inputs.purity2.value) || 100) / 100);
+                let c2Pur = parseFloat(inputs.purity2.value) || 100; if(c2Pur <= 0) c2Pur = 0.1;
+                pow2 = (totalBrewVol * c2Mg / 1000) / (c2Pur / 100);
                 pow2 = c2Mg > 0 ? pow2 : 0;
                 vol2 = pow2 * (parseFloat(inputs.disp2.value) || 0);
             }
@@ -1002,7 +1242,8 @@
             let pow3 = 0, vol3 = 0, c3Mg = 0;
             if (isBlendMode && inputs.enableC3 && inputs.enableC3.checked) {
                 c3Mg = parseFloat(inputs.mg3.value) || 0;
-                pow3 = (totalBrewVol * c3Mg / 1000) / ((parseFloat(inputs.purity3.value) || 100) / 100);
+                let c3Pur = parseFloat(inputs.purity3.value) || 100; if(c3Pur <= 0) c3Pur = 0.1;
+                pow3 = (totalBrewVol * c3Mg / 1000) / (c3Pur / 100);
                 pow3 = c3Mg > 0 ? pow3 : 0;
                 vol3 = pow3 * (parseFloat(inputs.disp3.value) || 0);
             }
@@ -1010,7 +1251,8 @@
             let pow4 = 0, vol4 = 0, c4Mg = 0;
             if (isBlendMode && inputs.enableC4 && inputs.enableC4.checked) {
                 c4Mg = parseFloat(inputs.mg4.value) || 0;
-                pow4 = (totalBrewVol * c4Mg / 1000) / ((parseFloat(inputs.purity4.value) || 100) / 100);
+                let c4Pur = parseFloat(inputs.purity4.value) || 100; if(c4Pur <= 0) c4Pur = 0.1;
+                pow4 = (totalBrewVol * c4Mg / 1000) / (c4Pur / 100);
                 pow4 = c4Mg > 0 ? pow4 : 0;
                 vol4 = pow4 * (parseFloat(inputs.disp4.value) || 0);
             }
@@ -1028,14 +1270,16 @@
             const remainingVol = totalBrewVol - totalCompoundVol - baVol - bbVol - extraSolventVol;
             const carrierMixPct = (inputs.secondCarrier && inputs.secondCarrier.checked) ? (parseFloat(inputs.carrierMixPct.value) || 0) : 0;
             
-            // Negative Carrier Guard! (Fixes Chart Breaking)
             let mainCarrierVol = 0;
             let secondCarrierVol = 0;
             let isMathError = false;
 
             if(remainingVol < 0) {
                 isMathError = true;
-                if(outputs.errorAlert) outputs.errorAlert.classList.remove('hidden');
+                if(outputs.errorAlert) {
+                    outputs.errorAlert.classList.remove('hidden');
+                    getEl('errorText').textContent = "Saturation Exceeded. Powder displacement and solvents occupy more space than total target volume.";
+                }
             } else {
                 if(outputs.errorAlert) outputs.errorAlert.classList.add('hidden');
                 mainCarrierVol = remainingVol * ((100 - carrierMixPct) / 100);
@@ -1089,7 +1333,7 @@
             safeSetText(outputs.finalYield, finalYieldText);
             safeSetText(outputs.mobileYield, finalYieldText);
 
-            // Vial Math
+            // Vial Calculations
             const vialS = parseFloat(inputs.vialSize ? inputs.vialSize.value : 10) || 10;
             const vialO = parseFloat(inputs.vialOverfill ? inputs.vialOverfill.value : 0.5) || 0.5;
             const actualVialVol = vialS + vialO;
@@ -1097,7 +1341,7 @@
             const remaining = (desiredYield % actualVialVol).toFixed(1);
             safeSetHTML(outputs.vialOutput, `Will yield approx <span class="font-bold text-white">${numVials}</span> vials (with ${remaining}ml leftover).`);
 
-            // Economics
+            // Pricing Math
             const pCost = parseFloat(inputs.costPowder ? inputs.costPowder.value : 0) || 0; 
             const oCost = parseFloat(inputs.costOil ? inputs.costOil.value : 0) || 0; 
             const sCost = parseFloat(inputs.costSolvent ? inputs.costSolvent.value : 0) || 0; 
@@ -1144,7 +1388,7 @@
                 const getTempAdjVisc = (key) => {
                     const muRef = baseViscosity[key] || 50;
                     const alpha = tempCoeff[key] || 0.03;
-                    return muRef * Math.exp(-alpha * (tempC - 25)); // Arrhenius temp decay
+                    return muRef * Math.exp(-alpha * (tempC - 25));
                 };
 
                 let vMain = getTempAdjVisc(inputs.carrierDensity ? inputs.carrierDensity.value : 'gso');
@@ -1153,7 +1397,6 @@
                 let vBa = getTempAdjVisc('ba');
                 let vBb = getTempAdjVisc('bb');
 
-                // Grunberg-Nissan Logarithmic Blending
                 let lnV = 0;
                 if (baVol > 0) lnV += (baVol / totalLiqVol) * Math.log(vBa);
                 if (bbVol > 0) lnV += (bbVol / totalLiqVol) * Math.log(vBb);
@@ -1162,8 +1405,6 @@
                 if (secondCarrierVol > 0) lnV += (secondCarrierVol / totalLiqVol) * Math.log(vSec);
 
                 let baseCp = Math.exp(lnV);
-                
-                // Exponential Powder Thickening Model
                 let powderMultiplier = Math.exp(totalConc / 1100); 
                 let estCp = baseCp * powderMultiplier;
 
@@ -1174,59 +1415,241 @@
                 else if (estCp < 150) { rating = "Thick (23G-25G)"; colorClass = "#fb923c"; }
                 else { rating = "Syrup (21G+ or Heat)"; colorClass = "#ef4444"; }
 
-                if(outputs.viscosityVal) {
-                    outputs.viscosityVal.textContent = `~${estCp.toFixed(1)} cP`;
-                    outputs.viscosityVal.style.color = colorClass;
-                }
-                if(outputs.viscosityRating) {
-                    outputs.viscosityRating.textContent = rating;
-                    outputs.viscosityRating.style.color = colorClass;
-                }
-                if(outputs.mobileViscosity) {
-                    outputs.mobileViscosity.textContent = rating;
-                    outputs.mobileViscosity.style.color = colorClass;
-                }
-            } else if (isMathError) {
-                safeSetText(outputs.viscosityVal, "ERR");
-                safeSetText(outputs.viscosityRating, "Oversaturated");
-                safeSetText(outputs.mobileViscosity, "ERR");
+                if(outputs.viscosityVal) { outputs.viscosityVal.textContent = `~${estCp.toFixed(1)} cP`; outputs.viscosityVal.style.color = colorClass; }
+                if(outputs.viscosityRating) { outputs.viscosityRating.textContent = rating; outputs.viscosityRating.style.color = colorClass; }
+                if(outputs.mobileViscosity) { outputs.mobileViscosity.textContent = rating; outputs.mobileViscosity.style.color = colorClass; }
             }
 
-            // Chart Update
-            if (brewChart && !isMathError) {
-                const carrierTotal = mainCarrierVol + secondCarrierVol;
-                brewChart.data.datasets[0].data = [totalCompoundVol, baVol, bbVol, (inputs.extraSolvent && inputs.extraSolvent.checked) ? extraSolventVol : 0, carrierTotal];
-                brewChart.update();
-            } else if (brewChart && isMathError) {
-                brewChart.data.datasets[0].data = [1, 0, 0, 0, 0]; // Blank chart
+            if (brewChart) {
+                if (isMathError) {
+                    brewChart.data.datasets[0].data = [1, 0, 0, 0, 0];
+                } else {
+                    brewChart.data.datasets[0].data = [totalCompoundVol, baVol, bbVol, extraSolventVol, mainCarrierVol + secondCarrierVol];
+                }
                 brewChart.update();
             }
 
-            // Save data for Lab Protocol
             latestCalculations = {
                 comp1Name: inputs.c1 ? inputs.c1.options[inputs.c1.selectedIndex].text : '',
-                pow1: pow1.toFixed(2),
-                baVol: baVol.toFixed(2), bbVol: bbVol.toFixed(2),
-                baWeight: baWeightG.toFixed(2), bbWeight: bbWeightG.toFixed(2),
-                mainCarrierVol: mainCarrierVol.toFixed(2), 
-                mainOilName: inputs.carrierDensity ? inputs.carrierDensity.options[inputs.carrierDensity.selectedIndex].text : '',
-                mainCarrierWeight: mainCarrierWeightG.toFixed(2),
-                totalBrewVol: totalBrewVol.toFixed(2),
-                totalMass: totalMassG.toFixed(2),
+                pow1: pow1.toFixed(3), baVol: baVol.toFixed(2), bbVol: bbVol.toFixed(2),
+                baWeight: baWeightG.toFixed(3), bbWeight: bbWeightG.toFixed(3),
+                mainCarrierVol: mainCarrierVol.toFixed(2), mainOilName: inputs.carrierDensity ? inputs.carrierDensity.options[inputs.carrierDensity.selectedIndex].text : '',
+                mainCarrierWeight: mainCarrierWeightG.toFixed(3), totalBrewVol: totalBrewVol.toFixed(2), totalMass: totalMassG.toFixed(3),
                 filterName: inputs.filterLoss ? inputs.filterLoss.options[inputs.filterLoss.selectedIndex].text : 'None',
-                isBlend: isBlendMode,
-                extraSolvents: extraSolventVol > 0 ? `${extraSolventVol.toFixed(2)}ml (${extraSolventWeightG.toFixed(2)}g) of ${inputs.extraSolventType.options[inputs.extraSolventType.selectedIndex].text}` : null,
-                secondCarrier: secondCarrierVol > 0 ? `${secondCarrierVol.toFixed(2)}ml (${secondCarrierWeightG.toFixed(2)}g) of ${inputs.secondCarrierSelect.options[inputs.secondCarrierSelect.selectedIndex].text}` : null,
-                comp2: (isBlendMode && inputs.enableC2 && inputs.enableC2.checked) ? { name: inputs.c2.options[inputs.c2.selectedIndex].text, pow: pow2.toFixed(2) } : null,
-                comp3: (isBlendMode && inputs.enableC3 && inputs.enableC3.checked) ? { name: inputs.c3.options[inputs.c3.selectedIndex].text, pow: pow3.toFixed(2) } : null,
-                comp4: (isBlendMode && inputs.enableC4 && inputs.enableC4.checked) ? { name: inputs.c4.options[inputs.c4.selectedIndex].text, pow: pow4.toFixed(2) } : null,
+                filterLossVal: filterLoss, isBlend: isBlendMode,
+                extraSolvents: extraSolventVol > 0 ? `${extraSolventVol.toFixed(2)}ml (${extraSolventWeightG.toFixed(3)}g) of ${inputs.extraSolventType.options[inputs.extraSolventType.selectedIndex].text}` : null,
+                secondCarrier: secondCarrierVol > 0 ? `${secondCarrierVol.toFixed(2)}ml (${secondCarrierWeightG.toFixed(3)}g) of ${inputs.secondCarrierSelect.options[inputs.secondCarrierSelect.selectedIndex].text}` : null,
+                comp2: (isBlendMode && inputs.enableC2.checked) ? { name: inputs.c2.options[inputs.c2.selectedIndex].text, pow: pow2.toFixed(3) } : null,
+                comp3: (isBlendMode && inputs.enableC3.checked) ? { name: inputs.c3.options[inputs.c3.selectedIndex].text, pow: pow3.toFixed(3) } : null,
+                comp4: (isBlendMode && inputs.enableC4.checked) ? { name: inputs.c4.options[inputs.c4.selectedIndex].text, pow: pow4.toFixed(3) } : null,
             };
         }
 
+        // TAB 3 ENGINE: ORAL POWDER BLENDS & GEOMETRIC DILUTION
+        function calculateOralPowder() {
+            let apiInGrams = 0;
+            let fillerInGrams = 0;
+            let totalBatchInGrams = 0;
+
+            const inputApiRaw = parseFloat(inputs.oralApiAmount.value) || 0;
+            const apiUnit = inputs.oralApiUnit.value;
+
+            // Normalize input raw API amount to standardized metric grams
+            if (apiUnit === 'mg') apiInGrams = inputApiRaw / 1000;
+            else if (apiUnit === 'kg') apiInGrams = inputApiRaw * 1000;
+            else apiInGrams = inputApiRaw;
+
+            let isMathError = false;
+
+            if (oralMode === 'weight') {
+                const targetValue = parseFloat(inputs.oralWeightTargetVal.value) || 0;
+                if (oralWeightTarget === 'batch') {
+                    totalBatchInGrams = targetValue;
+                    fillerInGrams = totalBatchInGrams - apiInGrams;
+                    if (fillerInGrams < 0) { isMathError = true; fillerInGrams = 0; }
+                } else if (oralWeightTarget === 'filler') {
+                    fillerInGrams = targetValue;
+                    totalBatchInGrams = apiInGrams + fillerInGrams;
+                } else if (oralWeightTarget === 'conc') {
+                    if (targetValue > 1000) {
+                        isMathError = true;
+                        totalBatchInGrams = apiInGrams;
+                        fillerInGrams = 0;
+                    } else if (targetValue > 0) {
+                        totalBatchInGrams = (apiInGrams * 1000) / targetValue;
+                        fillerInGrams = totalBatchInGrams - apiInGrams;
+                        if (fillerInGrams < 0) { isMathError = true; fillerInGrams = 0; }
+                    } else {
+                        isMathError = true;
+                        totalBatchInGrams = apiInGrams;
+                        fillerInGrams = 0;
+                    }
+                }
+                safeSetText(outputs.outOralApiCapsuleEquivalent, "Bulk Dry Blending");
+            } else {
+                // Capsule Formulation Mode
+                const mgPerCap = parseFloat(inputs.oralCapApiPerCapsule.value) || 0;
+                const capCount = parseFloat(inputs.oralCapCount.value) || 0;
+                const fillWeightMg = parseFloat(inputs.oralCapFillWeight.value) || 0;
+
+                const computedApiRequiredG = (mgPerCap * capCount) / 1000;
+                totalBatchInGrams = (fillWeightMg * capCount) / 1000;
+                fillerInGrams = totalBatchInGrams - computedApiRequiredG;
+
+                // Handle manual raw override for extra bulk overfill padding safely
+                if (apiInGrams > 0 && apiInGrams !== computedApiRequiredG) {
+                    // Re-base filler proportions based on user manual request
+                    apiInGrams = apiInGrams; 
+                    fillerInGrams = totalBatchInGrams - apiInGrams;
+                } else {
+                    apiInGrams = computedApiRequiredG;
+                }
+
+                if (fillerInGrams < 0) { isMathError = true; fillerInGrams = 0; }
+                safeSetText(outputs.outOralApiCapsuleEquivalent, `${capCount} caps @ ${fillWeightMg}mg`);
+            }
+
+            // Calculations for display outputs
+            let apiPercentage = 0;
+            let concPerGram = 0;
+            if (totalBatchInGrams > 0) {
+                apiPercentage = (apiInGrams / totalBatchInGrams) * 100;
+                concPerGram = (apiInGrams * 1000) / totalBatchInGrams;
+            }
+
+            if (isMathError) {
+                outputs.errorAlert.classList.remove('hidden');
+                if (oralMode === 'weight' && oralWeightTarget === 'conc' && parseFloat(inputs.oralWeightTargetVal.value) > 1000) {
+                    getEl('errorText').textContent = "Target concentration cannot exceed 1000 mg/g (pure API).";
+                } else {
+                    getEl('errorText').textContent = "API weight cannot exceed total final blend batch size.";
+                }
+            } else {
+                outputs.errorAlert.classList.add('hidden');
+            }
+
+            // Print Base Stat Targets
+            safeSetText(outputs.outOralTotalApi, `${apiInGrams.toFixed(3)} g`);
+            safeSetText(outputs.outOralTotalFiller, `${fillerInGrams.toFixed(3)} g`);
+            safeSetText(outputs.outOralTotalBatchSize, `${totalBatchInGrams.toFixed(3)} g`);
+            safeSetText(outputs.outOralApiPercentage, `${apiPercentage.toFixed(2)} %`);
+            safeSetText(outputs.outOralConcPerGram, `${concPerGram.toFixed(2)} mg/g`);
+
+            // Mobile view responsive bindings
+            safeSetText(outputs.mobileViscosity, `${apiPercentage.toFixed(1)}% API Ratio`);
+            safeSetText(outputs.mobileYield, `${totalBatchInGrams.toFixed(1)} g`);
+
+            // RUN AUTOMATED GEOMETRIC DILUTION MATRIX SCHEDULE
+            let stepsHtml = "";
+            let remainingFiller = fillerInGrams;
+            let currentMixWeight = apiInGrams;
+            let stepNum = 1;
+            
+            const maxStepsAllowed = inputs.oralStepsMode.value === 'custom' ? parseInt(inputs.oralMaxSteps.value) || 99 : 99;
+
+            if (apiInGrams > 0 && remainingFiller > 0 && !isMathError) {
+                stepsHtml += `
+                <div class="p-2.5 bg-[#000] border border-[#222] rounded text-gray-300">
+                    <span class="text-red-400 font-bold">Base Active Charge:</span> Place <b class="text-white">${apiInGrams.toFixed(3)}g</b> of raw pure API inside the mortar bowl.
+                </div>`;
+
+                while (remainingFiller > 0 && stepNum <= maxStepsAllowed) {
+                    let fillerToAdd = 0;
+                    let isFinalStep = false;
+
+                    // If remaining filler is less than current mixture, or it's the last forced step cap
+                    if (remainingFiller <= currentMixWeight || stepNum === maxStepsAllowed) {
+                        fillerToAdd = remainingFiller;
+                        isFinalStep = true;
+                    } else {
+                        fillerToAdd = currentMixWeight;
+                    }
+
+                    let previousWeight = currentMixWeight;
+                    currentMixWeight += fillerToAdd;
+                    remainingFiller -= fillerToAdd;
+
+                    stepsHtml += `
+                    <div class="p-2 bg-[#050505] border border-zinc-900 rounded space-y-1">
+                        <div class="flex justify-between font-bold text-[11px] text-gray-400 uppercase tracking-wide">
+                            <span class="${isFinalStep ? 'text-green-400' : 'text-yellow-500'}">Step ${stepNum}: Dilution Multiplier</span>
+                            <span>Mix Ratio 1:1</span>
+                        </div>
+                        <p class="text-gray-300">
+                            Add exactly <b class="text-white">${fillerToAdd.toFixed(3)}g</b> of filler powder to your current <b class="text-gray-400">${previousWeight.toFixed(3)}g</b> mixture. Tranduce/triturate cleanly.
+                        </p>
+                        <div class="text-[10px] text-gray-500 flex justify-between">
+                            <span>Accumulated Pool: ${currentMixWeight.toFixed(3)}g</span>
+                            <span>Remaining Unused Filler: ${Math.max(0, remainingFiller).toFixed(3)}g</span>
+                        </div>
+                    </div>`;
+
+                    if (isFinalStep) break;
+                    stepNum++;
+                }
+            } else if (isMathError) {
+                stepsHtml = `<div class="text-red-600 font-bold italic text-center text-xs py-4">Error: Review calculation inputs.</div>`;
+            } else {
+                stepsHtml = `<div class="text-gray-600 italic text-center text-xs py-4">Awaiting non-zero weight configurations.</div>`;
+            }
+
+            safeSetHTML(outputs.oralDilutionStepsRaw, stepsHtml);
+
+            // Stash local records target configuration for modal protocol processing
+            oralCalculations = {
+                apiG: apiInGrams,
+                fillerG: fillerInGrams,
+                totalG: totalBatchInGrams,
+                pct: apiPercentage,
+                mgPerG: concPerGram,
+                stepsCount: stepNum,
+                rawStepsHtml: stepsHtml,
+                mode: oralMode
+            };
+        }
+
+        // GENERATE LAB PROTOCOL CHECKLIST MODAL VIEW
         if(getEl('btnGenerateProtocol')) {
             getEl('btnGenerateProtocol').addEventListener('click', () => {
-                const lc = latestCalculations;
-                let html = `
+                let html = "";
+                
+                if (currentTab === 'oral') {
+                    const oc = oralCalculations;
+                    safeSetText(getEl('modalTitle'), "Oral Powder Blending Protocol");
+                    html = `
+                    <div class="mb-4 text-white border-b border-[#333] pb-4">
+                        <h3 class="text-lg font-bold text-red-500">Dry Trituration Protocol (Geometric Dilution)</h3>
+                        <p class="text-gray-400 text-xs mt-1">This dynamic schedule prevents active hormone clustering by slowly stepping up density ratios within the powder base matrix.</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 bg-[#000] p-3 border border-[#222] rounded text-xs mb-4">
+                        <div><span class="text-gray-500">Total Active Ingredient:</span> <b class="text-white">${oc.apiG.toFixed(3)} g</b></div>
+                        <div><span class="text-gray-500">Total Filler Required:</span> <b class="text-white">${oc.fillerG.toFixed(3)} g</b></div>
+                        <div><span class="text-gray-500">Active Blend Percent:</span> <b class="text-green-400">${oc.pct.toFixed(2)} %</b></div>
+                        <div><span class="text-gray-500">Yield Batch Weight:</span> <b class="text-red-400">${oc.totalG.toFixed(3)} g</b></div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                            <div><span class="font-bold text-white">Phase 1: Environment Setup</span><br>Ensure zero air drafts. Clean mortar, pestle, and digital analytical scale scales thoroughly using 99% anhydrous alcohol.</div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                            <div><span class="font-bold text-white">Phase 2: Master Batched Materials Weighing</span><br>Weigh out exactly <span class="text-red-400 font-bold">${oc.apiG.toFixed(3)}g</span> of API hormone compound. In a secondary sanitary vessel, isolate precisely <span class="text-yellow-400 font-bold">${oc.fillerG.toFixed(3)}g</span> of bulking matrix filler.</div>
+                        </div>
+                        <div class="border-t border-[#222] pt-3 space-y-3">
+                            <span class="font-bold text-white block text-xs uppercase tracking-wider text-zinc-400">Execution Schedule Milestones</span>
+                            ${oc.rawStepsHtml}
+                        </div>
+                        <div class="flex items-start gap-3 border-t border-[#222] pt-3">
+                            <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                            <div><span class="font-bold text-white">Phase 4: Final Homogenization Filter</span><br>Pass the finished combined powder blend through an 80-mesh or 100-mesh stainless steel sieve to crush micro-agglomerations and guarantee consistent particle dispersion distribution profiles.</div>
+                        </div>
+                    </div>`;
+                } else {
+                    // Liquid Injectable Mode Protocol Parsing Logic
+                    const lc = latestCalculations;
+                    safeSetText(getEl('modalTitle'), "Liquid Lab Protocol");
+                    html = `
                     <div class="mb-4 text-white border-b border-[#333] pb-4">
                         <h3 class="text-lg font-bold text-red-500">Gravimetric Protocol (Highly Accurate)</h3>
                         <p class="text-gray-400 text-xs mt-1">This protocol uses a digital scale (mass) instead of volumetric beakers to completely eliminate thermal expansion and transfer loss errors.</p>
@@ -1241,72 +1664,73 @@
                         <div><span class="font-bold text-white">Step 2: Powder Measurement</span><br>Add exactly <span class="text-red-400 font-bold">${lc.pow1}g</span> of ${lc.comp1Name} into the beaker.</div>
                     </div>`;
                 
-                if (lc.isBlend) {
-                    if(lc.comp2) html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-red-400 font-bold">${lc.comp2.pow}g</span> of ${lc.comp2.name} into the beaker.</div></div>`;
-                    if(lc.comp3) html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-red-400 font-bold">${lc.comp3.pow}g</span> of ${lc.comp3.name} into the beaker.</div></div>`;
-                    if(lc.comp4) html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-red-400 font-bold">${lc.comp4.pow}g</span> of ${lc.comp4.name} into the beaker.</div></div>`;
-                }
+                    if (lc.isBlend) {
+                        if(lc.comp2) html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-red-400 font-bold">${lc.comp2.pow}g</span> of ${lc.comp2.name} into the beaker.</div></div>`;
+                        if(lc.comp3) html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-red-400 font-bold">${lc.comp3.pow}g</span> of ${lc.comp3.name} into the beaker.</div></div>`;
+                        if(lc.comp4) html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-red-400 font-bold">${lc.comp4.pow}g</span> of ${lc.comp4.name} into the beaker.</div></div>`;
+                    }
 
-                html += `
+                    html += `
                     <div class="flex items-start gap-3">
                         <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
                         <div><span class="font-bold text-white">Step 3: Add Solvents</span><br>Leave beaker on scale. Add Benzyl Alcohol until scale increases by <span class="text-green-400 font-bold">${lc.baWeight}g</span> (${lc.baVol}ml). Then add Benzyl Benzoate until scale increases by another <span class="text-yellow-400 font-bold">${lc.bbWeight}g</span> (${lc.bbVol}ml).</div>
                     </div>`;
 
-                if (lc.extraSolvents) {
-                    html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-orange-400 font-bold">${lc.extraSolvents}</span> to the solution.</div></div>`;
-                }
+                    if (lc.extraSolvents) {
+                        html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-orange-400 font-bold">${lc.extraSolvents}</span> to the solution.</div></div>`;
+                    }
 
-                html += `
+                    html += `
                     <div class="flex items-start gap-3">
                         <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
                         <div><span class="font-bold text-white">Step 4: Dissolve (Covered)</span><br>Remove beaker, cover top with foil/silicone (to prevent evaporation), and place on a hot plate or warm water bath (do not exceed 60°C). Swirl gently until powder is entirely dissolved and clear.</div>
                     </div>`;
 
-                // Dual Carrier Protocol Logic Update
-                if (lc.secondCarrier) {
-                    const finalFirstOilTarget = (parseFloat(lc.totalMass) - parseFloat(lc.mainCarrierWeight)).toFixed(2);
-                    html += `
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
-                        <div><span class="font-bold text-white">Step 5a: Dual-Oil First Carrier</span><br>Remove from heat, wipe dry. Place back on scale (DO NOT TARE). Pour in ${lc.secondCarrier} until the scale reaches exactly <span class="text-purple-400 font-bold">${finalFirstOilTarget}g</span>.</div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
-                        <div><span class="font-bold text-white">Step 5b: Gravimetric Top-Off</span><br>Pour ${lc.mainOilName} directly into the beaker until the scale reads EXACTLY <span class="text-purple-400 font-bold text-lg">${lc.totalMass}g</span>. Mix thoroughly.</div>
-                    </div>`;
-                } else {
-                    html += `
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
-                        <div><span class="font-bold text-white">Step 5: Gravimetric Top-Off (Crucial)</span><br>Remove from heat, wipe any water off the beaker. Place back on scale (DO NOT TARE). Pour ${lc.mainOilName} directly into the beaker until the scale reads EXACTLY <span class="text-purple-400 font-bold text-lg">${lc.totalMass}g</span>. Mix thoroughly.</div>
-                    </div>`;
-                }
+                    if (lc.secondCarrier) {
+                        const finalFirstOilTarget = (parseFloat(lc.totalMass) - parseFloat(lc.mainCarrierWeight)).toFixed(3);
+                        html += `
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                            <div><span class="font-bold text-white">Step 5a: Dual-Oil First Carrier</span><br>Remove from heat, wipe dry. Place back on scale (DO NOT TARE). Pour in ${lc.secondCarrier} until the scale reaches exactly <span class="text-purple-400 font-bold">${finalFirstOilTarget}g</span>.</div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                            <div><span class="font-bold text-white">Step 5b: Gravimetric Top-Off</span><br>Pour ${lc.mainOilName} directly into the beaker until the scale reads EXACTLY <span class="text-purple-400 font-bold text-lg">${lc.totalMass}g</span>. Mix thoroughly.</div>
+                        </div>`;
+                    } else {
+                        html += `
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                            <div><span class="font-bold text-white">Step 5: Gravimetric Top-Off (Crucial)</span><br>Remove from heat, wipe any water off the beaker. Place back on scale (DO NOT TARE). Pour ${lc.mainOilName} directly into the beaker until the scale reads EXACTLY <span class="text-purple-400 font-bold text-lg">${lc.totalMass}g</span>. Mix thoroughly.</div>
+                        </div>`;
+                    }
 
-                let filterText = lc.filterName.includes("No") ? "Proceed directly to sterilization/vialing as no filter loss was accounted for." : `Draw the warm solution into a sterile syringe. Attach the ${lc.filterName} and filter directly into a sterile, sealed vial.`;
+                    let filterText = (lc.filterLossVal === 0) ? "Proceed directly to sterilization/vialing as no filter loss was accounted for." : `Draw the warm solution into a sterile syringe. Attach the ${lc.filterName} and filter directly into a sterile, sealed vial.`;
 
-                html += `
+                    html += `
                     <div class="flex items-start gap-3 pb-6">
                         <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
                         <div><span class="font-bold text-white">Step 6: Filtration & Vialing</span><br>${filterText}</div>
                     </div>`;
+                }
 
                 safeSetHTML(getEl('protocolContent'), html);
                 getEl('protocolModal').classList.remove('hidden');
             });
         }
 
-        // Global Listeners for auto-calculate
+        // Global Dynamic Input Event Hooks
         document.body.addEventListener('input', (e) => {
             if(e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
-                if(e.target.id !== 'presetSelect') calculateBrew();
+                if(e.target.id !== 'presetSelect') calculateBatch();
             }
         });
 
-        // Initial setup
-        initChart();
-        calculateBrew();
-
+        // App Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            initChart();
+            switchTab('single');
+        });
     </script>
 </body>
 </html>
