@@ -297,10 +297,13 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6);
             z-index: 1000;
-            align-items: center;
+            
+            /* FIXED: Changed from center to flex-start + padding to prevent trapped scrolling on mobile */
+            align-items: flex-start; 
             justify-content: center;
             overflow-y: auto;
-            padding: 20px;
+            padding: 40px 20px; /* Gives breathing room at top and bottom */
+            box-sizing: border-box;
         }
 
         .modal-content {
@@ -311,6 +314,7 @@
             width: 100%;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             position: relative;
+            margin: auto; /* Works with flex-start to center vertically if there's room, but allows scrolling if not */
         }
 
         .modal-instruction {
