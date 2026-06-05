@@ -243,6 +243,31 @@
         
         .empty-msg { color: #888; font-style: italic; }
 
+        /* SFX Overlay Styling */
+        .sfx-overlay {
+            position: fixed;
+            z-index: 2000;
+            pointer-events: none;
+            top: 50%;
+            left: 50%;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .sfx-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .sfx-overlay img {
+            transform: translate(-50%, -50%);
+            max-width: 300px;
+            max-height: 300px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: block;
+        }
+
         /* Order Modal Styling */
         #order-modal {
             display: none;
@@ -331,17 +356,16 @@
         /* SFX Overlay Styling */
         .sfx-overlay {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             z-index: 2000;
             pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
+            /* Start hidden completely */
+            display: none;
+            /* Will be animated via JS */
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .sfx-overlay.active {
-            opacity: 1;
+            display: block;
         }
 
         .sfx-overlay img {
@@ -349,6 +373,7 @@
             max-height: 300px;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: block;
         }
 
         @media (max-width: 600px) {
@@ -498,13 +523,13 @@
 
     <!-- SFX Overlays -->
     <div id="overlay-retail" class="sfx-overlay">
-        <img src="ara.gif?v=2" alt="Ara">
+        <img src="ara.gif?v=3" alt="Ara">
     </div>
     <div id="overlay-preorder" class="sfx-overlay">
-        <img src="money.gif?v=2" alt="Money">
+        <img src="money.gif?v=3" alt="Money">
     </div>
     <div id="overlay-addon" class="sfx-overlay">
-        <img src="arnold.gif?v=2" alt="Arnold">
+        <img src="arnold.gif?v=3" alt="Arnold">
     </div>
 
     <script>
@@ -514,9 +539,13 @@
         let currentOrderNum = 0;
 
         // Audio Objects (Cache-busted to bypass browser memory)
-        const audioRetail = new Audio('ara.mp3?v=2');
-        const audioPreorder = new Audio('money.mp3?v=2');
-        const audioAddon = new Audio('arnold.mp3?v=2');
+        const audioRetail = new Audio('ara.mp3?v=3');
+        const audioPreorder = new Audio('money.mp3?v=3');
+        const audioAddon = new Audio('arnold.mp3?v=3');
+
+        // Animation state trackers
+        let activeOverlay = null;
+        let animationTimeout = null;
 
         // Fallback data for preview environment
         const fallbackProducts = [
@@ -617,21 +646,64 @@
 
             if (overlayId && audioObj) {
                 // Play sound
-                audioObj.currentTime = 0; // Reset sound if clicking fast
+                audioObj.currentTime = 0;
                 audioObj.play().catch(e => console.log("Audio play blocked by browser:", e));
 
-                // Show GIF
                 const overlay = document.getElementById(overlayId);
                 
-                // Clear any existing timeout to prevent glitching if clicked fast
-                if(overlay.timeoutId) clearTimeout(overlay.timeoutId);
+                // Clear existing animation if clicked rapidly
+                if (animationTimeout) {
+                    clearTimeout(animationTimeout);
+                    if (activeOverlay) {
+                        activeOverlay.classList.remove('active');
+                        activeOverlay.style.transition = 'none';
+                    }
+                }
                 
+                activeOverlay = overlay;
+
+                // Define full-screen distances to slide from/to safely
+                const directions = [
+                    { x: '0vw', y: '-100vh' }, // Top
+                    { x: '0vw', y: '100vh' },  // Bottom
+                    { x: '-100vw', y: '0vh' }, // Left
+                    { x: '100vw', y: '0vh' }   // Right
+                ];
+
+                let startIdx = Math.floor(Math.random() * directions.length);
+                let endIdx;
+                do {
+                    endIdx = Math.floor(Math.random() * directions.length);
+                } while (endIdx === startIdx);
+
+                const startTransform = `translate(${directions[startIdx].x}, ${directions[startIdx].y})`;
+                const centerTransform = `translate(0vw, 0vh)`;
+                const endTransform = `translate(${directions[endIdx].x}, ${directions[endIdx].y})`;
+
+                // 1. Snap off-screen
+                overlay.style.transition = 'none';
+                overlay.style.transform = startTransform;
                 overlay.classList.add('active');
-                
-                // Hide after 2 seconds
-                overlay.timeoutId = setTimeout(() => {
-                    overlay.classList.remove('active');
-                }, 2000);
+
+                // 2. Force reflow
+                void overlay.offsetWidth;
+
+                // 3. Slide In
+                overlay.style.transition = 'transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                overlay.style.transform = centerTransform;
+
+                // 4. Slide Out after exactly 600ms
+                animationTimeout = setTimeout(() => {
+                    overlay.style.transform = endTransform;
+                    
+                    // Hide completely after slide out finishes
+                    setTimeout(() => {
+                        if (activeOverlay === overlay) {
+                            overlay.classList.remove('active');
+                        }
+                    }, 200); 
+                    
+                }, 600); 
             }
         }
 
