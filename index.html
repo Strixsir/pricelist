@@ -11,6 +11,7 @@
             --border-color: #e0e0e0;
             --disabled-color: #9aa0a6;
             --blue-link: #1a73e8;
+            --addon-bg: #fdfaf6;
         }
 
         body {
@@ -24,6 +25,16 @@
         }
 
         h1 { text-align: center; margin-bottom: 15px; }
+        
+        h2.section-title {
+            margin-top: 40px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            color: #333;
+            border-bottom: 2px solid var(--primary-red);
+            padding-bottom: 5px;
+            display: inline-block;
+        }
 
         /* Navigation Tabs */
         .nav-tabs {
@@ -78,6 +89,18 @@
             font-size: 0.95rem;
         }
 
+        .addon-note {
+            background: #fff8e1;
+            border: 1px solid #ffecb3;
+            color: #f57f17;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            text-align: center;
+            font-weight: bold;
+        }
+
         .discount-tiers {
             display: flex;
             justify-content: center;
@@ -111,6 +134,11 @@
             min-width: 800px;
         }
 
+        .price-table.addon-table {
+            background: var(--addon-bg);
+            min-width: 600px;
+        }
+
         th {
             background-color: #fcfcfc;
             padding: 15px;
@@ -120,6 +148,8 @@
             white-space: nowrap;
         }
 
+        .addon-table th { background-color: #fdfaf6; border-bottom: 2px solid #ffecb3; }
+
         .header-red { color: var(--primary-red); font-size: 1.1rem; }
 
         td {
@@ -127,6 +157,8 @@
             border-bottom: 1px solid var(--border-color);
             vertical-align: middle;
         }
+
+        .addon-table td { border-bottom: 1px solid #ffecb3; }
 
         .compound-name { font-weight: bold; }
         
@@ -296,6 +328,29 @@
             font-weight: bold;
         }
 
+        /* SFX Overlay Styling */
+        .sfx-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .sfx-overlay.active {
+            opacity: 1;
+        }
+
+        .sfx-overlay img {
+            max-width: 300px;
+            max-height: 300px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
         @media (max-width: 600px) {
             body { padding: 10px; }
             .nav-tabs { flex-direction: column; align-items: center; gap: 5px; }
@@ -307,6 +362,7 @@
 
     <h1>Product Catalog</h1>
 
+    <!-- Navigation Tabs -->
     <div class="nav-tabs">
         <a href="index.html" class="nav-tab active">🛒 Store</a>
         <a href="brew.html" class="nav-tab">🧪 Homebrew Calculator</a>
@@ -330,6 +386,7 @@
         <div style="font-size: 0.8rem; margin-top: 10px;">*Applies automatically in cart (Max 300g per item). For more, use 1KG Pre-order.</div>
     </div>
 
+    <h2 class="section-title">Raw Powders</h2>
     <div class="table-wrapper">
         <table class="price-table">
             <thead>
@@ -346,6 +403,28 @@
             </thead>
             <tbody id="product-list">
                 <tr><td colspan="8" style="text-align:center; padding: 20px;">Loading Inventory...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 class="section-title">Exclusive Add-ons</h2>
+    <div class="addon-note">
+        Add up to 10g of Add-ons for every 100g of Raws in your cart! (Example: Buy 200g of Test, unlock up to 20g of Anavar).
+    </div>
+    <div class="table-wrapper">
+        <table class="price-table addon-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Batch No</th>
+                    <th>Lab Test</th>
+                    <th>Stock (10G units)</th>
+                    <th class="header-red">Retail (10G)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="addon-list">
+                <!-- Addons will populate here -->
             </tbody>
         </table>
     </div>
@@ -374,6 +453,7 @@
         <button class="checkout-btn" onclick="openCheckoutModal()">Place Order</button>
     </div>
 
+    <!-- Order Modal -->
     <div id="order-modal">
         <div class="modal-content">
             <h3 style="margin-top:0"> Complete Your Order</h3>
@@ -416,27 +496,43 @@
         </div>
     </div>
 
+    <!-- SFX Overlays -->
+    <div id="overlay-retail" class="sfx-overlay">
+        <img src="Ara.gif" alt="Ara" onerror="this.style.display='none'">
+    </div>
+    <div id="overlay-preorder" class="sfx-overlay">
+        <img src="money.gif" alt="Money" onerror="this.style.display='none'">
+    </div>
+    <div id="overlay-addon" class="sfx-overlay">
+        <img src="arnold.gif" alt="Arnold" onerror="this.style.display='none'">
+    </div>
+
     <script>
         const SHIPPING_COST = 30;
         let products = [];
-        let cart = []; // Now stores { name, price, size, batch, qty }
+        let cart = []; // Stores { name, price, size, batch, qty, category }
         let currentOrderNum = 0;
+
+        // Audio Objects
+        const audioRetail = new Audio('ara.mp3');
+        const audioPreorder = new Audio('Money.mp3');
+        const audioAddon = new Audio('arnold.mp3');
 
         // Fallback data for preview environment
         const fallbackProducts = [
-            { "name": "TNE", "batch": "Sent to jano", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "#1", "p100": 220, "stock100": 5, "p1k": 1400, "s1k": 1 },
-            { "name": "TP",  "batch": "yet to see", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "#1", "p100": 230, "stock100": 0, "p1k": 1450, "s1k": 1 },
-            { "name": "TC",  "batch": "TTC-FP-125", "labLink": "https://verify.janoshik.com/tests/132664-Sample_1_873E5VFUEAZ8", "labResult": "94.63%", "p100": 240, "stock100": 16, "p1k": 1500, "s1k": 1 },
-            { "name": "TE",  "batch": "TTE-FP-125", "labLink": "https://verify.janoshik.com/tests/148722-Sample_1_7PVJ4SXQXMFJ", "labResult": "92.99%", "p100": 240, "stock100": 0, "p1k": 1500, "s1k": 1 },
-            { "name": "TD",  "batch": "TTD-FP-126", "labLink": "https://verify.janoshik.com/tests/150503-Sample_1_VJ34B4VFFRC2", "labResult": "92.18%", "p100": 260, "stock100": 10, "p1k": 1600, "s1k": 0 },
-            { "name": "TUD", "batch": "Yet to see", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "#1", "p100": 280, "stock100": 0, "p1k": 1650, "s1k": 1 },
-            { "name": "ND",  "batch": "yet to see", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "#1", "p100": 450, "stock100": 0, "p1k": 2300, "s1k": 1 },
-            { "name": "NPP", "batch": "TTD-FP-125", "labLink": "https://verify.janoshik.com/tests/150504-Sample_2_VKVA7I3GJEZH", "labResult": "87.24%", "p100": 400, "stock100": 10, "p1k": 2300, "s1k": 1 }
+            { "name": "TNE", "batch": "B-2311", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.5%", "p100": 220, "stock100": 15, "p1k": 1400, "s1k": 1 },
+            { "name": "TP",  "batch": "B-2312", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.9%", "p100": 240, "stock100": 8,  "p1k": 1450, "s1k": 1 },
+            { "name": "TUD", "batch": "B-2316", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.0%", "p100": 300, "stock100": 0,  "p1k": 1650, "s1k": 1 },
+            { "name": "ND",  "batch": "B-2317", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.3%", "p100": 450, "stock100": 10, "p1k": 2300, "s1k": 1 },
+            { "name": "NPP", "batch": "B-2318", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.7%", "p100": 400, "stock100": 25, "p1k": 2300, "s1k": 1 },
+            { "name": "Anavar", "category": "addon", "batch": "A-2301", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.2%", "p100": 60, "stock100": 20 },
+            { "name": "Anadrol", "category": "addon", "batch": "A-2302", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.7%", "p100": 50, "stock100": 20 }
         ];
 
         // Fetch the inventory from the JSON file on GitHub/Vercel
         async function loadInventory() {
             try {
+                // cache busting included
                 const response = await fetch('products.json?v=' + new Date().getTime());
                 if (!response.ok) throw new Error('Failed to load inventory');
                 products = await response.json();
@@ -448,7 +544,11 @@
         }
 
         function renderProducts() {
-            document.getElementById('product-list').innerHTML = products.map(item => `
+            const raws = products.filter(p => p.category !== 'addon');
+            const addons = products.filter(p => p.category === 'addon');
+
+            // Render Raws
+            document.getElementById('product-list').innerHTML = raws.map(item => `
                 <tr>
                     <td class="compound-name">${item.name}</td>
                     <td class="batch-no">${item.batch}</td>
@@ -459,7 +559,7 @@
                     <td style="${item.stock100 === 0 ? 'color: #999;' : ''}">$${item.p100}</td>
                     <td>
                         <button class="action-btn" 
-                                onclick="addToCart('${item.name}', ${item.p100}, '100g', '${item.batch}')" 
+                                onclick="addToCart('${item.name}', ${item.p100}, '100g', '${item.batch}', 'raw')" 
                                 ${item.stock100 === 0 ? 'disabled' : ''}>
                             ${item.stock100 === 0 ? 'Out of Stock' : 'Add to cart'}
                         </button>
@@ -467,16 +567,101 @@
                     <td style="${item.s1k === 0 ? 'color: #999;' : ''}">$${item.p1k}</td>
                     <td>
                         <button class="action-btn" 
-                                onclick="addToCart('${item.name}', ${item.p1k}, '1kg', '${item.batch}')" 
+                                onclick="addToCart('${item.name}', ${item.p1k}, '1kg', '${item.batch}', 'raw')" 
                                 ${item.s1k === 0 ? 'disabled' : ''}>
                             ${item.s1k === 0 ? 'Out of Stock' : 'Click to Pre-order'}
                         </button>
                     </td>
                 </tr>
             `).join('');
+
+            // Render Addons
+            if(addons.length > 0) {
+                document.getElementById('addon-list').innerHTML = addons.map(item => `
+                    <tr>
+                        <td class="compound-name">${item.name}</td>
+                        <td class="batch-no">${item.batch}</td>
+                        <td><a href="${item.labLink}" target="_blank" class="lab-link">${item.labResult || "View Lab"}</a></td>
+                        <td style="font-weight: bold; color: ${item.stock100 > 0 ? '#f57f17' : '#d93025'};">
+                            ${item.stock100 > 0 ? item.stock100 : '0'}
+                        </td>
+                        <td style="${item.stock100 === 0 ? 'color: #999;' : ''}">$${item.p100}</td>
+                        <td>
+                            <button class="action-btn" 
+                                    onclick="addToCart('${item.name}', ${item.p100}, '10g', '${item.batch}', 'addon')" 
+                                    ${item.stock100 === 0 ? 'disabled' : ''}>
+                                ${item.stock100 === 0 ? 'Out of Stock' : 'Add to cart'}
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                document.getElementById('addon-list').innerHTML = `<tr><td colspan="6" style="text-align:center;">No add-ons available.</td></tr>`;
+            }
         }
 
-        function addToCart(name, price, size, batch) {
+        function triggerSFX(type) {
+            let overlayId = '';
+            let audioObj = null;
+
+            if (type === 'retail') {
+                overlayId = 'overlay-retail';
+                audioObj = audioRetail;
+            } else if (type === 'preorder') {
+                overlayId = 'overlay-preorder';
+                audioObj = audioPreorder;
+            } else if (type === 'addon') {
+                overlayId = 'overlay-addon';
+                audioObj = audioAddon;
+            }
+
+            if (overlayId && audioObj) {
+                // Play sound
+                audioObj.currentTime = 0; // Reset sound if clicking fast
+                audioObj.play().catch(e => console.log("Audio play blocked by browser:", e));
+
+                // Show GIF
+                const overlay = document.getElementById(overlayId);
+                
+                // Clear any existing timeout to prevent glitching if clicked fast
+                if(overlay.timeoutId) clearTimeout(overlay.timeoutId);
+                
+                overlay.classList.add('active');
+                
+                // Hide after 2 seconds
+                overlay.timeoutId = setTimeout(() => {
+                    overlay.classList.remove('active');
+                }, 2000);
+            }
+        }
+
+        function getRawIncrements() {
+            // Count total 100g increments in cart. 1kg orders DO NOT count towards this limit anymore.
+            let increments = 0;
+            cart.forEach(item => {
+                if (item.category !== 'addon' && item.size === '100g') {
+                    increments += item.qty;
+                }
+            });
+            return increments;
+        }
+
+        function enforceAddonLimits() {
+            // Ensure addons do not exceed raw increments
+            let maxQty = getRawIncrements();
+            cart.forEach(item => {
+                if (item.category === 'addon') {
+                    if (item.qty > maxQty) {
+                        item.qty = maxQty; // Auto-correct quantity downward if they removed raws
+                    }
+                }
+            });
+            
+            // Clean up any addons that were forced down to 0
+            cart = cart.filter(item => item.qty > 0);
+        }
+
+        function addToCart(name, price, size, batch, category) {
             let totalItems = 0;
             cart.forEach(i => totalItems += i.qty);
             
@@ -485,30 +670,65 @@
                 return;
             }
 
-            // Find the actual product logic in inventory to check max stock
+            // --- SECURITY PATCH: Verify against actual database, ignore HTML DOM ---
             let productRecord = products.find(p => p.name === name && p.batch === batch);
-            let maxStock = size === '100g' ? productRecord.stock100 : Infinity;
+            if (!productRecord) return; // Failsafe if name/batch was spoofed
+            
+            let maxStock = (size === '100g' || size === '10g') ? productRecord.stock100 : Infinity;
+            
+            // Fix Exploit #1: Block users who remove the 'disabled' tag from out-of-stock buttons
+            if (maxStock <= 0) {
+                alert("Sorry, this item is currently out of stock.");
+                return;
+            }
+            
+            // Fix Exploit #2: Ignore HTML price parameter and fetch the true price
+            let securePrice = size === '1kg' ? productRecord.p1k : productRecord.p100;
+            // ----------------------------------------------------------------------
 
             let existingItem = cart.find(i => i.name === name && i.size === size && i.batch === batch);
             
-            if (existingItem) {
-                // BUG FIX: Prevent user from adding more items than available in stock
-                if (existingItem.qty >= maxStock) {
-                    alert(`Sorry, we only have ${maxStock} in stock for this item.`);
+            if (category === 'addon') {
+                let allowedIncrements = getRawIncrements();
+                if (allowedIncrements === 0) {
+                    alert("You must add Raws to your cart before unlocking Add-ons.");
                     return;
                 }
                 
-                // Enforce 300g max limit rule for retail discount
-                if (size === '100g' && existingItem.qty >= 3) {
+                let currentAddonQty = existingItem ? existingItem.qty : 0;
+                if (currentAddonQty >= allowedIncrements) {
+                    alert(`Add-on limit reached! Based on your cart's Raw weight, you can only add up to ${allowedIncrements * 10}g of ${name}. Add more Raws to increase this limit.`);
+                    return;
+                }
+            }
+
+            if (existingItem) {
+                if (existingItem.qty >= maxStock) {
+                    alert(`Sorry, we only have ${maxStock} units in stock for this item.`);
+                    return;
+                }
+                
+                // Enforce 300g max limit rule for retail discount (Only for Raws)
+                if (category !== 'addon' && size === '100g' && existingItem.qty >= 3) {
                     alert("Maximum 300g (3 units) allowed for retail bulk discount. For larger amounts, please use the 1KG Pre-order option!");
                     return;
                 }
                 
                 existingItem.qty += 1;
             } else {
-                cart.push({ name, price, size, batch, qty: 1 });
+                // Use the securePrice here instead of the parameter
+                cart.push({ name, price: securePrice, size, batch, qty: 1, category });
             }
             
+            // Trigger visual and audio effects
+            if (category === 'addon') {
+                triggerSFX('addon');
+            } else if (size === '100g') {
+                triggerSFX('retail');
+            } else if (size === '1kg') {
+                triggerSFX('preorder');
+            }
+
             updateCartUI();
         }
 
@@ -516,7 +736,8 @@
             let baseTotal = item.price * item.qty;
             let discountPercent = 0;
             
-            if (item.size === '100g') {
+            // Apply bulk discounts ONLY to 100g Raws
+            if (item.category !== 'addon' && item.size === '100g') {
                 if (item.qty === 2) discountPercent = 0.10;      // 200g = 10% off
                 else if (item.qty === 3) discountPercent = 0.15; // 300g = 15% off
             }
@@ -530,6 +751,9 @@
         }
 
         function updateCartUI() {
+            // Before drawing UI, make sure addon constraints are still met (important if an item was removed)
+            enforceAddonLimits(); 
+            
             const list = document.getElementById('cart-items');
             const subtotalDisplay = document.getElementById('cart-subtotal');
             const totalDisplay = document.getElementById('cart-total');
@@ -567,7 +791,8 @@
 
         function removeItem(index) {
             cart.splice(index, 1);
-            updateCartUI();
+            // updateCartUI calls enforceAddonLimits() automatically
+            updateCartUI(); 
         }
 
         function openCheckoutModal() {
