@@ -313,6 +313,39 @@
             position: relative;
         }
 
+        .modal-instruction {
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .email-copy-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .btn-mini-copy {
+            background: #e0e0e0;
+            border: 1px solid #ccc;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .btn-mini-copy:hover {
+            background: #d0d0d0;
+        }
+
         .form-group { margin-bottom: 15px; }
         .form-group label {
             display: block;
@@ -359,7 +392,22 @@
         }
 
         .btn-copy { background: #34a853; color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .btn-close { background: #70757a; color: white; padding: 12px; border: none; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 10px; font-weight: bold; }
+        
+        .close-icon {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            line-height: 1;
+        }
+
+        .close-icon:hover {
+            color: var(--primary-red);
+        }
 
         .btn-copy:disabled {
             background: #ccc;
@@ -512,11 +560,16 @@
     <!-- Order Modal -->
     <div id="order-modal">
         <div class="modal-content">
-            <h3 style="margin-top:0"> Complete Your Order</h3>
+            <span class="close-icon" onclick="closeModal()">&times;</span>
+            <h3 style="margin-top:0; padding-right: 30px;"> Complete Your Order</h3>
             
-            <div class="modal-instruction" style="margin-bottom: 20px; background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #eee;">
-                <p style="margin: 0 0 8px 0; font-size: 1.05rem;">Send order to: <strong style="color: var(--primary-red);">strixsir@proton.me</strong></p>
+            <div class="modal-instruction">
+                <div class="email-copy-wrapper">
+                    <p style="margin: 0; font-size: 1.05rem;">Send order to: <strong style="color: var(--primary-red);" id="vendor-email-text">strixsir@proton.me</strong></p>
+                    <button class="btn-mini-copy" onclick="copyVendorEmail()">Copy</button>
+                </div>
                 <p style="margin: 0; font-size: 0.85rem; color: #555;">You will Receive a crypto payment address in 12 Hours.</p>
+                <div id="email-copy-status" style="font-size: 0.75rem; color: #34a853; height: 1em; margin-top: 4px; font-weight: bold;"></div>
             </div>
             
             <div class="form-group">
@@ -532,9 +585,13 @@
             <div class="form-group">
                 <label> Select Crypto Network:</label>
                 <div style="display: flex; gap: 15px; margin-top: 5px; font-size: 0.9rem;">
-                    <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="USDT TRC 20" checked onchange="updateOrderText()"> USDT TRC 20</label>
-                    <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="USDT ERC 20" onchange="updateOrderText()"> USDT ERC 20</label>
-                    <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="BTC" onchange="updateOrderText()"> BTC</label>
+                    <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="USDT TRC 20" checked onchange="toggleCustomCrypto()"> USDT TRC 20</label>
+                    <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="USDT ERC 20" onchange="toggleCustomCrypto()"> USDT ERC 20</label>
+                    <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="BTC" onchange="toggleCustomCrypto()"> BTC</label>
+                    <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="Other" onchange="toggleCustomCrypto()"> Other</label>
+                </div>
+                <div id="custom-crypto-container" style="display: none; margin-top: 10px;">
+                    <input type="text" id="custom-crypto-input" class="form-input" placeholder="Specify Crypto (e.g. XMR, ETH)" oninput="updateOrderText()">
                 </div>
             </div>
 
@@ -547,8 +604,6 @@
                 </div>
                 <div id="copy-status" class="success-msg"></div>
             </div>
-            
-            <button class="btn-close" onclick="closeModal()">Back to Cart</button>
         </div>
     </div>
 
@@ -910,10 +965,27 @@
             document.getElementById('order-modal').style.display = 'flex';
         }
 
+        function toggleCustomCrypto() {
+            const network = document.querySelector('input[name="crypto-network"]:checked').value;
+            const customContainer = document.getElementById('custom-crypto-container');
+            if (network === 'Other') {
+                customContainer.style.display = 'block';
+            } else {
+                customContainer.style.display = 'none';
+                document.getElementById('custom-crypto-input').value = ''; // clear input when hidden
+            }
+            updateOrderText();
+        }
+
         function updateOrderText() {
             const name = document.getElementById('ship-name').value.trim();
             const addr = document.getElementById('ship-address').value.trim();
-            const cryptoNetwork = document.querySelector('input[name="crypto-network"]:checked').value;
+            let cryptoNetwork = document.querySelector('input[name="crypto-network"]:checked').value;
+            
+            if (cryptoNetwork === 'Other') {
+                const customCrypto = document.getElementById('custom-crypto-input').value.trim();
+                cryptoNetwork = customCrypto ? customCrypto : "OTHER CRYPTO";
+            }
             
             let subtotal = 0;
 
@@ -958,6 +1030,12 @@ You will Receive a ${cryptoNetwork} address in 12 Hours.`;
             const name = document.getElementById('ship-name').value.trim();
             const addr = document.getElementById('ship-address').value.trim();
             if (!name || !addr) return alert("Please enter shipping name and address.");
+            
+            const network = document.querySelector('input[name="crypto-network"]:checked').value;
+            if (network === 'Other') {
+               const customCrypto = document.getElementById('custom-crypto-input').value.trim();
+               if(!customCrypto) return alert("Please specify the crypto you want to use.");
+            }
 
             const textArea = document.getElementById('order-text-area');
             textArea.select();
@@ -965,6 +1043,21 @@ You will Receive a ${cryptoNetwork} address in 12 Hours.`;
             const status = document.getElementById('copy-status');
             status.innerText = "✓ Order copied! Please paste in your email.";
             setTimeout(() => { status.innerText = ""; }, 4000);
+        }
+
+        function copyVendorEmail() {
+            const emailText = document.getElementById('vendor-email-text').innerText;
+            // Create a temporary textarea to copy from
+            const tempTextArea = document.createElement("textarea");
+            tempTextArea.value = emailText;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+            
+            const status = document.getElementById('email-copy-status');
+            status.innerText = "✓ Email copied!";
+            setTimeout(() => { status.innerText = ""; }, 3000);
         }
 
         function closeModal() {
