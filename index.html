@@ -498,13 +498,13 @@
 
     <!-- SFX Overlays -->
     <div id="overlay-retail" class="sfx-overlay">
-        <img src="ara.gif" alt="Ara">
+        <img src="ara.gif?v=2" alt="Ara">
     </div>
     <div id="overlay-preorder" class="sfx-overlay">
-        <img src="money.gif" alt="Money">
+        <img src="money.gif?v=2" alt="Money">
     </div>
     <div id="overlay-addon" class="sfx-overlay">
-        <img src="arnold.gif" alt="Arnold">
+        <img src="arnold.gif?v=2" alt="Arnold">
     </div>
 
     <script>
@@ -513,10 +513,10 @@
         let cart = []; // Stores { name, price, size, batch, qty, category }
         let currentOrderNum = 0;
 
-        // Audio Objects (Forced to exact lowercase to match GitHub)
-        const audioRetail = new Audio('ara.mp3');
-        const audioPreorder = new Audio('money.mp3');
-        const audioAddon = new Audio('arnold.mp3');
+        // Audio Objects (Cache-busted to bypass browser memory)
+        const audioRetail = new Audio('ara.mp3?v=2');
+        const audioPreorder = new Audio('money.mp3?v=2');
+        const audioAddon = new Audio('arnold.mp3?v=2');
 
         // Fallback data for preview environment
         const fallbackProducts = [
