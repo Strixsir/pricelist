@@ -3,930 +3,1310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Price List</title>
+    <title>Dinfar Brew Calc - Advanced Homebrew Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
         :root {
-            --primary-red: #d93025;
-            --text-color: #3c4043;
-            --border-color: #e0e0e0;
-            --disabled-color: #9aa0a6;
-            --blue-link: #1a73e8;
-            --addon-bg: #fdfaf6;
+            --bg-dark: #050505;
+            --card-bg: #0a0a0a;
+            --border-color: #222;
+            --accent-red: #d32f2f;
+            --text-muted: #888;
+            
+            --val-red: #ff3333;
+            --val-green: #4ade80;
+            --val-yellow: #facc15;
+            --val-purple: #e879f9;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: var(--text-color);
-            line-height: 1.5;
-            padding: 20px;
-            max-width: 1100px;
-            margin: 0 auto;
-            background-color: #f8f9fa;
+            background-color: var(--bg-dark);
+            color: #eee;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            min-height: 100vh;
         }
 
-        h1 { text-align: center; margin-bottom: 15px; }
-        
-        h2.section-title {
-            margin-top: 40px;
-            margin-bottom: 15px;
-            font-size: 1.4rem;
-            color: #333;
-            border-bottom: 2px solid var(--primary-red);
-            padding-bottom: 5px;
-            display: inline-block;
-        }
-
-        /* Navigation Tabs */
-        .nav-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-
-        .nav-tab {
-            text-decoration: none;
-            color: #555;
-            font-weight: bold;
-            padding: 10px 20px;
-            border-radius: 6px;
-            transition: all 0.2s ease-in-out;
-            font-size: 1.05rem;
-        }
-
-        .nav-tab:hover {
-            background-color: #e8eaed;
-            color: var(--blue-link);
-        }
-
-        .nav-tab.active {
-            color: white;
-            background-color: var(--blue-link);
-            box-shadow: 0 2px 4px rgba(26, 115, 232, 0.3);
-        }
-
-        .note {
-            background: #fff5f5;
-            border: 1px solid #ffcdd2;
-            color: #b71c1c;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-
-        .discount-note {
-            background: #e6f4ea;
-            border: 1px solid #ceead6;
-            color: #137333;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 0.95rem;
-        }
-
-        .addon-note {
-            background: #fff8e1;
-            border: 1px solid #ffecb3;
-            color: #f57f17;
-            padding: 12px;
-            border-radius: 4px;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .discount-tiers {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
-            font-weight: bold;
-            flex-wrap: wrap;
-        }
-
-        .discount-tier {
-            background: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            border: 1px dashed #137333;
-            font-size: 0.9rem;
-        }
-
-        .table-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            margin-bottom: 40px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            border-radius: 8px;
-        }
-
-        .price-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            min-width: 800px;
-        }
-
-        .price-table.addon-table {
-            background: var(--addon-bg);
-            min-width: 600px;
-        }
-
-        th {
-            background-color: #fcfcfc;
-            padding: 15px;
-            text-align: left;
-            border-bottom: 2px solid var(--border-color);
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .addon-table th { background-color: #fdfaf6; border-bottom: 2px solid #ffecb3; }
-
-        .header-red { color: var(--primary-red); font-size: 1.1rem; }
-
-        td {
-            padding: 12px 15px;
-            border-bottom: 1px solid var(--border-color);
-            vertical-align: middle;
-        }
-
-        .addon-table td { border-bottom: 1px solid #ffecb3; }
-
-        .compound-name { font-weight: bold; }
-        
-        .batch-no {
-            font-family: monospace;
-            font-size: 0.85rem;
-            color: #666;
-        }
-
-        .lab-link {
-            color: var(--blue-link);
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .lab-link:hover { text-decoration: underline; }
-
-        button.action-btn {
-            background: none;
-            border: none;
-            color: var(--blue-link);
-            text-decoration: underline;
-            cursor: pointer;
-            font-size: 0.9rem;
-            padding: 8px 0;
-            white-space: nowrap;
-        }
-
-        button.action-btn:hover:not(:disabled) { color: #174ea6; }
-
-        button.action-btn:disabled {
-            color: var(--disabled-color);
-            text-decoration: none;
-            cursor: not-allowed;
-            font-style: italic;
-        }
-
-        .cart-container {
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        .input-box {
+            background: #000;
             border: 1px solid var(--border-color);
+            transition: border-color 0.2s;
+            color: #fff;
         }
 
-        .cart-title { font-size: 1.5rem; margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        
-        .cart-items { list-style: none; padding: 0; margin: 15px 0; }
-        .cart-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #eee; }
-
-        .total-summary {
-            margin-top: 15px;
-            padding-top: 10px;
-            border-top: 1px solid var(--border-color);
+        .input-box:focus {
+            border-color: var(--accent-red);
+            outline: none;
         }
 
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1rem;
-            color: #555;
-            margin-bottom: 5px;
-        }
-
-        .checkout-btn {
-            display: block;
-            width: 100%;
-            background-color: var(--blue-link);
-            color: white;
-            text-decoration: none;
-            text-align: center;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 20px;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .checkout-btn:hover { background-color: #174ea6; }
-        
-        .empty-msg { color: #888; font-style: italic; }
-
-        /* Order Modal Styling */
-        #order-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            overflow-y: auto;
-            padding: 20px;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 30px;
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem 1rem;
             border-radius: 8px;
-            max-width: 550px;
-            width: 100%;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 90px;
             position: relative;
         }
 
-        .form-group { margin-bottom: 15px; }
-        .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #444;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-family: inherit;
-        }
-
-        .copy-group {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px solid #f0f0f0;
-        }
-
-        #order-text-area {
-            width: 100%;
-            height: 220px;
-            resize: none;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 0.85rem;
-            background: #f9f9f9;
-            box-sizing: border-box;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        .primary-actions {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn-copy { background: #34a853; color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .btn-close { background: #70757a; color: white; padding: 12px; border: none; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 10px; font-weight: bold; }
-
-        .btn-copy:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-
-        .success-msg {
-            font-size: 0.8rem;
-            color: #34a853;
+        .stat-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
             text-align: center;
-            height: 1.2em;
-            margin-top: 5px;
-            font-weight: bold;
         }
 
-        /* SFX Overlay Styling */
-        .sfx-overlay {
-            position: fixed;
-            z-index: 2000;
-            pointer-events: none;
-            /* Start hidden completely */
-            display: none;
-            /* Will be animated via JS */
-            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        .stat-value {
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-align: center;
         }
 
-        .sfx-overlay.active {
-            display: block;
+        .sub-stat {
+            font-size: 0.6rem;
+            color: #666;
+            margin-top: 0.25rem;
+            text-align: center;
         }
 
-        .sfx-overlay img {
-            max-width: 300px;
-            max-height: 300px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            display: block;
+        .val-red { color: var(--val-red); }
+        .val-green { color: var(--val-green); }
+        .val-yellow { color: var(--val-yellow); }
+        .val-purple { color: var(--val-purple); }
+
+        .btn-active {
+            background-color: rgba(139, 0, 0, 0.4);
+            border: 1px solid #ff5555;
+            color: #fff;
         }
 
-        @media (max-width: 600px) {
-            body { padding: 10px; }
-            .nav-tabs { flex-direction: column; align-items: center; gap: 5px; }
-            .nav-tab { width: 100%; text-align: center; box-sizing: border-box; }
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--accent-red);
+            color: #fff;
+            transition: all 0.2s;
+        }
+
+        .btn-outline:hover {
+            background: rgba(139, 0, 0, 0.2);
+        }
+
+        .yield-card {
+            background: linear-gradient(180deg, #1a0505 0%, #050505 100%);
+            border: 1px solid var(--accent-red);
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-color: #0a0a0a;
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+            padding-right: 2.5rem !important;
+        }
+
+        input[type="checkbox"] {
+            accent-color: var(--accent-red);
+        }
+        
+        input[type=range] {
+            accent-color: var(--accent-red);
+        }
+
+        .tooltip-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 14px; height: 14px; border-radius: 50%;
+            background: #333; color: #aaa; font-size: 9px; font-weight: bold;
+            margin-left: 6px; cursor: help; transition: background 0.2s;
+        }
+        .has-tooltip:hover .tooltip-icon { background: #666; color: #fff; }
+        .has-tooltip { position: relative; display: inline-flex; align-items: center; }
+        .tooltip-text {
+            visibility: hidden; background-color: #222; color: #ddd;
+            text-align: left; padding: 10px 14px; border-radius: 6px;
+            position: absolute; z-index: 50; bottom: 130%; left: 50%; transform: translateX(-50%);
+            opacity: 0; transition: opacity 0.2s; width: max-content; max-width: 250px;
+            font-size: 11px; font-weight: normal; border: 1px solid #444; line-height: 1.4;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5); pointer-events: none; text-transform: none; letter-spacing: normal;
+        }
+        .has-tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+
+        #protocolModal {
+            backdrop-filter: blur(5px);
         }
     </style>
 </head>
-<body>
+<body class="p-4 md:p-8 pb-24 md:pb-8 relative">
 
-    <h1>Product Catalog</h1>
-
-    <!-- Navigation Tabs -->
-    <div class="nav-tabs">
-        <a href="index.html" class="nav-tab active">🛒 Store</a>
-        <a href="brew.html" class="nav-tab">🧪 Homebrew Calculator</a>
-    </div>
-
-    <div class="note">
-        <strong style="font-size: 1.05rem;">What is this Pre-order thing?</strong><br> 
-        For KG quantities, I need to source the raws first as I don’t keep large stock on hand.<br>
-        On Monday, I send a person to Gujarat to buy the Pre-ordered Amount. It reaches me by Thursday and is then Parcelled.
-        <div style="margin-top: 15px; padding: 10px; background-color: white; border: 2px dashed var(--primary-red); border-radius: 6px; font-weight: 800; color: var(--primary-red); font-size: 0.95rem; box-shadow: 0 2px 4px rgba(217, 48, 37, 0.1);">
-            ⚡ Retail Stock can go out of stock, but Pre-orders are ALWAYS available!
-        </div>
-    </div>
-
-    <div class="discount-note">
-        <strong style="font-size: 1.05rem;">🔥 Retail Bulk Discounts (Same Item)</strong>
-        <div class="discount-tiers">
-            <span class="discount-tier">200g: 10% Off</span>
-            <span class="discount-tier">300g: 15% Off</span>
-        </div>
-        <div style="font-size: 0.8rem; margin-top: 10px;">*Applies automatically in cart (Max 300g per item). For more, use 1KG Pre-order.</div>
-    </div>
-
-    <h2 class="section-title">Raw Powders</h2>
-    <div class="table-wrapper">
-        <table class="price-table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Batch No</th>
-                    <th>Lab Test</th>
-                    <th>Stock (100G)</th>
-                    <th class="header-red">Retail (100G)</th>
-                    <th></th>
-                    <th class="header-red">Pre_order (KG)</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="product-list">
-                <tr><td colspan="8" style="text-align:center; padding: 20px;">Loading Inventory...</td></tr>
-            </tbody>
-        </table>
-    </div>
-
-    <h2 class="section-title">Exclusive Add-ons</h2>
-    <div class="addon-note">
-        Add up to 10g of Add-ons for every 100g of Raws in your cart! (Example: Buy 200g of Test, unlock up to 20g of Anavar).
-    </div>
-    <div class="table-wrapper">
-        <table class="price-table addon-table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Batch No</th>
-                    <th>Lab Test</th>
-                    <th>Stock (10G units)</th>
-                    <th class="header-red">Retail (10G)</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="addon-list">
-                <!-- Addons will populate here -->
-            </tbody>
-        </table>
-    </div>
-
-    <div class="cart-container">
-        <h2 class="cart-title">Your Selection</h2>
-        <ul id="cart-items" class="cart-items">
-            <li class="empty-msg">No items selected yet</li>
-        </ul>
-        
-        <div id="cart-summary" class="total-summary" style="display: none;">
-            <div class="total-row">
-                <span>Subtotal:</span>
-                <span>$<span id="cart-subtotal">0</span></span>
-            </div>
-            <div class="total-row">
-                <span>Shipping:</span>
-                <span>$30</span>
-            </div>
-            <div class="total-row grand-total" style="font-size: 1.25rem; font-weight: bold; margin-top: 10px; padding-top: 10px; border-top: 2px solid #eee;">
-                <span>Grand Total:</span>
-                <span>$<span id="cart-total">0</span></span>
-            </div>
-        </div>
-
-        <button class="checkout-btn" onclick="openCheckoutModal()">Place Order</button>
-    </div>
-
-    <!-- Order Modal -->
-    <div id="order-modal">
-        <div class="modal-content">
-            <h3 style="margin-top:0"> Complete Your Order</h3>
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold tracking-tight mb-1" id="mainTitle">Dinfar Brew Calc V 1.05</h1>
+            <p class="text-gray-400 text-sm" id="mainSubtitle">Single compound steroid solution calculator</p>
             
-            <div class="modal-instruction" style="margin-bottom: 20px; background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #eee;">
-                <p style="margin: 0 0 8px 0; font-size: 1.05rem;">Send order to: <strong style="color: var(--primary-red);">strixsir@proton.me</strong></p>
-                <p style="margin: 0; font-size: 0.85rem; color: #555;">You will Receive a crypto payment address in 12 Hours.</p>
+            <div class="flex flex-wrap justify-center gap-3 mt-6">
+                <button id="navSingle" class="btn-active px-5 py-2 rounded text-xs font-bold">Single Compound</button>
+                <button id="navBlend" class="btn-outline px-5 py-2 rounded text-xs font-bold">Blend Calculator</button>
+                <button class="btn-outline px-5 py-2 rounded text-xs font-bold" onclick="window.open('https://thinksteroids.com/community/threads/homebrew-calculator.134440620/', '_blank')">Meso Thread</button>
             </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <div class="form-group">
-                <label> Shipping Name:</label>
-                <input type="text" id="ship-name" class="form-input" placeholder="First & Last Name" oninput="updateOrderText()">
-            </div>
-            <div class="form-group">
-                <label> Shipping Address:</label>
-                <div style="color: var(--primary-red); font-size: 0.8rem; margin-bottom: 5px;">* Only enter Real name and address, Else parcel will be lost</div>
-                <textarea id="ship-address" class="form-input" style="height: 60px" placeholder="Street, City, State, ZIP, Country" oninput="updateOrderText()"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label> Select Crypto Network:</label>
-                <div style="display: flex; gap: 15px; margin-top: 5px; font-size: 0.9rem;">
-                    <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="USDT TRC 20" checked onchange="updateOrderText()"> USDT TRC 20</label>
-                    <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="USDT ERC 20" onchange="updateOrderText()"> USDT ERC 20</label>
-                    <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="BTC" onchange="updateOrderText()"> BTC</label>
-                </div>
-            </div>
-
-            <div class="copy-group">
-                <label> Final Order Block:</label>
-                <textarea id="order-text-area" readonly></textarea>
+            <!-- Left Panel: Inputs -->
+            <div class="lg:col-span-5 space-y-6">
                 
-                <div class="primary-actions">
-                    <button class="btn-copy" id="btn-copy" onclick="copyOrder()" disabled>Copy Order Details</button>
+                <div id="presetCard" class="p-5 border border-red-900/40 bg-[#0a0a0a] rounded-lg shadow-[0_0_15px_rgba(139,0,0,0.05)] relative overflow-hidden transition-all duration-300">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-red-800"></div>
+                    <label class="text-[11px] font-bold text-gray-300 mb-2 uppercase tracking-wider flex items-center gap-2">
+                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        Load Recipe Preset
+                    </label>
+                    <select id="presetSelect" class="w-full input-box p-3 rounded text-sm cursor-pointer border-[#333]">
+                        <option value="none">-- Select a popular recipe --</option>
+                        <optgroup label="Standard Recipes (1.5% BA / 20% BB)">
+                            <option value='{"blend":false,"c":"test-c","mg":200,"ba":1.5,"bb":20,"oil":"mct"}'>Test C (200 mg/ml)</option>
+                            <option value='{"blend":false,"c":"tren-a","mg":100,"ba":1.5,"bb":20,"oil":"mct"}'>Tren A (100 mg/ml)</option>
+                            <option value='{"blend":false,"c":"tren-e","mg":200,"ba":1.5,"bb":20,"oil":"mct"}'>Tren E (200 mg/ml)</option>
+                            <option value='{"blend":false,"c":"npp","mg":100,"ba":1.5,"bb":20,"oil":"mct"}'>NPP (100 mg/ml)</option>
+                            <option value='{"blend":false,"c":"test-p","mg":100,"ba":1.5,"bb":20,"oil":"mct"}'>Test P (100 mg/ml)</option>
+                        </optgroup>
+                        <optgroup label="Optimized Solutions (Low BB / Thinning)">
+                            <option value='{"blend":false,"c":"eq","mg":500,"ba":1.5,"bb":18,"oil":"mct"}'>EQ (500 mg/ml)</option>
+                            <option value='{"blend":false,"c":"masteron-e","mg":200,"ba":1.5,"bb":15,"oil":"mct"}'>Mast E (200 mg/ml)</option>
+                            <option value='{"blend":false,"c":"deca","mg":300,"ba":1.5,"bb":18,"oil":"mct"}'>Deca (300 mg/ml)</option>
+                            <option value='{"blend":false,"c":"test-e","mg":250,"ba":1.5,"bb":15,"oil":"mct"}'>Test E (250 mg/ml)</option>
+                            <option value='{"blend":false,"c":"primo-e","mg":150,"ba":1.5,"bb":18,"oil":"mct"}'>Primo E (150 mg/ml)</option>
+                        </optgroup>
+                        <optgroup label="High Concentration Recipes">
+                            <option value='{"blend":false,"c":"test-deca","mg":500,"ba":1.5,"bb":24,"oil":"mct"}'>Test D (500 mg/ml)</option>
+                            <option value='{"blend":false,"c":"test-undecanoate","mg":200,"ba":1.5,"bb":25,"oil":"mct"}'>Test U (200 mg/ml - MCT)</option>
+                            <option value='{"blend":false,"c":"npp","mg":150,"ba":1.5,"bb":24,"oil":"mct"}'>NPP (150 mg/ml)</option>
+                            <option value='{"blend":false,"c":"test-c","mg":250,"ba":1.5,"bb":25,"oil":"mct"}'>Test C (250 mg/ml)</option>
+                            <option value='{"blend":false,"c":"masteron-e","mg":300,"ba":1.5,"bb":22,"oil":"mct"}'>Mast E (300 mg/ml)</option>
+                            <option value='{"blend":false,"c":"test-undecanoate","mg":250,"ba":1.5,"bb":45,"oil":"castor"}'>Test U (250 mg/ml - Castor)</option>
+                            <option value='{"blend":false,"c":"test-undecanoate","mg":350,"ba":1.5,"bb":50,"oil":"castor"}'>Test U (350 mg/ml - Castor)</option>
+                        </optgroup>
+                        <optgroup label="Blend Recipes (Auto-Switches to Blend)">
+                            <option value='{"blend":true,"c1":"test-p","mg1":30,"c2":"test-phenyl","mg2":60,"c3":"test-iso","mg3":60,"c4":"test-deca","mg4":100,"ba":2,"bb":20,"oil":"gso"}'>Sustanon 250 (4 Compounds)</option>
+                        </optgroup>
+                    </select>
                 </div>
-                <div id="copy-status" class="success-msg"></div>
+
+                <div class="p-5 border border-[#222] bg-[#0a0a0a] rounded-lg space-y-5">
+                    <div class="flex justify-between items-center border-b border-[#222] pb-2">
+                        <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Core Brew Profile</h3>
+                        <div class="bg-[#000] border border-[#222] p-[2px] rounded flex text-[9px] font-bold text-gray-500 w-[150px]" id="calcModeToggle">
+                            <button id="btnModeVol" class="flex-1 py-1 rounded bg-[#d32f2f] text-white shadow transition-all">Target Vol</button>
+                            <button id="btnModePowder" class="flex-1 py-1 rounded hover:text-gray-300 transition-all">Fixed Powder</button>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-2">
+                        <label class="text-[11px] font-bold text-gray-300 mb-1.5 block" id="lblComp1">Compound</label>
+                        <select id="compound1Select" class="w-full input-box p-3 rounded text-sm cursor-pointer mb-4">
+                            <option value="custom">Custom (manual displacement)</option>
+                            <option value="test-base">Testosterone Base</option>
+                            <option value="test-p">Testosterone Propionate</option>
+                            <option value="test-phenyl">Testosterone Phenylpropionate</option>
+                            <option value="test-c">Testosterone Cypionate</option>
+                            <option value="test-e">Testosterone Enanthate</option>
+                            <option value="test-iso">Testosterone Isocaproate</option>
+                            <option value="test-deca">Testosterone Decanoate</option>
+                            <option value="test-undecanoate">Testosterone Undecanoate</option>
+                            <option value="test-susp">Testosterone Suspension (water-based)</option>
+                            <option value="tren-base">Trenbolone Base</option>
+                            <option value="tren-a">Trenbolone Acetate</option>
+                            <option value="tren-e">Trenbolone Enanthate</option>
+                            <option value="tren-hex">Trenbolone Hexahydrobenzylcarbonate</option>
+                            <option value="mTren">Methyltrienolone (MTREN)</option>
+                            <option value="nandrolone-base">Nandrolone Base</option>
+                            <option value="deca">Nandrolone Decanoate (Deca)</option>
+                            <option value="npp">Nandrolone Phenylpropionate (NPP)</option>
+                            <option value="eq">Boldenone Undecylenate (EQ)</option>
+                            <option value="bold-cyp">Boldenone Cypionate</option>
+                            <option value="masteron-p">Drostanolone Propionate (Masteron P)</option>
+                            <option value="masteron-e">Drostanolone Enanthate (Masteron E)</option>
+                            <option value="primo-e">Methenolone Enanthate (Primobolan)</option>
+                            <option value="trestolone">Trestolone (MENT)</option>
+                            <option value="trestolone-a">Trestolone Acetate</option>
+                            <option value="dhb">1-Testosterone Cypionate (DHB)</option>
+                            <option value="progesterone">Progesterone</option>
+                            <option value="dhea">Dhea</option>
+                            <option value="7dhea">7-Keto-Dhea</option>
+                            <option value="dhea-sulf">Dhea Sulfate</option>
+                            <option value="est-ace">Estrogen Acetate</option>
+                            <option value="est-enan">Estrogen Enanthate</option>
+                            <option value="est-cyp">Estrogen Cypionate</option>
+                            <option value="est-udy">Estrogen undecylenate</option>
+                            <option value="est-val">Estrogen valerate</option>
+                            <option value="winstrol">Winstrol (Stanozolol) - Injectable</option>
+                            <option value="dbol">Dianabol (Methandrostenolone) - Injectable</option>
+                            <option value="anadrol">Anadrol (Oxymetholone) - Injectable</option>
+                            <option value="anavar">Anavar (Oxandrolone) - Injectable</option>
+                            <option value="tbol">Turinabol (Chlorodehydromethyltestosterone) - Injectable</option>
+                            <option value="sdrol">Superdrol (Methasterone) - Injectable</option>
+                            <option value="proviron">Proviron (Mesterolone) - Injectable</option>
+                            <option value="yk11">YK-11 - Injectable</option>
+                            <option value="l-carn">L-Carnitine Base</option>
+                            <option value="glut">Glutathione Base</option>
+                        </select>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div>
+                                <label class="text-[10px] font-semibold text-gray-400 mb-1 block">Conc (mg/ml)</label>
+                                <input type="number" id="mgml1" value="300" step="10" class="w-full input-box p-2.5 rounded text-sm">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-semibold text-gray-400 mb-1 block">Disp (ml/g)</label>
+                                <input type="number" id="disp1" value="0.909" step="0.001" class="w-full input-box p-2.5 rounded text-sm">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-semibold text-gray-400 mb-1 block">Purity (%)</label>
+                                <input type="number" id="purity1" value="100" step="0.1" class="w-full input-box p-2.5 rounded text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="inputVolumeGroup" class="pt-4 border-t border-[#111]">
+                        <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block">Desired Final Yield (ml)</label>
+                        <input type="number" id="finalVolume" value="50" step="1" class="w-full input-box p-3 rounded text-sm">
+                        
+                        <div class="mt-2 text-right">
+                            <button id="toggleVialMath" class="text-[10px] text-gray-500 hover:text-gray-300 underline underline-offset-2 transition-colors">Show Vial & Overfill Estimator</button>
+                        </div>
+                        <div id="vialMathGroup" class="hidden grid grid-cols-2 gap-3 mt-3 p-3 bg-[#000] border border-[#222] rounded">
+                            <div>
+                                <label class="text-[9px] font-semibold text-gray-400 mb-1 block">Vial Size (ml)</label>
+                                <input type="number" id="vialSize" value="10" step="1" class="w-full input-box p-2 rounded text-sm">
+                            </div>
+                            <div>
+                                <label class="text-[9px] font-semibold text-gray-400 mb-1 block">Overfill/Vial (ml)</label>
+                                <input type="number" id="vialOverfill" value="0.5" step="0.1" class="w-full input-box p-2 rounded text-sm">
+                            </div>
+                            <div class="col-span-2 text-[10px] text-gray-400 text-center pt-1" id="vialOutput">
+                                Will yield approx <span class="font-bold text-white">0</span> vials.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="inputPowderGroup" class="hidden pt-4 border-t border-[#111]">
+                        <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block has-tooltip">
+                            Available Raw Powder (g) <span class="tooltip-icon">?</span>
+                            <span class="tooltip-text">Calculates the total volume based on a fixed amount of raw powder.</span>
+                        </label>
+                        <input type="number" id="availablePowder" value="10" step="0.1" class="w-full input-box p-3 rounded text-sm">
+                    </div>
+
+                    <div id="blendSection" class="hidden space-y-4 pt-4 border-t border-[#222]">
+                        <!-- Compound 2 -->
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="enableCompound2" class="w-4 h-4 rounded border-gray-600 bg-gray-800 cursor-pointer">
+                            <label for="enableCompound2" class="text-xs font-bold text-gray-300 cursor-pointer">Add Compound 2</label>
+                        </div>
+                        <div id="compound2Group" class="hidden p-3 border border-[#333] bg-[#000] rounded-lg">
+                            <label class="text-[10px] font-semibold text-gray-400 mb-1 block">Compound Selection</label>
+                            <select id="compound2Select" class="w-full input-box p-2.5 rounded text-sm cursor-pointer mb-3"></select>
+                            <div class="grid grid-cols-3 gap-3">
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Conc (mg/ml)</label><input type="number" id="mgml2" value="150" class="w-full input-box p-2 rounded text-sm"></div>
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Disp (ml/g)</label><input type="number" id="disp2" value="0.909" step="0.001" class="w-full input-box p-2 rounded text-sm"></div>
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Purity (%)</label><input type="number" id="purity2" value="100" class="w-full input-box p-2 rounded text-sm"></div>
+                            </div>
+                        </div>
+
+                        <!-- Compound 3 -->
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="enableCompound3" class="w-4 h-4 rounded border-gray-600 bg-gray-800 cursor-pointer">
+                            <label for="enableCompound3" class="text-xs font-bold text-gray-300 cursor-pointer">Add Compound 3</label>
+                        </div>
+                        <div id="compound3Group" class="hidden p-3 border border-[#333] bg-[#000] rounded-lg">
+                            <label class="text-[10px] font-semibold text-gray-400 mb-1 block">Compound Selection</label>
+                            <select id="compound3Select" class="w-full input-box p-2.5 rounded text-sm cursor-pointer mb-3"></select>
+                            <div class="grid grid-cols-3 gap-3">
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Conc (mg/ml)</label><input type="number" id="mgml3" value="150" class="w-full input-box p-2 rounded text-sm"></div>
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Disp (ml/g)</label><input type="number" id="disp3" value="0.909" step="0.001" class="w-full input-box p-2 rounded text-sm"></div>
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Purity (%)</label><input type="number" id="purity3" value="100" class="w-full input-box p-2 rounded text-sm"></div>
+                            </div>
+                        </div>
+
+                        <!-- Compound 4 -->
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="enableCompound4" class="w-4 h-4 rounded border-gray-600 bg-gray-800 cursor-pointer">
+                            <label for="enableCompound4" class="text-xs font-bold text-gray-300 cursor-pointer">Add Compound 4</label>
+                        </div>
+                        <div id="compound4Group" class="hidden p-3 border border-[#333] bg-[#000] rounded-lg">
+                            <label class="text-[10px] font-semibold text-gray-400 mb-1 block">Compound Selection</label>
+                            <select id="compound4Select" class="w-full input-box p-2.5 rounded text-sm cursor-pointer mb-3"></select>
+                            <div class="grid grid-cols-3 gap-3">
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Conc (mg/ml)</label><input type="number" id="mgml4" value="150" class="w-full input-box p-2 rounded text-sm"></div>
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Disp (ml/g)</label><input type="number" id="disp4" value="0.909" step="0.001" class="w-full input-box p-2 rounded text-sm"></div>
+                                <div><label class="text-[9px] font-semibold text-gray-400 mb-1 block">Purity (%)</label><input type="number" id="purity4" value="100" class="w-full input-box p-2 rounded text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-5 border border-[#222] bg-[#0a0a0a] rounded-lg space-y-5">
+                    <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest border-b border-[#222] pb-2">Solvents</h3>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block has-tooltip">BA % <span class="tooltip-icon">?</span><span class="tooltip-text">Benzyl Alcohol. Preservative. Standard is 1-2%.</span></label>
+                            <input type="number" id="baPercent" value="2" step="0.1" class="w-full input-box p-3 rounded text-sm">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block has-tooltip">BB % <span class="tooltip-icon">?</span><span class="tooltip-text">Benzyl Benzoate. Co-solvent. Standard is 15-20%.</span></label>
+                            <input type="number" id="bbPercent" value="18" step="0.5" class="w-full input-box p-3 rounded text-sm">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 pt-2">
+                        <input type="checkbox" id="extraSolvent" class="w-4 h-4 rounded border-gray-600 bg-gray-800 cursor-pointer">
+                        <label for="extraSolvent" class="text-xs font-semibold text-gray-300 cursor-pointer">Add Extra Solvent (Guaiacol, PEG, etc.)</label>
+                    </div>
+
+                    <div id="extraSolventGroup" class="hidden space-y-4 p-4 border border-[#333] bg-[#000] rounded-lg mt-2">
+                        <div>
+                            <label class="text-[11px] font-semibold text-gray-400 mb-1.5 block">Extra Solvent %</label>
+                            <input type="number" id="extraSolventPct" value="0" step="0.5" class="w-full input-box p-2.5 rounded text-sm">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-semibold text-gray-400 mb-1.5 block">Extra Solvent Type</label>
+                            <select id="extraSolventType" class="w-full input-box p-2.5 rounded text-sm cursor-pointer">
+                                <option value="none">None</option>
+                                <option value="guaiacol">Guaiacol (1.129 g/ml)</option>
+                                <option value="peg400">PEG 400 (1.128 g/ml)</option>
+                                <option value="dmso">DMSO (1.10 g/ml)</option>
+                                <option value="ethyl-lactate">Ethyl L-Lactate (1.035 g/ml)</option>
+                                <option value="custom">Custom (manual density)</option>
+                            </select>
+                        </div>
+                        <div id="customExtraSolventDensityField" class="hidden">
+                            <label class="text-[11px] font-semibold text-gray-400 mb-1.5 block">Custom Extra Solvent Density (g/ml)</label>
+                            <input type="number" id="customExtraSolventDensity" value="1.1" step="0.001" class="w-full input-box p-2.5 rounded text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-5 border border-[#222] bg-[#0a0a0a] rounded-lg space-y-5">
+                    <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest border-b border-[#222] pb-2">Carrier Oils & Filtration</h3>
+                    
+                    <div>
+                        <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block has-tooltip">
+                            Sterile Filter Pore Size <span class="tooltip-icon">?</span>
+                            <span class="tooltip-text">Compensates for oil lost in the filter by adding extra carrier oil and solvents to starting mix.</span>
+                        </label>
+                        <select id="filterLoss" class="w-full input-box p-3 rounded text-sm cursor-pointer">
+                            <option value="none">No Loss Comp.</option>
+                            <option value="0.45">0.45µm (~1.0ml loss)</option>
+                            <option value="0.22">0.22µm (~1.6ml loss)</option>
+                            <option value="double">Double (0.45+0.22µm)</option>
+                            <option value="custom">Custom Loss (ml)</option>
+                        </select>
+                    </div>
+
+                    <div id="customLossField" class="hidden">
+                        <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block">Custom Filter Loss (ml)</label>
+                        <input type="number" id="customLoss" value="1.5" step="0.1" class="w-full input-box p-3 rounded text-sm">
+                    </div>
+
+                    <div>
+                        <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block">Main Carrier Oil</label>
+                        <select id="carrierDensity" class="w-full input-box p-3 rounded text-sm cursor-pointer">
+                            <option value="gso">Grapeseed Oil (GSO) (~0.92 g/ml)</option>
+                            <option value="mct">MCT Oil (~0.95 g/ml)</option>
+                            <option value="castor">Castor Oil (~0.96 g/ml)</option>
+                            <option value="sesame">Sesame Oil (~0.92 g/ml)</option>
+                            <option value="mig840">Miglyol 840 (~0.94 g/ml)</option>
+                            <option value="mig812">Miglyol 812N (0.95 g/ml)</option>
+                            <option value="eo">Ethyl Oleate (EO) (0.87 g/ml)</option>
+                            <option value="water">Water (1 g/ml)</option>
+                            <option value="custom">Custom (manual density)</option>
+                        </select>
+                    </div>
+
+                    <div id="customMainCarrierField" class="hidden">
+                        <label class="text-[11px] font-semibold text-gray-300 mb-1.5 block">Custom Main Carrier Density (g/ml)</label>
+                        <input type="number" id="customMainCarrierDensity" value="0.92" step="0.001" class="w-full input-box p-3 rounded text-sm">
+                    </div>
+
+                    <div class="flex items-center gap-2 pt-2">
+                        <input type="checkbox" id="secondCarrier" class="w-4 h-4 rounded border-gray-600 bg-gray-800 cursor-pointer">
+                        <label for="secondCarrier" class="text-xs font-semibold text-gray-300 cursor-pointer">Mix with Second Carrier Oil</label>
+                    </div>
+
+                    <div id="secondCarrierGroup" class="hidden space-y-4 p-4 border border-[#333] bg-[#000] rounded-lg mt-2">
+                        <div>
+                            <label class="text-[11px] font-semibold text-gray-400 mb-1.5 block">Carrier Mix % (second oil)</label>
+                            <input type="number" id="carrierMixPct" value="0" min="0" max="100" class="w-full input-box p-2.5 rounded text-sm">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-semibold text-gray-400 mb-1.5 block">Second Carrier Oil</label>
+                            <select id="secondCarrierSelect" class="w-full input-box p-2.5 rounded text-sm cursor-pointer">
+                                <option value="none">None</option>
+                                <option value="castor">Castor Oil (~0.96 g/ml)</option>
+                                <option value="gso">Grapeseed Oil (GSO) (~0.92 g/ml)</option>
+                                <option value="mct">MCT Oil (~0.95 g/ml)</option>
+                                <option value="sesame">Sesame Oil (~0.92 g/ml)</option>
+                                <option value="mig840">Miglyol 840 (~0.94 g/ml)</option>
+                                <option value="mig812">Miglyol 812N (0.95 g/ml)</option>
+                                <option value="eo">Ethyl Oleate (EO) (0.87 g/ml)</option>
+                                <option value="water">Water (1 g/ml)</option>
+                                <option value="custom">Custom (manual density)</option>
+                            </select>
+                        </div>
+                        <div id="customSecondCarrierField" class="hidden">
+                            <label class="text-[11px] font-semibold text-gray-400 mb-1.5 block">Custom Second Carrier Density (g/ml)</label>
+                            <input type="number" id="customSecondCarrierDensity" value="0.96" step="0.001" class="w-full input-box p-2.5 rounded text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-5 border border-[#222] bg-[#0a0a0a] rounded-lg space-y-4">
+                    <div class="flex items-center justify-between cursor-pointer group" id="toggleEcoBtn">
+                        <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2 group-hover:text-green-500 transition-colors">
+                            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Economics & Costing (Optional)
+                        </h3>
+                        <svg class="w-4 h-4 text-gray-500 transition-transform duration-200" id="ecoArrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                    <div id="ecoGroup" class="hidden space-y-4 pt-4 border-t border-[#222]">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-[9px] font-semibold text-gray-400 mb-1 block">Raw Powder Cost ($ per 10g)</label>
+                                <input type="number" id="costPowder" value="15" class="w-full input-box p-2 rounded text-sm">
+                            </div>
+                            <div>
+                                <label class="text-[9px] font-semibold text-gray-400 mb-1 block">Carrier Oil Cost ($ per 100ml)</label>
+                                <input type="number" id="costOil" value="10" class="w-full input-box p-2 rounded text-sm">
+                            </div>
+                            <div>
+                                <label class="text-[9px] font-semibold text-gray-400 mb-1 block">Solvents (BA/BB) ($ per 100ml)</label>
+                                <input type="number" id="costSolvent" value="12" class="w-full input-box p-2 rounded text-sm">
+                            </div>
+                            <div>
+                                <label class="text-[9px] font-semibold text-gray-400 mb-1 block">Misc Cost/Vial (Filter, Vial, Stopper)</label>
+                                <input type="number" id="costVial" value="1.50" step="0.1" class="w-full input-box p-2 rounded text-sm">
+                            </div>
+                        </div>
+                        <div class="bg-[#000] p-3 rounded border border-green-900/50 flex justify-between items-center mt-2">
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-wide">Est. Cost Per Vial</span>
+                            <span class="text-xl font-bold text-green-500" id="outCostPerVial">$0.00</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <button class="btn-close" onclick="closeModal()">Back to Cart</button>
+
+            <div class="lg:col-span-7 flex flex-col gap-4">
+                
+                <!-- Advanced Error Box -->
+                <div id="errorAlert" class="hidden border border-red-700/50 bg-red-900/20 p-4 rounded-lg flex items-start gap-3 shadow-lg">
+                    <svg class="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    <div>
+                        <h4 class="text-sm font-bold text-red-500 mb-1">Saturation Exceeded</h4>
+                        <p class="text-xs text-red-200/80 leading-relaxed" id="errorText">The selected powder and solvents require more volume than your Target Volume allows. The math is impossible. Please increase Target Volume or reduce concentration.</p>
+                    </div>
+                </div>
+
+                <!-- Warning Box -->
+                <div id="warningAlert" class="hidden border border-yellow-700/50 bg-yellow-900/20 p-4 rounded-lg flex items-start gap-3 shadow-lg">
+                    <svg class="w-5 h-5 text-yellow-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    <div>
+                        <h4 class="text-sm font-bold text-yellow-500 mb-1">Brew Warning</h4>
+                        <p class="text-xs text-yellow-200/80 leading-relaxed" id="warningText">Warning message goes here.</p>
+                    </div>
+                </div>
+
+                <!-- Data Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="stat-card">
+                        <span class="stat-label" id="lblOutPowder1">Powder Weight</span>
+                        <span class="stat-value val-red" id="outPowderWeight">0.000 g</span>
+                        <div class="sub-stat" id="outActiveApi1">Active Hormone: 0mg/ml</div>
+                    </div>
+                    
+                    <div class="stat-card hidden" id="outPowder2Card">
+                        <span class="stat-label">Compound 2 Powder</span>
+                        <span class="stat-value val-red" id="outPowder2Weight">0.000 g</span>
+                        <div class="sub-stat" id="outActiveApi2">Active Hormone: 0mg/ml</div>
+                    </div>
+                    <div class="stat-card hidden" id="outPowder3Card">
+                        <span class="stat-label">Compound 3 Powder</span>
+                        <span class="stat-value val-red" id="outPowder3Weight">0.000 g</span>
+                        <div class="sub-stat" id="outActiveApi3">Active Hormone: 0mg/ml</div>
+                    </div>
+                    <div class="stat-card hidden" id="outPowder4Card">
+                        <span class="stat-label">Compound 4 Powder</span>
+                        <span class="stat-value val-red" id="outPowder4Weight">0.000 g</span>
+                        <div class="sub-stat" id="outActiveApi4">Active Hormone: 0mg/ml</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label">BA Volume</span>
+                        <span class="stat-value val-green" id="outBaVol">0.00 ml</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">BA Weight</span>
+                        <span class="stat-value val-green" id="outBaWeight">0.000 g</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">BB Volume</span>
+                        <span class="stat-value val-yellow" id="outBbVol">0.00 ml</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">BB Weight</span>
+                        <span class="stat-value val-yellow" id="outBbWeight">0.000 g</span>
+                    </div>
+                    
+                    <div id="outExtraSolventVolCard" class="stat-card hidden">
+                        <span class="stat-label">Extra Solvent Vol</span>
+                        <span class="stat-value text-orange-500" id="outExtraSolventVol">0.00 ml</span>
+                    </div>
+                    <div id="outExtraSolventWeightCard" class="stat-card hidden">
+                        <span class="stat-label">Extra Solvent Weight</span>
+                        <span class="stat-value text-orange-500" id="outExtraSolventWeight">0.000 g</span>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label">Main Carrier Volume</span>
+                        <span class="stat-value val-purple" id="outCarrierVol">0.00 ml</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Main Carrier Weight</span>
+                        <span class="stat-value val-purple" id="outCarrierWeight">0.000 g</span>
+                    </div>
+
+                    <div id="outSecondCarrierVolCard" class="stat-card hidden">
+                        <span class="stat-label">Second Carrier Vol</span>
+                        <span class="stat-value val-purple" id="outSecondCarrierVol">0.00 ml</span>
+                    </div>
+                    <div id="outSecondCarrierWeightCard" class="stat-card hidden">
+                        <span class="stat-label">Second Carrier Weight</span>
+                        <span class="stat-value val-purple" id="outSecondCarrierWeight">0.000 g</span>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label" id="lblOutCompVol">Compound Volume</span>
+                        <span class="stat-value val-red" id="outCompoundVol">0.000 ml</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Total Brew Volume</span>
+                        <span class="stat-value val-red" id="outTotalVol">0.00 ml</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Volume Check</span>
+                        <span class="stat-value val-red" id="outVolCheck">0.00 ml</span>
+                    </div>
+                    <div class="stat-card col-span-2" style="background: linear-gradient(135deg, #1a0505 0%, #050505 100%); border-color: #ff3333;">
+                        <span class="stat-label text-gray-300">Total Batch Mass (Gravimetric)</span>
+                        <span class="stat-value val-red text-2xl" id="outTotalMass">0.000 g</span>
+                        <div class="sub-stat">Scale Top-Off Target</div>
+                    </div>
+                </div>
+
+                <!-- Final Yield Banner -->
+                <div class="stat-card yield-card mt-2">
+                    <span class="stat-label">Final Yield</span>
+                    <span class="stat-value val-red text-2xl" id="outFinalYield">0.00 ml</span>
+                </div>
+
+                <div class="stat-card mt-2 p-4 text-center" style="background: linear-gradient(180deg, #111 0%, #050505 100%); border-color: #333;">
+                    <div class="flex justify-between items-center w-full mb-3 px-4">
+                        <span class="text-xs font-bold text-gray-400">Temp: <span id="tempVal" class="text-red-400">25°C</span></span>
+                        <input type="range" id="tempSlider" min="15" max="40" value="25" step="1" class="w-1/2">
+                    </div>
+                    <span class="stat-label text-gray-400">Est. Solution Viscosity & Flow</span>
+                    <div class="flex items-baseline justify-center gap-2 mt-1">
+                        <span class="font-bold text-xl transition-colors duration-300" id="outViscosityVal">0.0 cP</span>
+                        <span class="text-sm font-semibold transition-colors duration-300" id="outViscosityRating">N/A</span>
+                    </div>
+                    <span class="text-[9px] text-gray-600 mt-2 uppercase tracking-wider">*Approximation (Thermodynamic Blending Model)</span>
+                </div>
+
+                <!-- Chart & Protocol Button -->
+                <div class="stat-card mt-2 p-6 flex flex-col items-center justify-center relative min-h-[250px]">
+                    <div class="w-full max-w-[220px]">
+                        <canvas id="brewChart"></canvas>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-4 mt-6 text-xs font-semibold text-gray-400" id="chartLegend">
+                        <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-[#ff3333]"></div>Compound(s)</div>
+                        <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-[#4ade80]"></div>BA</div>
+                        <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-[#facc15]"></div>BB</div>
+                        <div id="legendExtra" class="items-center gap-1.5 hidden"><div class="w-3 h-3 rounded-full bg-[#f97316]"></div>Extra Solvent</div>
+                        <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded-full bg-[#e879f9]"></div>Carrier Oil</div>
+                    </div>
+
+                    <button id="btnGenerateProtocol" class="mt-8 px-6 py-2 bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 rounded-lg text-sm font-bold text-white transition-all flex items-center gap-2 shadow-lg">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                        Generate Lab Protocol
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- SFX Overlays -->
-    <div id="overlay-retail" class="sfx-overlay">
-        <img src="ara.gif?v=2" alt="Ara">
+    <!-- Mobile Sticky Banner -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-[#0a0a0a] border-t border-[#333] p-3 px-5 flex justify-between items-center z-40 shadow-[0_-10px_20px_rgba(0,0,0,0.8)]">
+        <div>
+            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Est. Flow</div>
+            <div class="text-sm font-bold truncate max-w-[150px]" id="mobileViscosity">-- cP</div>
+        </div>
+        <div class="text-right">
+            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Final Yield</div>
+            <div class="text-lg font-bold text-[#ff3333]" id="mobileYield">0.00 ml</div>
+        </div>
     </div>
-    <div id="overlay-preorder" class="sfx-overlay">
-        <img src="money.gif?v=2" alt="Money">
-    </div>
-    <div id="overlay-addon" class="sfx-overlay">
-        <img src="arnold.gif?v=2" alt="Arnold">
+
+    <!-- Protocol Modal -->
+    <div id="protocolModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-[#0a0a0a] border border-[#333] rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
+            <div class="sticky top-0 bg-[#0a0a0a] p-5 border-b border-[#222] flex justify-between items-center">
+                <h2 class="text-xl font-bold text-white uppercase tracking-wider">Lab Protocol</h2>
+                <button onclick="document.getElementById('protocolModal').classList.add('hidden')" class="text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-6 text-gray-300 text-sm space-y-6" id="protocolContent">
+            </div>
+            <div class="p-5 border-t border-[#222] bg-[#050505] flex justify-end">
+                <button onclick="window.print()" class="px-5 py-2 bg-red-900/50 hover:bg-red-800 border border-red-700 rounded text-white font-bold text-sm transition-colors flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                    Print Checklist
+                </button>
+            </div>
+        </div>
     </div>
 
     <script>
-        const SHIPPING_COST = 30;
-        let products = [];
-        let cart = []; // Stores { name, price, size, batch, qty, category }
-        let currentOrderNum = 0;
+        // Constants & Data
+        const displacements = {
+            "custom": 0.909, "test-base": 0.909, "test-p": 0.916, "test-phenyl": 0.954,
+            "test-c": 0.909, "test-e": 0.943, "test-iso": 0.935, "test-deca": 0.962,
+            "test-susp": 1.000, "progesterone": 0.854, "dhea": 0.893, "dhea-sulf": 0.85,
+            "7dhea": 0.84, "mTren": 0.855, "est-val": 0.91, "est-udy": 0.935,
+            "est-ace": 0.865, "est-cyp": 0.869, "est-enan": 0.9, "test-undecanoate": 0.97,
+            "tren-base": 0.841, "tren-a": 0.848, "tren-e": 0.909, "tren-hex": 0.909,
+            "nandrolone-base": 0.89, "deca": 0.962, "npp": 0.877, "eq": 0.952,
+            "bold-cyp": 0.909, "masteron-p": 0.935, "masteron-e": 0.962, "primo-e": 0.952,
+            "trestolone": 0.900, "trestolone-a": 0.901, "dhb": 0.97, "winstrol": 0.885,
+            "dbol": 0.892, "anadrol": 0.86, "anavar": 0.9, "tbol": 0.83, "sdrol": 0.909,
+            "proviron": 0.909, "yk11": 0.820, "l-carn": 0.625, "glut": 0.694
+        };
 
-        // Audio Objects (Cache-busted to bypass browser memory)
-        const audioRetail = new Audio('ara.mp3?v=2');
-        const audioPreorder = new Audio('money.mp3?v=2');
-        const audioAddon = new Audio('arnold.mp3?v=2');
+        const activeAPI = {
+            "test-base": 1.00, "test-p": 0.83, "test-phenyl": 0.68, "test-c": 0.69, "test-e": 0.72,
+            "test-iso": 0.72, "test-deca": 0.62, "test-undecanoate": 0.63, "test-susp": 1.00,
+            "tren-base": 1.00, "tren-a": 0.87, "tren-e": 0.68, "tren-hex": 0.65,
+            "nandrolone-base": 1.00, "deca": 0.64, "npp": 0.67, "eq": 0.61, "bold-cyp": 0.69,
+            "masteron-p": 0.80, "masteron-e": 0.68, "primo-e": 0.70, "dhb": 0.69, "trestolone-a": 0.86, 
+            "trestolone": 1.00, "winstrol": 1.00, "dbol": 1.00, "anadrol": 1.00, "anavar": 1.00
+        };
 
-        // Animation state trackers
-        let activeOverlay = null;
-        let animationTimeout = null;
+        const densities = {
+            ba: 1.044, bb: 1.118, castor: 0.96, gso: 0.92, sesame: 0.92,
+            mct: 0.95, mig840: 0.94, mig812: 0.95, eo: 0.87, 'ethyl-lactate': 1.035,
+            guaiacol: 1.129, peg400: 1.128, dmso: 1.10, water: 1, none: 1.0
+        };
 
-        // Fallback data for preview environment
-        const fallbackProducts = [
-            { "name": "TNE", "batch": "B-2311", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.5%", "p100": 220, "stock100": 15, "p1k": 1400, "s1k": 1 },
-            { "name": "TP",  "batch": "B-2312", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.9%", "p100": 240, "stock100": 8,  "p1k": 1450, "s1k": 1 },
-            { "name": "TUD", "batch": "B-2316", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.0%", "p100": 300, "stock100": 0,  "p1k": 1650, "s1k": 1 },
-            { "name": "ND",  "batch": "B-2317", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.3%", "p100": 450, "stock100": 10, "p1k": 2300, "s1k": 1 },
-            { "name": "NPP", "batch": "B-2318", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.7%", "p100": 400, "stock100": 25, "p1k": 2300, "s1k": 1 },
-            { "name": "Anavar", "category": "addon", "batch": "A-2301", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.2%", "p100": 60, "stock100": 20 },
-            { "name": "Anadrol", "category": "addon", "batch": "A-2302", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.7%", "p100": 50, "stock100": 20 }
-        ];
+        // Thermodynamic Viscosity Constants
+        const baseViscosity = {
+            ba: 5.5, bb: 8.5, castor: 650, gso: 50, sesame: 45,
+            mct: 28, mig840: 25, mig812: 30, eo: 5.5, 'ethyl-lactate': 3,
+            guaiacol: 5, peg400: 90, dmso: 2, water: 1, none: 1.0, custom: 50
+        };
+        const tempCoeff = {
+            ba: 0.015, bb: 0.015, castor: 0.065, gso: 0.035, sesame: 0.035,
+            mct: 0.025, mig840: 0.025, mig812: 0.025, eo: 0.015, 'ethyl-lactate': 0.01,
+            guaiacol: 0.01, peg400: 0.04, dmso: 0.01, water: 0.01, none: 0, custom: 0.03
+        };
 
-        // Fetch the inventory from the JSON file on GitHub/Vercel
-        async function loadInventory() {
-            try {
-                // cache busting included
-                const response = await fetch('products.json?v=' + new Date().getTime());
-                if (!response.ok) throw new Error('Failed to load inventory');
-                products = await response.json();
-            } catch (error) {
-                console.warn("Could not fetch products.json, using fallback data for preview.");
-                products = fallbackProducts;
-            }
-            renderProducts();
+        // App State
+        let isBlendMode = false;
+        let calcMode = 'volume';
+        let latestCalculations = {}; 
+
+        // Clone select options securely
+        const comp1HTML = document.getElementById('compound1Select').innerHTML;
+        if(document.getElementById('compound2Select')) document.getElementById('compound2Select').innerHTML = comp1HTML;
+        if(document.getElementById('compound3Select')) document.getElementById('compound3Select').innerHTML = comp1HTML;
+        if(document.getElementById('compound4Select')) document.getElementById('compound4Select').innerHTML = comp1HTML;
+
+        const getEl = (id) => document.getElementById(id);
+        const inputs = {
+            finalVolume: getEl('finalVolume'), availablePowder: getEl('availablePowder'),
+            btnModeVol: getEl('btnModeVol'), btnModePowder: getEl('btnModePowder'),
+            inputVolumeGroup: getEl('inputVolumeGroup'), inputPowderGroup: getEl('inputPowderGroup'),
+            calcModeToggle: getEl('calcModeToggle'), toggleVialMath: getEl('toggleVialMath'),
+            vialMathGroup: getEl('vialMathGroup'), vialSize: getEl('vialSize'), vialOverfill: getEl('vialOverfill'),
+            filterLoss: getEl('filterLoss'), customLoss: getEl('customLoss'),
+            c1: getEl('compound1Select'), mg1: getEl('mgml1'), disp1: getEl('disp1'), purity1: getEl('purity1'),
+            enableC2: getEl('enableCompound2'), c2: getEl('compound2Select'), mg2: getEl('mgml2'), disp2: getEl('disp2'), purity2: getEl('purity2'),
+            enableC3: getEl('enableCompound3'), c3: getEl('compound3Select'), mg3: getEl('mgml3'), disp3: getEl('disp3'), purity3: getEl('purity3'),
+            enableC4: getEl('enableCompound4'), c4: getEl('compound4Select'), mg4: getEl('mgml4'), disp4: getEl('disp4'), purity4: getEl('purity4'),
+            baPercent: getEl('baPercent'), bbPercent: getEl('bbPercent'), extraSolvent: getEl('extraSolvent'),
+            extraSolventPct: getEl('extraSolventPct'), extraSolventType: getEl('extraSolventType'),
+            customExtraSolventDensity: getEl('customExtraSolventDensity'), carrierDensity: getEl('carrierDensity'),
+            customMainCarrierDensity: getEl('customMainCarrierDensity'), secondCarrier: getEl('secondCarrier'),
+            carrierMixPct: getEl('carrierMixPct'), secondCarrierSelect: getEl('secondCarrierSelect'),
+            customSecondCarrierDensity: getEl('customSecondCarrierDensity'), presetSelect: getEl('presetSelect'),
+            costPowder: getEl('costPowder'), costOil: getEl('costOil'), costSolvent: getEl('costSolvent'), costVial: getEl('costVial'),
+            tempSlider: getEl('tempSlider'), tempVal: getEl('tempVal')
+        };
+
+        const outputs = {
+            powder1: getEl('outPowderWeight'), powder2: getEl('outPowder2Weight'),
+            powder3: getEl('outPowder3Weight'), powder4: getEl('outPowder4Weight'),
+            activeApi1: getEl('outActiveApi1'), activeApi2: getEl('outActiveApi2'),
+            activeApi3: getEl('outActiveApi3'), activeApi4: getEl('outActiveApi4'),
+            baVol: getEl('outBaVol'), baWeight: getEl('outBaWeight'), bbVol: getEl('outBbVol'), bbWeight: getEl('outBbWeight'),
+            extraSolventVol: getEl('outExtraSolventVol'), extraSolventWeight: getEl('outExtraSolventWeight'),
+            carrierVol: getEl('outCarrierVol'), carrierWeight: getEl('outCarrierWeight'),
+            secondCarrierVol: getEl('outSecondCarrierVol'), secondCarrierWeight: getEl('outSecondCarrierWeight'),
+            compoundVol: getEl('outCompoundVol'), totalVol: getEl('outTotalVol'), volCheck: getEl('outVolCheck'),
+            finalYield: getEl('outFinalYield'), totalMass: getEl('outTotalMass'),
+            viscosityVal: getEl('outViscosityVal'), viscosityRating: getEl('outViscosityRating'),
+            mobileViscosity: getEl('mobileViscosity'), mobileYield: getEl('mobileYield'),
+            vialOutput: getEl('vialOutput'), costPerVial: getEl('outCostPerVial'),
+            warningAlert: getEl('warningAlert'), warningText: getEl('warningText'),
+            errorAlert: getEl('errorAlert')
+        };
+
+        // Utility safely updates text
+        const safeSetText = (el, text) => { if(el) el.textContent = text; };
+        const safeSetHTML = (el, html) => { if(el) el.innerHTML = html; };
+
+        if(inputs.toggleVialMath) {
+            inputs.toggleVialMath.addEventListener('click', () => {
+                inputs.vialMathGroup.classList.toggle('hidden');
+                inputs.toggleVialMath.textContent = inputs.vialMathGroup.classList.contains('hidden') ? 'Show Vial & Overfill Estimator' : 'Hide Vial Estimator';
+            });
         }
 
-        function renderProducts() {
-            const raws = products.filter(p => p.category !== 'addon');
-            const addons = products.filter(p => p.category === 'addon');
+        if(getEl('toggleEcoBtn')) {
+            getEl('toggleEcoBtn').addEventListener('click', () => {
+                const grp = getEl('ecoGroup');
+                const arrow = getEl('ecoArrow');
+                grp.classList.toggle('hidden');
+                if(grp.classList.contains('hidden')) arrow.classList.remove('rotate-180');
+                else arrow.classList.add('rotate-180');
+            });
+        }
 
-            // Render Raws
-            document.getElementById('product-list').innerHTML = raws.map(item => `
-                <tr>
-                    <td class="compound-name">${item.name}</td>
-                    <td class="batch-no">${item.batch}</td>
-                    <td><a href="${item.labLink}" target="_blank" class="lab-link">${item.labResult || "View Lab"}</a></td>
-                    <td style="font-weight: bold; color: ${item.stock100 > 0 ? '#34a853' : '#d93025'};">
-                        ${item.stock100 > 0 ? item.stock100 : '0'}
-                    </td>
-                    <td style="${item.stock100 === 0 ? 'color: #999;' : ''}">$${item.p100}</td>
-                    <td>
-                        <button class="action-btn" 
-                                onclick="addToCart('${item.name}', ${item.p100}, '100g', '${item.batch}', 'raw')" 
-                                ${item.stock100 === 0 ? 'disabled' : ''}>
-                            ${item.stock100 === 0 ? 'Out of Stock' : 'Add to cart'}
-                        </button>
-                    </td>
-                    <td style="${item.s1k === 0 ? 'color: #999;' : ''}">$${item.p1k}</td>
-                    <td>
-                        <button class="action-btn" 
-                                onclick="addToCart('${item.name}', ${item.p1k}, '1kg', '${item.batch}', 'raw')" 
-                                ${item.s1k === 0 ? 'disabled' : ''}>
-                            ${item.s1k === 0 ? 'Out of Stock' : 'Click to Pre-order'}
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-
-            // Render Addons
-            if(addons.length > 0) {
-                document.getElementById('addon-list').innerHTML = addons.map(item => `
-                    <tr>
-                        <td class="compound-name">${item.name}</td>
-                        <td class="batch-no">${item.batch}</td>
-                        <td><a href="${item.labLink}" target="_blank" class="lab-link">${item.labResult || "View Lab"}</a></td>
-                        <td style="font-weight: bold; color: ${item.stock100 > 0 ? '#f57f17' : '#d93025'};">
-                            ${item.stock100 > 0 ? item.stock100 : '0'}
-                        </td>
-                        <td style="${item.stock100 === 0 ? 'color: #999;' : ''}">$${item.p100}</td>
-                        <td>
-                            <button class="action-btn" 
-                                    onclick="addToCart('${item.name}', ${item.p100}, '10g', '${item.batch}', 'addon')" 
-                                    ${item.stock100 === 0 ? 'disabled' : ''}>
-                                ${item.stock100 === 0 ? 'Out of Stock' : 'Add to cart'}
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
+        function switchMode(mode) {
+            isBlendMode = (mode === 'blend');
+            const singleBtn = getEl('navSingle'); const blendBtn = getEl('navBlend');
+            if (isBlendMode) {
+                if(blendBtn) blendBtn.classList.replace('btn-outline', 'btn-active');
+                if(singleBtn) singleBtn.classList.replace('btn-active', 'btn-outline');
+                safeSetText(getEl('mainTitle'), "Dinfar Blend Calc");
+                safeSetText(getEl('mainSubtitle'), "Blend steroid solution calculator (up to 4 compounds)");
+                if(getEl('blendSection')) getEl('blendSection').classList.remove('hidden');
+                safeSetText(getEl('lblComp1'), "Compound 1");
+                safeSetText(getEl('lblOutPowder1'), "Compound 1 Powder");
+                safeSetText(getEl('lblOutCompVol'), "Total Compound Vol");
+                if(inputs.calcModeToggle) inputs.calcModeToggle.classList.add('hidden');
+                if (calcMode === 'powder' && inputs.btnModeVol) inputs.btnModeVol.click();
             } else {
-                document.getElementById('addon-list').innerHTML = `<tr><td colspan="6" style="text-align:center;">No add-ons available.</td></tr>`;
+                if(singleBtn) singleBtn.classList.replace('btn-outline', 'btn-active');
+                if(blendBtn) blendBtn.classList.replace('btn-active', 'btn-outline');
+                safeSetText(getEl('mainTitle'), "Dinfar Brew Calc V 1.05");
+                safeSetText(getEl('mainSubtitle'), "Single compound steroid solution calculator");
+                if(getEl('blendSection')) getEl('blendSection').classList.add('hidden');
+                safeSetText(getEl('lblComp1'), "Compound");
+                safeSetText(getEl('lblOutPowder1'), "Powder Weight");
+                safeSetText(getEl('lblOutCompVol'), "Compound Volume");
+                if(inputs.calcModeToggle) inputs.calcModeToggle.classList.remove('hidden');
             }
+            calculateBrew();
         }
 
-        function triggerSFX(type) {
-            let overlayId = '';
-            let audioObj = null;
+        if(getEl('navSingle')) getEl('navSingle').addEventListener('click', () => switchMode('single'));
+        if(getEl('navBlend')) getEl('navBlend').addEventListener('click', () => switchMode('blend'));
 
-            if (type === 'retail') {
-                overlayId = 'overlay-retail';
-                audioObj = audioRetail;
-            } else if (type === 'preorder') {
-                overlayId = 'overlay-preorder';
-                audioObj = audioPreorder;
-            } else if (type === 'addon') {
-                overlayId = 'overlay-addon';
-                audioObj = audioAddon;
-            }
+        if(inputs.btnModeVol) {
+            inputs.btnModeVol.addEventListener('click', () => {
+                calcMode = 'volume';
+                inputs.btnModeVol.classList.add('bg-[#d32f2f]', 'text-white');
+                inputs.btnModePowder.classList.remove('bg-[#d32f2f]', 'text-white');
+                inputs.inputVolumeGroup.classList.remove('hidden');
+                inputs.inputPowderGroup.classList.add('hidden');
+                calculateBrew();
+            });
+        }
 
-            if (overlayId && audioObj) {
-                // Play sound
-                audioObj.currentTime = 0;
-                audioObj.play().catch(e => console.log("Audio play blocked by browser:", e));
+        if(inputs.btnModePowder) {
+            inputs.btnModePowder.addEventListener('click', () => {
+                calcMode = 'powder';
+                inputs.btnModePowder.classList.add('bg-[#d32f2f]', 'text-white');
+                inputs.btnModeVol.classList.remove('bg-[#d32f2f]', 'text-white');
+                inputs.inputPowderGroup.classList.remove('hidden');
+                inputs.inputVolumeGroup.classList.add('hidden');
+                calculateBrew();
+            });
+        }
 
-                const overlay = document.getElementById(overlayId);
+        if(inputs.presetSelect) {
+            inputs.presetSelect.addEventListener('change', (e) => {
+                if (e.target.value === 'none') return;
+                const data = JSON.parse(e.target.value);
                 
-                // Clear existing animation if someone clicks super fast
-                if (animationTimeout) {
-                    clearTimeout(animationTimeout);
-                    if (activeOverlay) {
-                        activeOverlay.classList.remove('active');
-                        activeOverlay.style.transition = 'none'; // reset transition
+                if (data.blend) {
+                    if (!isBlendMode) getEl('navBlend').click();
+                    if(inputs.c1) inputs.c1.value = data.c1; if(inputs.mg1) inputs.mg1.value = data.mg1;
+                    if (data.c2) { if(inputs.enableC2) inputs.enableC2.checked = true; if(inputs.c2) inputs.c2.value = data.c2; if(inputs.mg2) inputs.mg2.value = data.mg2; } else if(inputs.enableC2) inputs.enableC2.checked = false;
+                    if (data.c3) { if(inputs.enableC3) inputs.enableC3.checked = true; if(inputs.c3) inputs.c3.value = data.c3; if(inputs.mg3) inputs.mg3.value = data.mg3; } else if(inputs.enableC3) inputs.enableC3.checked = false;
+                    if (data.c4) { if(inputs.enableC4) inputs.enableC4.checked = true; if(inputs.c4) inputs.c4.value = data.c4; if(inputs.mg4) inputs.mg4.value = data.mg4; } else if(inputs.enableC4) inputs.enableC4.checked = false;
+                } else {
+                    if (isBlendMode) getEl('navSingle').click();
+                    if(inputs.c1) inputs.c1.value = data.c; if(inputs.mg1) inputs.mg1.value = data.mg;
+                    if(inputs.enableC2) inputs.enableC2.checked = false; if(inputs.enableC3) inputs.enableC3.checked = false; if(inputs.enableC4) inputs.enableC4.checked = false;
+                }
+
+                if(inputs.baPercent) inputs.baPercent.value = data.ba;
+                if(inputs.bbPercent) inputs.bbPercent.value = data.bb;
+                if(inputs.carrierDensity) inputs.carrierDensity.value = data.oil;
+                if(inputs.extraSolvent) inputs.extraSolvent.checked = false;
+                if(inputs.secondCarrier) inputs.secondCarrier.checked = false;
+                
+                updateDisplacement(1);
+                if (data.blend) {
+                    if (data.c2) updateDisplacement(2);
+                    if (data.c3) updateDisplacement(3);
+                    if (data.c4) updateDisplacement(4);
+                }
+
+                inputs.presetSelect.classList.add('border-red-500');
+                setTimeout(() => inputs.presetSelect.classList.remove('border-red-500'), 500);
+            });
+        }
+
+        function updateDisplacement(num) {
+            const select = inputs[`c${num}`];
+            const dispInput = inputs[`disp${num}`];
+            if (select && dispInput && select.value !== "custom" && displacements[select.value]) {
+                dispInput.value = displacements[select.value].toFixed(3);
+            }
+            calculateBrew();
+        }
+
+        if(inputs.c1) inputs.c1.addEventListener('change', () => updateDisplacement(1));
+        if(inputs.c2) inputs.c2.addEventListener('change', () => updateDisplacement(2));
+        if(inputs.c3) inputs.c3.addEventListener('change', () => updateDisplacement(3));
+        if(inputs.c4) inputs.c4.addEventListener('change', () => updateDisplacement(4));
+
+        function toggleVisibility() {
+            const showC2 = isBlendMode && inputs.enableC2 && inputs.enableC2.checked;
+            if(getEl('compound2Group')) getEl('compound2Group').classList.toggle('hidden', !showC2);
+            if(getEl('outPowder2Card')) getEl('outPowder2Card').classList.toggle('hidden', !showC2);
+            
+            const showC3 = isBlendMode && inputs.enableC3 && inputs.enableC3.checked;
+            if(getEl('compound3Group')) getEl('compound3Group').classList.toggle('hidden', !showC3);
+            if(getEl('outPowder3Card')) getEl('outPowder3Card').classList.toggle('hidden', !showC3);
+
+            const showC4 = isBlendMode && inputs.enableC4 && inputs.enableC4.checked;
+            if(getEl('compound4Group')) getEl('compound4Group').classList.toggle('hidden', !showC4);
+            if(getEl('outPowder4Card')) getEl('outPowder4Card').classList.toggle('hidden', !showC4);
+
+            const showExtra = inputs.extraSolvent && inputs.extraSolvent.checked;
+            if(getEl('extraSolventGroup')) getEl('extraSolventGroup').classList.toggle('hidden', !showExtra);
+            if(getEl('outExtraSolventVolCard')) getEl('outExtraSolventVolCard').classList.toggle('hidden', !showExtra);
+            if(getEl('outExtraSolventWeightCard')) getEl('outExtraSolventWeightCard').classList.toggle('hidden', !showExtra);
+            if(getEl('legendExtra')) getEl('legendExtra').style.display = showExtra ? 'flex' : 'none';
+
+            const showSecond = inputs.secondCarrier && inputs.secondCarrier.checked;
+            if(getEl('secondCarrierGroup')) getEl('secondCarrierGroup').classList.toggle('hidden', !showSecond);
+            if(getEl('outSecondCarrierVolCard')) getEl('outSecondCarrierVolCard').classList.toggle('hidden', !showSecond);
+            if(getEl('outSecondCarrierWeightCard')) getEl('outSecondCarrierWeightCard').classList.toggle('hidden', !showSecond);
+
+            if(getEl('customLossField')) getEl('customLossField').classList.toggle('hidden', !inputs.filterLoss || inputs.filterLoss.value !== 'custom');
+            if(getEl('customExtraSolventDensityField')) getEl('customExtraSolventDensityField').classList.toggle('hidden', !(inputs.extraSolventType && inputs.extraSolventType.value === 'custom' && showExtra));
+            if(getEl('customMainCarrierField')) getEl('customMainCarrierField').classList.toggle('hidden', !inputs.carrierDensity || inputs.carrierDensity.value === 'custom');
+            if(getEl('customSecondCarrierField')) getEl('customSecondCarrierField').classList.toggle('hidden', !(inputs.secondCarrierSelect && inputs.secondCarrierSelect.value === 'custom' && showSecond));
+        }
+
+        let brewChart = null;
+        function initChart() {
+            const ctx = document.getElementById('brewChart');
+            if(!ctx) return;
+            brewChart = new Chart(ctx.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Compound(s)', 'BA', 'BB', 'Extra Solvent', 'Carrier Oil'],
+                    datasets: [{
+                        data: [0, 0, 0, 0, 0],
+                        backgroundColor: ['#ff3333', '#4ade80', '#facc15', '#f97316', '#e879f9'],
+                        borderWidth: 2,
+                        borderColor: '#0a0a0a'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    cutout: '65%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: function(context) { return ' ' + context.label + ': ' + context.raw.toFixed(2) + ' ml'; } } }
                     }
                 }
-                
-                activeOverlay = overlay;
-
-                // Define random directions
-                const directions = [
-                    { x: 0, y: -150 }, // Top
-                    { x: 0, y: 150 },  // Bottom
-                    { x: -150, y: 0 }, // Left
-                    { x: 150, y: 0 }   // Right
-                ];
-
-                // Pick random start and end directions (ensure they are different)
-                let startIdx = Math.floor(Math.random() * directions.length);
-                let endIdx;
-                do {
-                    endIdx = Math.floor(Math.random() * directions.length);
-                } while (endIdx === startIdx);
-
-                const startDir = directions[startIdx];
-                const endDir = directions[endIdx];
-
-                // 1. Setup initial position (Off-screen based on start direction)
-                // We use vw/vh to ensure it starts outside the visible area
-                const startTransform = `translate(calc(-50% + ${startDir.x}vw), calc(-50% + ${startDir.y}vh))`;
-                const centerTransform = `translate(-50%, -50%)`;
-                const endTransform = `translate(calc(-50% + ${endDir.x}vw), calc(-50% + ${endDir.y}vh))`;
-
-                // Temporarily disable transition to snap to start position
-                overlay.style.transition = 'none';
-                // Always position exactly in the middle of the viewport
-                overlay.style.top = '50%';
-                overlay.style.left = '50%';
-                overlay.style.transform = startTransform;
-                overlay.classList.add('active');
-
-                // 2. Force reflow so the browser registers the start position
-                void overlay.offsetWidth;
-
-                // 3. Slide In
-                overlay.style.transition = 'transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                overlay.style.transform = centerTransform;
-
-                // 4. Wait, then Slide Out
-                animationTimeout = setTimeout(() => {
-                    overlay.style.transform = endTransform;
-                    
-                    // 5. Hide completely after slide out finishes
-                    setTimeout(() => {
-                        // Only hide if this is still the active animation
-                        if (activeOverlay === overlay) {
-                            overlay.classList.remove('active');
-                        }
-                    }, 200); // Wait for the 0.2s slide-out transition
-                    
-                }, 600); // Stay in center for exactly 0.6 seconds
-            }
-        }
-
-        function getRawIncrements() {
-            // Count total 100g increments in cart. 1kg orders DO NOT count towards this limit anymore.
-            let increments = 0;
-            cart.forEach(item => {
-                if (item.category !== 'addon' && item.size === '100g') {
-                    increments += item.qty;
-                }
             });
-            return increments;
         }
 
-        function enforceAddonLimits() {
-            // Ensure addons do not exceed raw increments
-            let maxQty = getRawIncrements();
-            cart.forEach(item => {
-                if (item.category === 'addon') {
-                    if (item.qty > maxQty) {
-                        item.qty = maxQty; // Auto-correct quantity downward if they removed raws
-                    }
-                }
-            });
-            
-            // Clean up any addons that were forced down to 0
-            cart = cart.filter(item => item.qty > 0);
-        }
+        function calculateBrew() {
+            toggleVisibility();
 
-        function addToCart(name, price, size, batch, category) {
-            let totalItems = 0;
-            cart.forEach(i => totalItems += i.qty);
-            
-            if (totalItems >= 30) {
-                alert("You have reached the maximum of 30 items per order.");
-                return;
-            }
+            let filterLoss = 0;
+            const fType = inputs.filterLoss ? inputs.filterLoss.value : 'none';
+            if (fType === '0.45') filterLoss = 1.0;
+            else if (fType === '0.22') filterLoss = 1.6;
+            else if (fType === 'double') filterLoss = 2.5;
+            else if (fType === 'custom') filterLoss = parseFloat(inputs.customLoss.value) || 0;
 
-            // --- SECURITY PATCH: Verify against actual database, ignore HTML DOM ---
-            let productRecord = products.find(p => p.name === name && p.batch === batch);
-            if (!productRecord) return; // Failsafe if name/batch was spoofed
-            
-            let maxStock = (size === '100g' || size === '10g') ? productRecord.stock100 : Infinity;
-            
-            // Fix Exploit #1: Block users who remove the 'disabled' tag from out-of-stock buttons
-            if (maxStock <= 0) {
-                alert("Sorry, this item is currently out of stock.");
-                return;
-            }
-            
-            // Fix Exploit #2: Ignore HTML price parameter and fetch the true price
-            let securePrice = size === '1kg' ? productRecord.p1k : productRecord.p100;
-            // ----------------------------------------------------------------------
+            let totalBrewVol = 0;
+            let desiredYield = 0;
 
-            let existingItem = cart.find(i => i.name === name && i.size === size && i.batch === batch);
-            
-            if (category === 'addon') {
-                let allowedIncrements = getRawIncrements();
-                if (allowedIncrements === 0) {
-                    alert("You must add Raws to your cart before unlocking Add-ons.");
-                    return;
-                }
-                
-                let currentAddonQty = existingItem ? existingItem.qty : 0;
-                if (currentAddonQty >= allowedIncrements) {
-                    alert(`Add-on limit reached! Based on your cart's Raw weight, you can only add up to ${allowedIncrements * 10}g of ${name}. Add more Raws to increase this limit.`);
-                    return;
-                }
-            }
+            const c1Mg = parseFloat(inputs.mg1 ? inputs.mg1.value : 0) || 0;
+            const c1Disp = parseFloat(inputs.disp1 ? inputs.disp1.value : 0) || 0;
+            const c1Pur = parseFloat(inputs.purity1 ? inputs.purity1.value : 100) || 100;
+            let pow1 = 0;
 
-            if (existingItem) {
-                if (existingItem.qty >= maxStock) {
-                    alert(`Sorry, we only have ${maxStock} units in stock for this item.`);
-                    return;
-                }
-                
-                // Enforce 300g max limit rule for retail discount (Only for Raws)
-                if (category !== 'addon' && size === '100g' && existingItem.qty >= 3) {
-                    alert("Maximum 300g (3 units) allowed for retail bulk discount. For larger amounts, please use the 1KG Pre-order option!");
-                    return;
-                }
-                
-                existingItem.qty += 1;
+            if (calcMode === 'volume') {
+                desiredYield = parseFloat(inputs.finalVolume ? inputs.finalVolume.value : 0) || 0;
+                totalBrewVol = desiredYield + filterLoss;
+                pow1 = (totalBrewVol * c1Mg / 1000) / (c1Pur / 100);
+                pow1 = c1Mg > 0 ? pow1 : 0;
             } else {
-                // Use the securePrice here instead of the parameter
-                cart.push({ name, price: securePrice, size, batch, qty: 1, category });
+                pow1 = parseFloat(inputs.availablePowder ? inputs.availablePowder.value : 0) || 0;
+                if (c1Mg > 0) {
+                    totalBrewVol = (pow1 * (c1Pur / 100) * 1000) / c1Mg;
+                } else totalBrewVol = 0;
+                desiredYield = totalBrewVol - filterLoss;
+                if (desiredYield < 0) desiredYield = 0;
             }
-            
-            // Trigger visual and audio effects
-            if (category === 'addon') {
-                triggerSFX('addon');
-            } else if (size === '100g') {
-                triggerSFX('retail');
-            } else if (size === '1kg') {
-                triggerSFX('preorder');
+            const vol1 = pow1 * c1Disp;
+
+            let pow2 = 0, vol2 = 0, c2Mg = 0;
+            if (isBlendMode && inputs.enableC2 && inputs.enableC2.checked) {
+                c2Mg = parseFloat(inputs.mg2.value) || 0;
+                pow2 = (totalBrewVol * c2Mg / 1000) / ((parseFloat(inputs.purity2.value) || 100) / 100);
+                pow2 = c2Mg > 0 ? pow2 : 0;
+                vol2 = pow2 * (parseFloat(inputs.disp2.value) || 0);
             }
 
-            updateCartUI();
-        }
-
-        function calculateItemPrice(item) {
-            let baseTotal = item.price * item.qty;
-            let discountPercent = 0;
-            
-            // Apply bulk discounts ONLY to 100g Raws
-            if (item.category !== 'addon' && item.size === '100g') {
-                if (item.qty === 2) discountPercent = 0.10;      // 200g = 10% off
-                else if (item.qty === 3) discountPercent = 0.15; // 300g = 15% off
+            let pow3 = 0, vol3 = 0, c3Mg = 0;
+            if (isBlendMode && inputs.enableC3 && inputs.enableC3.checked) {
+                c3Mg = parseFloat(inputs.mg3.value) || 0;
+                pow3 = (totalBrewVol * c3Mg / 1000) / ((parseFloat(inputs.purity3.value) || 100) / 100);
+                pow3 = c3Mg > 0 ? pow3 : 0;
+                vol3 = pow3 * (parseFloat(inputs.disp3.value) || 0);
             }
+
+            let pow4 = 0, vol4 = 0, c4Mg = 0;
+            if (isBlendMode && inputs.enableC4 && inputs.enableC4.checked) {
+                c4Mg = parseFloat(inputs.mg4.value) || 0;
+                pow4 = (totalBrewVol * c4Mg / 1000) / ((parseFloat(inputs.purity4.value) || 100) / 100);
+                pow4 = c4Mg > 0 ? pow4 : 0;
+                vol4 = pow4 * (parseFloat(inputs.disp4.value) || 0);
+            }
+
+            const totalCompoundVol = vol1 + vol2 + vol3 + vol4;
+
+            const baPct = parseFloat(inputs.baPercent ? inputs.baPercent.value : 0) || 0;
+            const bbPct = parseFloat(inputs.bbPercent ? inputs.bbPercent.value : 0) || 0;
+            const extraSolventPct = (inputs.extraSolvent && inputs.extraSolvent.checked) ? (parseFloat(inputs.extraSolventPct.value) || 0) : 0;
             
-            let finalTotal = baseTotal * (1 - discountPercent);
+            const baVol = totalBrewVol * (baPct / 100);
+            const bbVol = totalBrewVol * (bbPct / 100);
+            const extraSolventVol = totalBrewVol * (extraSolventPct / 100);
+
+            const remainingVol = totalBrewVol - totalCompoundVol - baVol - bbVol - extraSolventVol;
+            const carrierMixPct = (inputs.secondCarrier && inputs.secondCarrier.checked) ? (parseFloat(inputs.carrierMixPct.value) || 0) : 0;
             
-            return {
-                finalTotal: Math.round(finalTotal),
-                discountPercent: discountPercent
+            // Negative Carrier Guard! (Fixes Chart Breaking)
+            let mainCarrierVol = 0;
+            let secondCarrierVol = 0;
+            let isMathError = false;
+
+            if(remainingVol < 0) {
+                isMathError = true;
+                if(outputs.errorAlert) outputs.errorAlert.classList.remove('hidden');
+            } else {
+                if(outputs.errorAlert) outputs.errorAlert.classList.add('hidden');
+                mainCarrierVol = remainingVol * ((100 - carrierMixPct) / 100);
+                secondCarrierVol = remainingVol * (carrierMixPct / 100);
+            }
+
+            let mainDens = densities[inputs.carrierDensity ? inputs.carrierDensity.value : 'gso'] || 0.92;
+            if(inputs.carrierDensity && inputs.carrierDensity.value === 'custom') mainDens = parseFloat(inputs.customMainCarrierDensity.value) || 0.92;
+            let secDens = densities[inputs.secondCarrierSelect ? inputs.secondCarrierSelect.value : 'gso'] || 0.92;
+            if(inputs.secondCarrierSelect && inputs.secondCarrierSelect.value === 'custom') secDens = parseFloat(inputs.customSecondCarrierDensity.value) || 0.92;
+            let extraDens = densities[inputs.extraSolventType ? inputs.extraSolventType.value : 'none'] || 1.0;
+            if(inputs.extraSolventType && inputs.extraSolventType.value === 'custom') extraDens = parseFloat(inputs.customExtraSolventDensity.value) || 1.0;
+
+            const baWeightG = baVol * densities.ba;
+            const bbWeightG = bbVol * densities.bb;
+            const extraSolventWeightG = extraSolventVol * extraDens;
+            const mainCarrierWeightG = mainCarrierVol * mainDens;
+            const secondCarrierWeightG = secondCarrierVol * secDens;
+
+            const checkSum = totalCompoundVol + baVol + bbVol + extraSolventVol + mainCarrierVol + secondCarrierVol;
+            const totalMassG = pow1 + pow2 + pow3 + pow4 + baWeightG + bbWeightG + extraSolventWeightG + mainCarrierWeightG + secondCarrierWeightG;
+
+            safeSetText(outputs.powder1, `${pow1.toFixed(3)} g`);
+            safeSetText(outputs.powder2, `${pow2.toFixed(3)} g`);
+            safeSetText(outputs.powder3, `${pow3.toFixed(3)} g`);
+            safeSetText(outputs.powder4, `${pow4.toFixed(3)} g`);
+            
+            const apiRatio1 = activeAPI[inputs.c1 ? inputs.c1.value : 'test-base'] || 1.0; safeSetText(outputs.activeApi1, `Active Hormone: ~${(c1Mg * apiRatio1).toFixed(0)}mg/ml`);
+            const apiRatio2 = activeAPI[inputs.c2 ? inputs.c2.value : 'test-base'] || 1.0; safeSetText(outputs.activeApi2, `Active Hormone: ~${(c2Mg * apiRatio2).toFixed(0)}mg/ml`);
+            const apiRatio3 = activeAPI[inputs.c3 ? inputs.c3.value : 'test-base'] || 1.0; safeSetText(outputs.activeApi3, `Active Hormone: ~${(c3Mg * apiRatio3).toFixed(0)}mg/ml`);
+            const apiRatio4 = activeAPI[inputs.c4 ? inputs.c4.value : 'test-base'] || 1.0; safeSetText(outputs.activeApi4, `Active Hormone: ~${(c4Mg * apiRatio4).toFixed(0)}mg/ml`);
+
+            safeSetText(outputs.baVol, `${baVol.toFixed(2)} ml`);
+            safeSetText(outputs.baWeight, `${baWeightG.toFixed(3)} g`);
+            safeSetText(outputs.bbVol, `${bbVol.toFixed(2)} ml`);
+            safeSetText(outputs.bbWeight, `${bbWeightG.toFixed(3)} g`);
+            
+            safeSetText(outputs.extraSolventVol, `${extraSolventVol.toFixed(2)} ml`);
+            safeSetText(outputs.extraSolventWeight, `${extraSolventWeightG.toFixed(3)} g`);
+            safeSetText(outputs.carrierVol, `${mainCarrierVol.toFixed(2)} ml`);
+            safeSetText(outputs.carrierWeight, `${mainCarrierWeightG.toFixed(3)} g`);
+            safeSetText(outputs.secondCarrierVol, `${secondCarrierVol.toFixed(2)} ml`);
+            safeSetText(outputs.secondCarrierWeight, `${secondCarrierWeightG.toFixed(3)} g`);
+
+            safeSetText(outputs.compoundVol, `${totalCompoundVol.toFixed(3)} ml`);
+            safeSetText(outputs.totalVol, `${totalBrewVol.toFixed(2)} ml`);
+            safeSetText(outputs.volCheck, `${checkSum.toFixed(2)} ml`);
+            safeSetText(outputs.totalMass, `${totalMassG.toFixed(3)} g`);
+            
+            const finalYieldText = `${desiredYield.toFixed(2)} ml`;
+            safeSetText(outputs.finalYield, finalYieldText);
+            safeSetText(outputs.mobileYield, finalYieldText);
+
+            // Vial Math
+            const vialS = parseFloat(inputs.vialSize ? inputs.vialSize.value : 10) || 10;
+            const vialO = parseFloat(inputs.vialOverfill ? inputs.vialOverfill.value : 0.5) || 0.5;
+            const actualVialVol = vialS + vialO;
+            const numVials = Math.floor(desiredYield / actualVialVol);
+            const remaining = (desiredYield % actualVialVol).toFixed(1);
+            safeSetHTML(outputs.vialOutput, `Will yield approx <span class="font-bold text-white">${numVials}</span> vials (with ${remaining}ml leftover).`);
+
+            // Economics
+            const pCost = parseFloat(inputs.costPowder ? inputs.costPowder.value : 0) || 0; 
+            const oCost = parseFloat(inputs.costOil ? inputs.costOil.value : 0) || 0; 
+            const sCost = parseFloat(inputs.costSolvent ? inputs.costSolvent.value : 0) || 0; 
+            const vCost = parseFloat(inputs.costVial ? inputs.costVial.value : 0) || 0; 
+            
+            const totalPowder = pow1 + pow2 + pow3 + pow4;
+            const batchCostPowder = (totalPowder / 10) * pCost;
+            const batchCostOil = ((mainCarrierVol + secondCarrierVol) / 100) * oCost;
+            const batchCostSolvents = ((baVol + bbVol + extraSolventVol) / 100) * sCost;
+            
+            const totalBatchCost = batchCostPowder + batchCostOil + batchCostSolvents;
+            let estCostPerVial = 0;
+            if (numVials > 0) estCostPerVial = (totalBatchCost / numVials) + vCost;
+            safeSetText(outputs.costPerVial, `$${estCostPerVial.toFixed(2)}`);
+
+            let warnings = [];
+            let totalConc = c1Mg + c2Mg + c3Mg + c4Mg;
+            
+            if (baPct > 3) warnings.push("BA > 3% greatly increases Post Injection Pain (PIP). 1-2% is standard.");
+            
+            if (!isBlendMode && inputs.c1) {
+                let cType = inputs.c1.value;
+                if (cType === "test-c" && c1Mg >= 250 && bbPct < 18) warnings.push("Test C >= 250mg/ml with low BB has a high crash risk. Recommend 18-20% BB or EO.");
+                if (cType === "test-e" && c1Mg >= 300 && bbPct < 20) warnings.push("Test E >= 300mg/ml requires high BB (20%+) to prevent crashing.");
+                if (cType === "tren-a" && c1Mg >= 150 && bbPct < 20) warnings.push("Tren A at high concentrations usually requires Guaiacol or EO to hold.");
+                if (cType === "test-undecanoate" && c1Mg >= 300 && inputs.carrierDensity && inputs.carrierDensity.value !== "castor") warnings.push("Test Undecanoate >= 300mg/ml requires a heavy oil like Castor to prevent crashing at room temperature.");
+            } else if (isBlendMode) {
+                if (totalConc > 400 && extraSolventPct === 0) warnings.push("Total blend concentration > 400mg/ml. Extremely high crash risk without EO, Guaiacol, or PEG.");
+            }
+
+            if (warnings.length > 0) {
+                if(outputs.warningAlert) outputs.warningAlert.classList.remove('hidden');
+                safeSetHTML(outputs.warningText, warnings.join("<br><br>"));
+            } else {
+                if(outputs.warningAlert) outputs.warningAlert.classList.add('hidden');
+            }
+
+            const tempC = parseFloat(inputs.tempSlider ? inputs.tempSlider.value : 25) || 25;
+            if(inputs.tempVal) inputs.tempVal.textContent = `${tempC}°C`;
+
+            const totalLiqVol = baVol + bbVol + extraSolventVol + mainCarrierVol + secondCarrierVol;
+            
+            if (totalLiqVol > 0 && !isMathError) {
+                const getTempAdjVisc = (key) => {
+                    const muRef = baseViscosity[key] || 50;
+                    const alpha = tempCoeff[key] || 0.03;
+                    return muRef * Math.exp(-alpha * (tempC - 25)); // Arrhenius temp decay
+                };
+
+                let vMain = getTempAdjVisc(inputs.carrierDensity ? inputs.carrierDensity.value : 'gso');
+                let vSec = getTempAdjVisc(inputs.secondCarrierSelect ? inputs.secondCarrierSelect.value : 'none');
+                let vExtra = getTempAdjVisc(inputs.extraSolventType ? inputs.extraSolventType.value : 'none');
+                let vBa = getTempAdjVisc('ba');
+                let vBb = getTempAdjVisc('bb');
+
+                // Grunberg-Nissan Logarithmic Blending
+                let lnV = 0;
+                if (baVol > 0) lnV += (baVol / totalLiqVol) * Math.log(vBa);
+                if (bbVol > 0) lnV += (bbVol / totalLiqVol) * Math.log(vBb);
+                if (extraSolventVol > 0) lnV += (extraSolventVol / totalLiqVol) * Math.log(vExtra);
+                if (mainCarrierVol > 0) lnV += (mainCarrierVol / totalLiqVol) * Math.log(vMain);
+                if (secondCarrierVol > 0) lnV += (secondCarrierVol / totalLiqVol) * Math.log(vSec);
+
+                let baseCp = Math.exp(lnV);
+                
+                // Exponential Powder Thickening Model
+                let powderMultiplier = Math.exp(totalConc / 1100); 
+                let estCp = baseCp * powderMultiplier;
+
+                let rating = ""; let colorClass = "";
+                if (estCp < 15) { rating = "Very Thin (29G-31G)"; colorClass = "#4ade80"; }
+                else if (estCp < 35) { rating = "Thin (27G-29G)"; colorClass = "#a3e635"; }
+                else if (estCp < 65) { rating = "Medium (25G-27G)"; colorClass = "#facc15"; }
+                else if (estCp < 150) { rating = "Thick (23G-25G)"; colorClass = "#fb923c"; }
+                else { rating = "Syrup (21G+ or Heat)"; colorClass = "#ef4444"; }
+
+                if(outputs.viscosityVal) {
+                    outputs.viscosityVal.textContent = `~${estCp.toFixed(1)} cP`;
+                    outputs.viscosityVal.style.color = colorClass;
+                }
+                if(outputs.viscosityRating) {
+                    outputs.viscosityRating.textContent = rating;
+                    outputs.viscosityRating.style.color = colorClass;
+                }
+                if(outputs.mobileViscosity) {
+                    outputs.mobileViscosity.textContent = rating;
+                    outputs.mobileViscosity.style.color = colorClass;
+                }
+            } else if (isMathError) {
+                safeSetText(outputs.viscosityVal, "ERR");
+                safeSetText(outputs.viscosityRating, "Oversaturated");
+                safeSetText(outputs.mobileViscosity, "ERR");
+            }
+
+            // Chart Update
+            if (brewChart && !isMathError) {
+                const carrierTotal = mainCarrierVol + secondCarrierVol;
+                brewChart.data.datasets[0].data = [totalCompoundVol, baVol, bbVol, (inputs.extraSolvent && inputs.extraSolvent.checked) ? extraSolventVol : 0, carrierTotal];
+                brewChart.update();
+            } else if (brewChart && isMathError) {
+                brewChart.data.datasets[0].data = [1, 0, 0, 0, 0]; // Blank chart
+                brewChart.update();
+            }
+
+            // Save data for Lab Protocol
+            latestCalculations = {
+                comp1Name: inputs.c1 ? inputs.c1.options[inputs.c1.selectedIndex].text : '',
+                pow1: pow1.toFixed(2),
+                baVol: baVol.toFixed(2), bbVol: bbVol.toFixed(2),
+                baWeight: baWeightG.toFixed(2), bbWeight: bbWeightG.toFixed(2),
+                mainCarrierVol: mainCarrierVol.toFixed(2), 
+                mainOilName: inputs.carrierDensity ? inputs.carrierDensity.options[inputs.carrierDensity.selectedIndex].text : '',
+                mainCarrierWeight: mainCarrierWeightG.toFixed(2),
+                totalBrewVol: totalBrewVol.toFixed(2),
+                totalMass: totalMassG.toFixed(2),
+                filterName: inputs.filterLoss ? inputs.filterLoss.options[inputs.filterLoss.selectedIndex].text : 'None',
+                isBlend: isBlendMode,
+                extraSolvents: extraSolventVol > 0 ? `${extraSolventVol.toFixed(2)}ml (${extraSolventWeightG.toFixed(2)}g) of ${inputs.extraSolventType.options[inputs.extraSolventType.selectedIndex].text}` : null,
+                secondCarrier: secondCarrierVol > 0 ? `${secondCarrierVol.toFixed(2)}ml (${secondCarrierWeightG.toFixed(2)}g) of ${inputs.secondCarrierSelect.options[inputs.secondCarrierSelect.selectedIndex].text}` : null,
+                comp2: (isBlendMode && inputs.enableC2 && inputs.enableC2.checked) ? { name: inputs.c2.options[inputs.c2.selectedIndex].text, pow: pow2.toFixed(2) } : null,
+                comp3: (isBlendMode && inputs.enableC3 && inputs.enableC3.checked) ? { name: inputs.c3.options[inputs.c3.selectedIndex].text, pow: pow3.toFixed(2) } : null,
+                comp4: (isBlendMode && inputs.enableC4 && inputs.enableC4.checked) ? { name: inputs.c4.options[inputs.c4.selectedIndex].text, pow: pow4.toFixed(2) } : null,
             };
         }
 
-        function updateCartUI() {
-            // Before drawing UI, make sure addon constraints are still met (important if an item was removed)
-            enforceAddonLimits(); 
-            
-            const list = document.getElementById('cart-items');
-            const subtotalDisplay = document.getElementById('cart-subtotal');
-            const totalDisplay = document.getElementById('cart-total');
-            const summaryDiv = document.getElementById('cart-summary');
+        if(getEl('btnGenerateProtocol')) {
+            getEl('btnGenerateProtocol').addEventListener('click', () => {
+                const lc = latestCalculations;
+                let html = `
+                    <div class="mb-4 text-white border-b border-[#333] pb-4">
+                        <h3 class="text-lg font-bold text-red-500">Gravimetric Protocol (Highly Accurate)</h3>
+                        <p class="text-gray-400 text-xs mt-1">This protocol uses a digital scale (mass) instead of volumetric beakers to completely eliminate thermal expansion and transfer loss errors.</p>
+                    </div>
+                    
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                        <div><span class="font-bold text-white">Step 1: Prep & Tare</span><br>Place your primary beaker on a high-precision digital scale and <b>TARE (zero)</b> it.</div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                        <div><span class="font-bold text-white">Step 2: Powder Measurement</span><br>Add exactly <span class="text-red-400 font-bold">${lc.pow1}g</span> of ${lc.comp1Name} into the beaker.</div>
+                    </div>`;
+                
+                if (lc.isBlend) {
+                    if(lc.comp2) html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-red-400 font-bold">${lc.comp2.pow}g</span> of ${lc.comp2.name} into the beaker.</div></div>`;
+                    if(lc.comp3) html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-red-400 font-bold">${lc.comp3.pow}g</span> of ${lc.comp3.name} into the beaker.</div></div>`;
+                    if(lc.comp4) html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-red-400 font-bold">${lc.comp4.pow}g</span> of ${lc.comp4.name} into the beaker.</div></div>`;
+                }
 
-            if (cart.length === 0) {
-                list.innerHTML = '<li class="empty-msg">No items selected yet</li>';
-                summaryDiv.style.display = 'none';
-                return;
+                html += `
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                        <div><span class="font-bold text-white">Step 3: Add Solvents</span><br>Leave beaker on scale. Add Benzyl Alcohol until scale increases by <span class="text-green-400 font-bold">${lc.baWeight}g</span> (${lc.baVol}ml). Then add Benzyl Benzoate until scale increases by another <span class="text-yellow-400 font-bold">${lc.bbWeight}g</span> (${lc.bbVol}ml).</div>
+                    </div>`;
+
+                if (lc.extraSolvents) {
+                    html += `<div class="flex items-start gap-3"><input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer"><div>Add <span class="text-orange-400 font-bold">${lc.extraSolvents}</span> to the solution.</div></div>`;
+                }
+
+                html += `
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                        <div><span class="font-bold text-white">Step 4: Dissolve (Covered)</span><br>Remove beaker, cover top with foil/silicone (to prevent evaporation), and place on a hot plate or warm water bath (do not exceed 60°C). Swirl gently until powder is entirely dissolved and clear.</div>
+                    </div>`;
+
+                // Dual Carrier Protocol Logic Update
+                if (lc.secondCarrier) {
+                    const finalFirstOilTarget = (parseFloat(lc.totalMass) - parseFloat(lc.mainCarrierWeight)).toFixed(2);
+                    html += `
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                        <div><span class="font-bold text-white">Step 5a: Dual-Oil First Carrier</span><br>Remove from heat, wipe dry. Place back on scale (DO NOT TARE). Pour in ${lc.secondCarrier} until the scale reaches exactly <span class="text-purple-400 font-bold">${finalFirstOilTarget}g</span>.</div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                        <div><span class="font-bold text-white">Step 5b: Gravimetric Top-Off</span><br>Pour ${lc.mainOilName} directly into the beaker until the scale reads EXACTLY <span class="text-purple-400 font-bold text-lg">${lc.totalMass}g</span>. Mix thoroughly.</div>
+                    </div>`;
+                } else {
+                    html += `
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                        <div><span class="font-bold text-white">Step 5: Gravimetric Top-Off (Crucial)</span><br>Remove from heat, wipe any water off the beaker. Place back on scale (DO NOT TARE). Pour ${lc.mainOilName} directly into the beaker until the scale reads EXACTLY <span class="text-purple-400 font-bold text-lg">${lc.totalMass}g</span>. Mix thoroughly.</div>
+                    </div>`;
+                }
+
+                let filterText = lc.filterName.includes("No") ? "Proceed directly to sterilization/vialing as no filter loss was accounted for." : `Draw the warm solution into a sterile syringe. Attach the ${lc.filterName} and filter directly into a sterile, sealed vial.`;
+
+                html += `
+                    <div class="flex items-start gap-3 pb-6">
+                        <input type="checkbox" class="mt-1 w-5 h-5 rounded border-gray-600 bg-gray-800 accent-red-600 cursor-pointer">
+                        <div><span class="font-bold text-white">Step 6: Filtration & Vialing</span><br>${filterText}</div>
+                    </div>`;
+
+                safeSetHTML(getEl('protocolContent'), html);
+                getEl('protocolModal').classList.remove('hidden');
+            });
+        }
+
+        // Global Listeners for auto-calculate
+        document.body.addEventListener('input', (e) => {
+            if(e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+                if(e.target.id !== 'presetSelect') calculateBrew();
             }
+        });
 
-            summaryDiv.style.display = 'block';
-            let subtotal = 0;
+        // Initial setup
+        initChart();
+        calculateBrew();
 
-            list.innerHTML = cart.map((item, index) => {
-                let pricing = calculateItemPrice(item);
-                subtotal += pricing.finalTotal;
-                
-                let discountLabel = "";
-                if (pricing.discountPercent > 0) {
-                    discountLabel = `<span style="color:var(--primary-red); font-size:0.85rem; font-weight:bold; margin-left:5px;">(-${pricing.discountPercent * 100}%)</span>`;
-                }
-
-                return `
-                    <li class="cart-item">
-                        <span>${item.name} (${item.size}) x${item.qty}</span>
-                        <span>$${pricing.finalTotal} ${discountLabel} <button style="color:red; margin-left:10px; text-decoration:none; cursor:pointer;" onclick="removeItem(${index})">×</button></span>
-                    </li>
-                `;
-            }).join('');
-
-            subtotalDisplay.innerText = subtotal.toLocaleString();
-            totalDisplay.innerText = (subtotal + SHIPPING_COST).toLocaleString();
-        }
-
-        function removeItem(index) {
-            cart.splice(index, 1);
-            // updateCartUI calls enforceAddonLimits() automatically
-            updateCartUI(); 
-        }
-
-        function openCheckoutModal() {
-            if (cart.length === 0) return alert("Please add items to your selection first.");
-            currentOrderNum = Math.floor(100000 + Math.random() * 900000);
-            
-            // Clear inputs for fresh modal
-            document.getElementById('ship-name').value = '';
-            document.getElementById('ship-address').value = '';
-            
-            updateOrderText();
-            document.getElementById('order-modal').style.display = 'flex';
-        }
-
-        function updateOrderText() {
-            const name = document.getElementById('ship-name').value.trim();
-            const addr = document.getElementById('ship-address').value.trim();
-            const cryptoNetwork = document.querySelector('input[name="crypto-network"]:checked').value;
-            
-            let subtotal = 0;
-
-            const itemsText = cart.map(i => {
-                let pricing = calculateItemPrice(i);
-                subtotal += pricing.finalTotal;
-                
-                let line = `- ${i.name} [Batch: ${i.batch}] (${i.size}) x${i.qty}: $${pricing.finalTotal}`;
-                if (pricing.discountPercent > 0) {
-                    line += ` (-${pricing.discountPercent * 100}% bulk discount)`;
-                }
-                return line;
-            }).join("\n");
-
-            const grandTotal = subtotal + SHIPPING_COST;
-
-            const fullText = `ORDER REFERENCE: #${currentOrderNum}
-----------------------------
-ITEMS:
-${itemsText}
-----------------------------
-SUBTOTAL: $${subtotal}
-SHIPPING: $${SHIPPING_COST}
-----------------------------
-GRAND TOTAL: $${grandTotal}
-----------------------------
-SHIPPING INFO:
-Name: ${name || "[REQUIRED]"}
-Address: ${addr || "[REQUIRED]"}
-----------------------------
-${cryptoNetwork} ADDRESS REQUESTED
-You will Receive a ${cryptoNetwork} address in 12 Hours.`;
-            
-            document.getElementById('order-text-area').value = fullText;
-            
-            // Toggle buttons based on validation
-            const isValid = name !== "" && addr !== "";
-            document.getElementById('btn-copy').disabled = !isValid;
-        }
-
-        function copyOrder() {
-            const name = document.getElementById('ship-name').value.trim();
-            const addr = document.getElementById('ship-address').value.trim();
-            if (!name || !addr) return alert("Please enter shipping name and address.");
-
-            const textArea = document.getElementById('order-text-area');
-            textArea.select();
-            document.execCommand('copy');
-            const status = document.getElementById('copy-status');
-            status.innerText = "✓ Order copied! Please paste in your email.";
-            setTimeout(() => { status.innerText = ""; }, 4000);
-        }
-
-        function closeModal() {
-            document.getElementById('order-modal').style.display = 'none';
-        }
-
-        // Start the app by loading the inventory
-        loadInventory();
     </script>
 </body>
 </html>
