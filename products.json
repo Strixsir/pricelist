@@ -10,8 +10,8 @@
     { "name": "Nandrolone Decanoate",  "batch": "NND-FP-126", "labLink": "https://verify.janoshik.com/tests/156902-ND_ZBLQTAWM2TGM", "labResult": "92.03%", "p100": 360, "stock100": 6, "p1k": 2300, "s1k": 1 },
     { "name": "Nandrolone phenylpropionate (NPP)", "batch": "NPP-FP-26", "labLink": "https://verify.janoshik.com/tests/164151-Sample_2_2JFUUAH97UZF", "labResult": "89%%", "p100": 360, "stock100": 10, "p1k": 2300, "s1k": 1 },
 
-{ "name": "Anavar", "category": "addon", "batch": "A-2301", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.2%", "p100": 60, "stock100": 20 },
-{ "name": "Anadrol", "category": "addon", "batch": "A-2302", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.7%", "p100": 50, "stock100": 20 }
+{ "name": "Anavar", "category": "addon", "batch": "China baby!!!", "labLink": "Transit", "labResult": "--", "p100": 90, "stock100": 0 },
+{ "name": "Anadrol", "category": "addon", "batch": "Oxy/FP/26", "labLink": "At Jano", "labResult": "At Jano", "p100": 50, "stock100": 50 }
 
 
 ]
