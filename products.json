@@ -2,7 +2,7 @@
 
 [
  { "name": "Test Base/No Ester", "batch": "TNE-FP-126", "labLink": "https://verify.janoshik.com/tests/156900-TNE_BPKWVD6ESHIH", "labResult": "89.93%", "p100": 210, "stock100": 12, "p1k": 1300, "s1k": 1 },
-    { "name": "Test Prop",  "batch": "TTC-FP-126", "labLink": "https://verify.janoshik.com/tests/156901-TP_5TZC4ED8B2CH", "labResult": "89.29%", "p100": 230, "stock100": 2, "p1k": 1440, "s1k": 1 },
+    { "name": "Test Prop",  "batch": "TTC-FP-126", "labLink": "https://verify.janoshik.com/tests/156901-TP_5TZC4ED8B2CH", "labResult": "89.29%", "p100": 230, "stock100": 8, "p1k": 1440, "s1k": 1 },
     { "name": "Test Cyp",  "batch": "TTC-FP-126", "labLink": "https://verify.janoshik.com/tests/132664-Sample_1_873E5VFUEAZ8", "labResult": "Jano Result Out by 6th June likely", "p100": 240, "stock100": 14, "p1k": 1700, "s1k": 1 },
     { "name": "Test Ent",  "batch": "TTE-FP-125", "labLink": "https://verify.janoshik.com/tests/148722-Sample_1_7PVJ4SXQXMFJ", "labResult": "92.99%", "p100": 240, "stock100": 0, "p1k": 1600, "s1k": 1 },
     { "name": "Test Decanoate",  "batch": "TTD-FP-126", "labLink": "https://verify.janoshik.com/tests/150503-Sample_1_VJ34B4VFFRC2", "labResult": "92.18%", "p100": 260, "stock100": 22, "p1k": 1670, "s1k": 1 },
