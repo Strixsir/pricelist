@@ -1054,6 +1054,12 @@
             }
         }
 
+        // Robust, crash-proof numeric value reader
+        function getVal(id, defaultVal = 0) {
+            const el = getEl(id);
+            return el ? parseFloat(el.value) || defaultVal : defaultVal;
+        }
+
         function switchTab(tab) {
             currentTab = tab;
             
@@ -1344,35 +1350,40 @@
             showCustomFields();
 
             const isBlend = currentTab === 'blend';
-            const baPct = parseFloat(getEl('baPct').value) || 0;
-            const bbPct = parseFloat(getEl('bbPct').value) || 0;
-            const extraSolventPct = getEl('enableExtraSolvent').checked ? parseFloat(getEl('extraSolventPct').value) || 0 : 0;
-            const carrierMixPct = getEl('enableSecondCarrier').checked ? parseFloat(getEl('carrierMixPct').value) || 0 : 0;
+            const baPct = getVal('baPct');
+            const bbPct = getVal('bbPct');
+            
+            const enableExtraSolvent = getEl('enableExtraSolvent');
+            const extraSolventPct = (enableExtraSolvent && enableExtraSolvent.checked) ? getVal('extraSolventPct') : 0;
+            
+            const enableSecondCarrier = getEl('enableSecondCarrier');
+            const carrierMixPct = (enableSecondCarrier && enableSecondCarrier.checked) ? getVal('carrierMixPct') : 0;
 
-            const filterType = getEl('filter').value;
+            const filterEl = getEl('filter');
+            const filterType = filterEl ? filterEl.value : 'none';
             let filterLoss = 0;
             if (filterType === '0.45') filterLoss = 1.0;
             else if (filterType === '0.22') filterLoss = 1.6;
             else if (filterType === 'double') filterLoss = 2.5;
-            else if (filterType === 'custom') filterLoss = parseFloat(getEl('customLoss').value) || 0;
+            else if (filterType === 'custom') filterLoss = getVal('customLoss');
 
             let totalBrewVol = 0;
             let desiredVol = 0;
 
-            const conc1 = parseFloat(getEl('mgml').value) || 0;
-            const disp1 = parseFloat(getEl('disp').value) || 0;
-            let purity1 = parseFloat(getEl('purity').value);
+            const conc1 = getVal('mgml');
+            const disp1 = getVal('disp', 0.909);
+            let purity1 = getVal('purity', 100);
             if (isNaN(purity1) || purity1 <= 0) purity1 = 0.1; // Division by zero guard
 
             let powder1 = 0;
 
             if (calcMode === 'volume') {
-                desiredVol = parseFloat(getEl('totalVol').value) || 0;
+                desiredVol = getVal('totalVol');
                 totalBrewVol = desiredVol + filterLoss;
                 powder1 = (totalBrewVol * conc1 / 1000) / (purity1 / 100);
                 powder1 = conc1 > 0 ? powder1 : 0;
             } else {
-                powder1 = parseFloat(getEl('availablePowder').value) || 0;
+                powder1 = getVal('availablePowder');
                 if (conc1 > 0) {
                     totalBrewVol = (powder1 * (purity1 / 100) * 1000) / conc1;
                 } else totalBrewVol = 0;
@@ -1384,30 +1395,33 @@
 
             // Multi-compound blend allocations
             let powder2 = 0, compound2Vol = 0, conc2 = 0;
-            if (isBlend && getEl('enableC2').checked) {
-                conc2 = parseFloat(getEl('mgml2').value) || 0;
-                let purity2 = parseFloat(getEl('purity2').value) || 100; if(purity2 <= 0) purity2 = 0.1;
+            const enableC2 = getEl('enableC2');
+            if (isBlend && enableC2 && enableC2.checked) {
+                conc2 = getVal('mgml2');
+                let purity2 = getVal('purity2', 100); if (purity2 <= 0) purity2 = 0.1;
                 powder2 = (totalBrewVol * conc2 / 1000) / (purity2 / 100);
                 powder2 = conc2 > 0 ? powder2 : 0;
-                compound2Vol = powder2 * (parseFloat(getEl('disp2').value) || 0);
+                compound2Vol = powder2 * getVal('disp2', 0.909);
             }
 
             let powder3 = 0, compound3Vol = 0, conc3 = 0;
-            if (isBlend && getEl('enableC3').checked) {
-                conc3 = parseFloat(getEl('mgml3').value) || 0;
-                let purity3 = parseFloat(getEl('purity3').value) || 100; if(purity3 <= 0) purity3 = 0.1;
+            const enableC3 = getEl('enableC3');
+            if (isBlend && enableC3 && enableC3.checked) {
+                conc3 = getVal('mgml3');
+                let purity3 = getVal('purity3', 100); if (purity3 <= 0) purity3 = 0.1;
                 powder3 = (totalBrewVol * conc3 / 1000) / (purity3 / 100);
                 powder3 = conc3 > 0 ? powder3 : 0;
-                compound3Vol = powder3 * (parseFloat(getEl('disp3').value) || 0);
+                compound3Vol = powder3 * getVal('disp3', 0.909);
             }
 
             let powder4 = 0, compound4Vol = 0, conc4 = 0;
-            if (isBlend && getEl('enableC4').checked) {
-                conc4 = parseFloat(getEl('mgml4').value) || 0;
-                let purity4 = parseFloat(getEl('purity4').value) || 100; if(purity4 <= 0) purity4 = 0.1;
+            const enableC4 = getEl('enableC4');
+            if (isBlend && enableC4 && enableC4.checked) {
+                conc4 = getVal('mgml4');
+                let purity4 = getVal('purity4', 100); if (purity4 <= 0) purity4 = 0.1;
                 powder4 = (totalBrewVol * conc4 / 1000) / (purity4 / 100);
                 powder4 = conc4 > 0 ? powder4 : 0;
-                compound4Vol = powder4 * (parseFloat(getEl('disp4').value) || 0);
+                compound4Vol = powder4 * getVal('disp4', 0.909);
             }
 
             const totalCompoundVol = compound1Vol + compound2Vol + compound3Vol + compound4Vol;
@@ -1433,14 +1447,17 @@
                 secondCarrierVol = remainingVol * (carrierMixPct / 100);
             }
 
-            let mainCarrierDensity = densities[getEl('mainCarrier').value] || 0.92;
-            if (getEl('mainCarrier').value === 'custom') mainCarrierDensity = parseFloat(getEl('customMainCarrierDensity').value) || 0.92;
+            const mainCarrierEl = getEl('mainCarrier');
+            let mainCarrierDensity = densities[mainCarrierEl ? mainCarrierEl.value : 'mct'] || 0.92;
+            if (mainCarrierEl && mainCarrierEl.value === 'custom') mainCarrierDensity = getVal('customMainCarrierDensity', 0.92);
 
-            let secondCarrierDensity = densities[getEl('secondCarrier').value] || 0.92;
-            if (getEl('secondCarrier').value === 'custom') secondCarrierDensity = parseFloat(getEl('customSecondCarrierDensity').value) || 0.92;
+            const secondCarrierEl = getEl('secondCarrier');
+            let secondCarrierDensity = densities[secondCarrierEl ? secondCarrierEl.value : 'none'] || 0.92;
+            if (secondCarrierEl && secondCarrierEl.value === 'custom') secondCarrierDensity = getVal('customSecondCarrierDensity', 0.92);
 
-            let extraSolventDensity = densities[getEl('extraSolventType').value] || 1.0;
-            if (getEl('extraSolventType').value === 'custom') extraSolventDensity = parseFloat(getEl('customExtraSolventDensity').value) || 1.0;
+            const extraSolventTypeEl = getEl('extraSolventType');
+            let extraSolventDensity = densities[extraSolventTypeEl ? extraSolventTypeEl.value : 'none'] || 1.0;
+            if (extraSolventTypeEl && extraSolventTypeEl.value === 'custom') extraSolventDensity = getVal('customExtraSolventDensity', 1.0);
 
             const baWeight = baVol * densities.ba;
             const bbWeight = bbVol * densities.bb;
@@ -1474,7 +1491,8 @@
             safeSetText(getEl('totalMass'), totalMassVal.toFixed(3) + ' g');
 
             // VISCOSITY SIMULATION GRUNBERG-NISSAN MODEL
-            const tempC = parseFloat(getEl('tempSlider').value) || 25;
+            const tempSlider = getEl('tempSlider');
+            const tempC = tempSlider ? parseFloat(tempSlider.value) || 25 : 25;
             safeSetText(getEl('tempVal'), tempC + '°C');
 
             if (totalLiqVol() > 0 && !isMathError) {
@@ -1484,9 +1502,9 @@
                     return muRef * Math.exp(-alpha * (tempC - 25));
                 };
 
-                let vMain = getTempAdjVisc(getEl('mainCarrier').value);
-                let vSec = getTempAdjVisc(getEl('secondCarrier').value);
-                let vExtra = getTempAdjVisc(getEl('extraSolventType').value);
+                let vMain = getTempAdjVisc(mainCarrierEl ? mainCarrierEl.value : 'mct');
+                let vSec = getTempAdjVisc(secondCarrierEl ? secondCarrierEl.value : 'none');
+                let vExtra = getTempAdjVisc(extraSolventTypeEl ? extraSolventTypeEl.value : 'none');
                 let vBa = getTempAdjVisc('ba');
                 let vBb = getTempAdjVisc('bb');
 
@@ -1571,7 +1589,7 @@
             let fillerInGrams = 0;
             let totalBatchInGrams = 0;
 
-            const inputApiRaw = parseFloat(getEl('oralApiAmount').value) || 0;
+            const inputApiRaw = getVal('oralApiAmount');
             const apiUnit = getEl('oralApiUnit').value;
 
             // Unit conversion interface
@@ -1582,7 +1600,7 @@
             let isMathError = false;
 
             if (oralMode === 'weight') {
-                const targetValue = parseFloat(getEl('oralWeightTargetVal').value) || 0;
+                const targetValue = getVal('oralWeightTargetVal');
                 
                 if (oralWeightTarget === 'batch') {
                     totalBatchInGrams = targetValue;
@@ -1610,9 +1628,9 @@
                 safeSetText(getEl('outOralApiCapsuleEquivalent'), "Bulk Dry Blending");
             } else {
                 // Capsule Formulation Mode
-                const mgPerCap = parseFloat(getEl('oralCapApiPerCapsule').value) || 0;
-                const capCount = parseFloat(getEl('oralCapCount').value) || 0;
-                const fillWeightMg = parseFloat(getEl('oralCapFillWeight').value) || 0;
+                const mgPerCap = getVal('oralCapApiPerCapsule');
+                const capCount = getVal('oralCapCount');
+                const fillWeightMg = getVal('oralCapFillWeight');
 
                 const computedApiRequiredG = (mgPerCap * capCount) / 1000;
                 totalBatchInGrams = (fillWeightMg * capCount) / 1000;
@@ -1641,7 +1659,7 @@
                 safeToggleClass('errorAlert', 'hidden', false);
                 const errorText = getEl('errorText');
                 if (errorText) {
-                    if (oralMode === 'weight' && oralWeightTarget === 'conc' && parseFloat(getEl('oralWeightTargetVal').value) > 1000) {
+                    if (oralMode === 'weight' && oralWeightTarget === 'conc' && getVal('oralWeightTargetVal') > 1000) {
                         errorText.textContent = "Target concentration cannot exceed 1000 mg/g (pure active API).";
                     } else {
                         errorText.textContent = "API weight cannot exceed total dry target blend size.";
@@ -1729,13 +1747,26 @@
 
         // Pie chart rendering updates
         function updatePieChart(data) {
-            const ctx = document.getElementById('pieChart').getContext('2d');
-            const labels = ['Compound', 'BA', 'BB', data[3] > 0.01 ? 'Extra Solvent' : null, 'Carrier Oil'].filter(Boolean);
-            const colors = ['#8B0000', '#008000', '#FFD700', data[3] > 0.01 ? '#FF8C00' : null, '#DA70D6'].filter(Boolean);
+            if (typeof Chart === 'undefined') return; // CDN Load Protection
+            const canvas = document.getElementById('pieChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
 
-            const filteredData = data.filter(val => val > 0.01);
-            const filteredLabels = labels.filter((_, i) => data[i] > 0.01);
-            const filteredColors = colors.filter((_, i) => data[i] > 0.01);
+            const labels = ['Compound', 'BA', 'BB', 'Extra Solvent', 'Carrier Oil'];
+            const colors = ['#8B0000', '#008000', '#FFD700', '#FF8C00', '#DA70D6'];
+
+            const filteredData = [];
+            const filteredLabels = [];
+            const filteredColors = [];
+
+            // Corrected robust index mapping alignment loop
+            for (let i = 0; i < data.length; i++) {
+                if (data[i] > 0.01) {
+                    filteredData.push(data[i]);
+                    filteredLabels.push(labels[i]);
+                    filteredColors.push(colors[i]);
+                }
+            }
 
             if (chart) chart.destroy();
 
