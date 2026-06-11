@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Dinfar Brew Calc - UI Redux</title>
+    <title>Dinfar Brew Calc - Dashboard UI</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Clean, Robust Public CDNs -->
@@ -15,76 +15,37 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
         :root {
-            --accent: #e11d48;
-            --accent-hover: #be123c;
-            --bg-main: #050505;
-            --panel-bg: rgba(15, 15, 18, 0.85);
-            --card-bg: rgba(25, 25, 30, 0.6);
-            --border: rgba(255, 255, 255, 0.08);
-            --border-highlight: rgba(225, 29, 72, 0.3);
-            
-            --powder-color: #ff4d4d;
-            --ba-color: #4ade80;
-            --bb-color: #facc15;
-            --extra-color: #f97316;
-            --carrier-color: #c084fc;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            --accent: #e11d48; --accent-hover: #be123c;
+            --bg-main: #050505; --panel-bg: rgba(15, 15, 18, 0.85); --card-bg: rgba(25, 25, 30, 0.6);
+            --border: rgba(255, 255, 255, 0.08); --border-highlight: rgba(225, 29, 72, 0.3);
+            --powder-color: #ff4d4d; --ba-color: #4ade80; --bb-color: #facc15; 
+            --extra-color: #f97316; --carrier-color: #c084fc;
+            --text-main: #f8fafc; --text-muted: #94a3b8;
         }
 
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
-            margin: 0;
-            min-height: 100vh;
+            margin: 0; padding: 15px; height: 100vh; overflow: hidden; 
             background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), url("https://images7.alphacoders.com/398/398372.jpg") center/cover fixed;
-            color: var(--text-main);
-            padding: 20px;
-            display: flex;
-            justify-content: center;
+            color: var(--text-main); display: flex; flex-direction: column;
         }
 
-        /* --- Floating Store Button --- */
-        .store-btn {
-            position: fixed; top: 20px; right: 20px; z-index: 1000;
-            background: rgba(225, 29, 72, 0.15);
-            border: 1px solid var(--accent);
-            color: #fff; padding: 10px 18px; border-radius: 20px;
-            font-weight: 600; font-size: 13px; text-decoration: none;
-            backdrop-filter: blur(10px);
-            display: flex; align-items: center; gap: 8px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 0 15px rgba(225, 29, 72, 0.2);
-            will-change: transform, box-shadow;
-            animation: neonPulse 3s infinite ease-in-out;
-        }
-        .store-btn:hover {
-            background: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(225, 29, 72, 0.5);
-        }
+        .app-container { width: 100%; max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; height: 100%; }
 
-        @keyframes neonPulse {
-            0%, 100% { box-shadow: 0 0 10px rgba(196, 30, 58, 0.35); transform: translate3d(0, 0, 0); }
-            50% { box-shadow: 0 0 20px rgba(196, 30, 58, 0.7); transform: translate3d(0, -1px, 0); }
+        .top-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--panel-bg); border: 1px solid var(--border);
+            padding: 12px 24px; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(20px);
         }
+        .brand h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; color: #fff; }
+        .brand p { margin: 0; color: var(--text-muted); font-size: 11px; font-weight: 500; }
 
-        @keyframes tabPulse {
-            0%, 100% { box-shadow: 0 0 8px rgba(196, 30, 58, 0.3); }
-            50% { box-shadow: 0 0 16px rgba(196, 30, 58, 0.65); }
-        }
-
-        /* --- Main Layout --- */
-        .app-container { width: 100%; max-width: 1280px; margin-top: 50px; }
-        .header-section { text-align: center; margin-bottom: 40px; }
-        .header-section h1 { margin: 0 0 8px; font-size: 36px; font-weight: 800; letter-spacing: -0.5px; }
-        .header-section p { margin: 0; color: var(--text-muted); font-size: 15px; }
-
-        /* --- Custom Segmented Tabs --- */
-        .tab-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+        .tab-container { display: flex; gap: 8px; }
         .tab-btn {
             background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); color: var(--text-muted);
-            padding: 12px 24px; border-radius: 30px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
         .tab-btn:hover { background: rgba(255, 255, 255, 0.08); color: #fff; transform: translate3d(0, -1px, 0); }
         .tab-btn.active {
@@ -92,231 +53,250 @@
             will-change: box-shadow; animation: tabPulse 2.5s infinite ease-in-out; cursor: default; transform: none !important;
         }
 
-        /* --- Grid Layout --- */
-        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; }
-        @media (max-width: 960px) { .main-grid { grid-template-columns: 1fr; } }
+        .store-btn {
+            background: rgba(225, 29, 72, 0.15); border: 1px solid var(--accent); color: #fff; 
+            padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 12px; text-decoration: none;
+            display: flex; align-items: center; gap: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, box-shadow; animation: neonPulse 3s infinite ease-in-out;
+        }
+        .store-btn:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 5px 20px rgba(225, 29, 72, 0.5); }
+
+        @keyframes neonPulse { 0%, 100% { box-shadow: 0 0 8px rgba(196, 30, 58, 0.35); transform: translate3d(0, 0, 0); } 50% { box-shadow: 0 0 15px rgba(196, 30, 58, 0.7); transform: translate3d(0, -1px, 0); } }
+        @keyframes tabPulse { 0%, 100% { box-shadow: 0 0 5px rgba(196, 30, 58, 0.3); } 50% { box-shadow: 0 0 12px rgba(196, 30, 58, 0.65); } }
+
+        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; flex: 1; min-height: 0; }
         .panel-col {
-            background: var(--panel-bg); border: 1px solid var(--border); border-radius: 24px;
-            padding: 30px; backdrop-filter: blur(20px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            display: flex; flex-direction: column; gap: 25px;
+            background: var(--panel-bg); border: 1px solid var(--border); border-radius: 24px; padding: 20px; 
+            backdrop-filter: blur(20px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: flex; flex-direction: column; gap: 15px; overflow-y: auto; height: 100%;
         }
+        .panel-col::-webkit-scrollbar { width: 6px; }
+        .panel-col::-webkit-scrollbar-track { background: transparent; }
+        .panel-col::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .panel-col::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 
-        /* --- Stepped Workflow Cards --- */
-        .step-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 20px; transition: border-color 0.3s; }
+        .step-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 15px; transition: border-color 0.3s; }
         .step-card:focus-within { border-color: var(--border-highlight); }
-        .step-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; font-weight: 700; font-size: 15px; color: #fff; }
-        .step-badge { background: var(--accent); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; }
+        .step-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-weight: 700; font-size: 13px; color: #fff; }
+        .step-badge { background: var(--accent); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; }
 
-        /* --- Form Elements --- */
-        .input-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; }
-        .field { display: flex; flex-direction: column; gap: 6px; position: relative; }
-        .field label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .preset-row { display: flex; align-items: center; gap: 12px; }
+        .preset-row label { margin: 0; font-size: 11px; white-space: nowrap; color: var(--accent); font-weight: 700; text-transform: uppercase;}
+
+        .input-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; }
+        .field { display: flex; flex-direction: column; gap: 4px; position: relative; }
+        .field label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
         input[type="number"], select {
-            width: 100%; padding: 12px 16px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px; color: #fff; font-size: 15px; font-weight: 500; transition: all 0.2s; appearance: none;
+            width: 100%; padding: 8px 12px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px; color: #fff; font-size: 13px; font-weight: 500; transition: all 0.2s; appearance: none;
         }
-        input[type="number"]:focus, select:focus { outline: none; border-color: var(--accent); background: rgba(0, 0, 0, 0.6); box-shadow: 0 0 12px rgba(225,29,72,0.45); }
-        select {
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat; background-position: right 12px center; background-size: 16px; padding-right: 40px; cursor: pointer;
-        }
+        input[type="number"]:focus, select:focus { outline: none; border-color: var(--accent); background: rgba(0, 0, 0, 0.6); box-shadow: 0 0 10px rgba(225,29,72,0.45); }
+        select { background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 10px center; background-size: 14px; padding-right: 30px; cursor: pointer; }
+        optgroup { background: #1a1a1a; color: var(--accent); font-weight: 700; }
+        option { background: #111; color: #fff; font-weight: 500; padding: 4px; }
 
-        .checkbox-field { display: flex; align-items: center; gap: 10px; font-size: 15px; margin: 10px 0; }
-        .checkbox-field input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; }
-
-        /* --- Sub-Toggles styled inline inside tabs --- */
-        .sub-mode-toggle {
-            display: inline-flex; width: fit-content; max-width: 100%; background: #000; border: 1px solid var(--border);
-            padding: 4px; border-radius: 12px; margin-bottom: 15px; overflow-x: auto;
-        }
-        .sub-mode-toggle::-webkit-scrollbar { display: none; }
-        .sub-mode-toggle button {
-            flex: 0 1 auto; padding: 8px 16px; border: none; background: transparent; color: #888;
-            font-size: 11px; font-weight: 700; text-transform: uppercase; border-radius: 8px; cursor: pointer;
-            transition: all 0.2s ease; white-space: nowrap;
-        }
-        .sub-mode-toggle button.active { background: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(196, 30, 58, 0.4); }
-
-        /* --- Details / Accordion --- */
-        details.advanced-settings { background: rgba(0, 0, 0, 0.2); border: 1px dashed rgba(255, 255, 255, 0.05); border-radius: 10px; margin-top: 15px; }
-        details.advanced-settings summary { padding: 10px 15px; font-size: 12px; font-weight: 600; color: var(--text-muted); cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; }
-        details.advanced-settings summary::after { content: '+'; font-size: 16px; }
+        details.advanced-settings { background: rgba(0, 0, 0, 0.2); border: 1px dashed rgba(255, 255, 255, 0.05); border-radius: 8px; margin-top: 12px; }
+        details.advanced-settings summary { padding: 8px 12px; font-size: 11px; font-weight: 600; color: var(--text-muted); cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; }
+        details.advanced-settings summary::after { content: '+'; font-size: 14px; }
         details.advanced-settings[open] summary::after { content: '-'; }
-        .advanced-content { padding: 15px; border-top: 1px dashed rgba(255, 255, 255, 0.05); display: flex; flex-direction: column; gap: 15px; }
+        .advanced-content { padding: 12px; border-top: 1px dashed rgba(255, 255, 255, 0.05); display: flex; flex-direction: column; gap: 12px; }
 
-        /* --- Modern Toggle Switches --- */
-        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: rgba(0, 0, 0, 0.3); border-radius: 10px; margin-bottom: 10px; }
-        .toggle-row label { font-size: 13px; font-weight: 600; cursor: pointer; flex: 1; margin: 0; color: #fff; text-transform: none; }
-        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(0, 0, 0, 0.3); border-radius: 8px; margin-bottom: 8px; }
+        .toggle-row label { font-size: 11px; font-weight: 600; cursor: pointer; flex: 1; margin: 0; color: #fff; text-transform: none; }
+        .switch { position: relative; display: inline-block; width: 36px; height: 20px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .3s; border-radius: 24px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: var(--text-muted); transition: .3s; border-radius: 50%; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .3s; border-radius: 20px; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: var(--text-muted); transition: .3s; border-radius: 50%; }
         input:checked + .slider { background-color: var(--accent); }
-        input:checked + .slider:before { transform: translateX(20px); background-color: #fff; }
+        input:checked + .slider:before { transform: translateX(16px); background-color: #fff; }
 
-        /* --- Segmented Controls --- */
-        .segmented-control {
-            display: inline-flex; width: fit-content; max-width: 100%; background: rgba(0,0,0,0.4); 
-            padding: 4px; border-radius: 12px; margin-bottom: 15px; overflow-x: auto;
-        }
+        .segmented-control { display: inline-flex; width: fit-content; max-width: 100%; background: rgba(0,0,0,0.4); padding: 3px; border-radius: 10px; margin-bottom: 12px; overflow-x: auto; }
         .segmented-control::-webkit-scrollbar { display: none; }
-        .segmented-control button {
-            flex: 0 1 auto; padding: 8px 16px; border: none; background: transparent; color: var(--text-muted);
-            font-size: 12px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: 0.2s; white-space: nowrap;
-        }
-        .segmented-control button.active { background: rgba(255,255,255,0.1); color: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .segmented-control button { flex: 0 1 auto; padding: 6px 12px; border: none; background: transparent; color: var(--text-muted); font-size: 11px; font-weight: 600; border-radius: 7px; cursor: pointer; transition: 0.2s; white-space: nowrap; }
+        .segmented-control button.active { background: rgba(255,255,255,0.1); color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
-        /* --- Outputs: The Recipe Card --- */
-        .recipe-card { background: linear-gradient(180deg, rgba(30, 30, 35, 0.8) 0%, rgba(15, 15, 18, 0.9) 100%); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: 16px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .recipe-header { font-size: 18px; font-weight: 800; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
-        .recipe-header span { font-size: 12px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; }
-        .recipe-list { display: flex; flex-direction: column; gap: 12px; }
-        .recipe-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 12px 16px; border-radius: 10px; }
-        .recipe-item-name { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; }
-        .dot { width: 10px; height: 10px; border-radius: 50%; }
-        .recipe-item-value { font-size: 16px; font-weight: 800; text-align: right; transition: color 0.2s; }
-        .recipe-item-sub { font-size: 11px; color: var(--text-muted); font-weight: 500; text-align: right; margin-top: 2px;}
+        .recipe-card { background: linear-gradient(180deg, rgba(30, 30, 35, 0.8) 0%, rgba(15, 15, 18, 0.9) 100%); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: 14px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .recipe-header { font-size: 15px; font-weight: 800; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .recipe-header span { font-size: 10px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; }
+        .recipe-list { display: flex; flex-direction: column; gap: 8px; }
+        .recipe-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 10px 14px; border-radius: 8px; }
+        .recipe-item-name { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .recipe-item-value { font-size: 15px; font-weight: 800; text-align: right; transition: color 0.2s; }
+        .recipe-item-sub { font-size: 10px; color: var(--text-muted); font-weight: 500; text-align: right; margin-top: 2px;}
 
-        /* --- Stats Grid --- */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px; }
-        .stat-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 15px; border-radius: 12px; text-align: center; }
-        .stat-box span { display: block; font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
-        .stat-box strong { font-size: 20px; color: #fff; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+        .stat-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 12px; border-radius: 10px; text-align: center; }
+        .stat-box span { display: block; font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 4px; }
+        .stat-box strong { font-size: 16px; color: #fff; }
         .stat-box.highlight { background: rgba(225, 29, 72, 0.1); border-color: rgba(225, 29, 72, 0.3); grid-column: 1 / -1; }
-        .stat-box.highlight strong { color: var(--accent); font-size: 24px; }
+        .stat-box.highlight strong { color: var(--accent); font-size: 20px; }
 
-        .chart-box { height: 220px; margin-top: 20px; position: relative; }
+        .chart-box { height: 160px; margin-top: 10px; position: relative; }
         
-        /* --- Dilution Schedule View (Oral Tab) --- */
-        .schedule-container { background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 14px; padding: 20px; max-height: 420px; overflow-y: auto; }
-        .schedule-title { font-size: 13px; font-weight: 700; text-transform: uppercase; border-b: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 12px; color: var(--accent); letter-spacing: 0.5px; }
-        .schedule-steps { display: flex; flex-direction: column; gap: 10px; }
-        .schedule-step { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; font-size: 12px; cursor: pointer; transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .schedule-container { background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 12px; padding: 15px; flex: 1; display: flex; flex-direction: column; min-height: 0;}
+        .schedule-title { font-size: 11px; font-weight: 700; text-transform: uppercase; border-b: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 10px; color: var(--accent); }
+        .schedule-steps { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; padding-right: 5px;}
+        .schedule-steps::-webkit-scrollbar { width: 4px; }
+        .schedule-steps::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .schedule-step { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 10px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); }
         .schedule-step:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.15); }
         .schedule-step.completed { opacity: 0.45; text-decoration: line-through; border-color: rgba(74, 222, 128, 0.2) !important; background: rgba(74, 222, 128, 0.02); }
         .schedule-step-header { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 4px; align-items: center; }
 
-        /* Alert Boxes */
-        .alert-box { background: rgba(196, 30, 58, 0.15); border: 1px solid var(--accent); border-radius: 12px; padding: 15px; font-size: 13px; line-height: 1.4; display: flex; gap: 12px; align-items: flex-start; }
+        .alert-box { background: rgba(196, 30, 58, 0.15); border: 1px solid var(--accent); border-radius: 10px; padding: 12px; font-size: 12px; line-height: 1.4; display: flex; gap: 10px; align-items: flex-start; }
 
-        .actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
-        .actions button { padding: 14px 28px; background: rgba(196, 30, 58, 0.15); border: 1px solid var(--accent); border-radius: 12px; color: #fff; font-weight: 600; cursor: pointer; transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); }
-        .actions button:hover { background: rgba(196, 30, 58, 0.4); box-shadow: 0 0 15px rgba(196, 30, 58, 0.6); transform: translate3d(0, -1px, 0); }
-        .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3); flex: 2; border: none;}
+        .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: auto; padding-top: 15px;}
+        .actions button { padding: 10px 20px; border-radius: 10px; color: #fff; font-weight: 600; font-size: 12px; cursor: pointer; transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); border: none; text-align: center;}
+        .btn-primary { background: var(--accent); box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3); flex: 2; }
         .btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(225, 29, 72, 0.4); }
-        .btn-secondary { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border); flex: 1; }
+        .btn-secondary { background: rgba(255,255,255,0.05); border: 1px solid var(--border); flex: 1; }
         .btn-secondary:hover { background: rgba(255,255,255,0.1); }
 
-        /* Lab Protocol Modal styling */
+        /* Lab Protocol Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .modal-box { background: #0f0f12; border: 1px solid var(--border); border-radius: 20px; max-width: 700px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.9); display: flex; flex-direction: column; }
-        .modal-header { padding: 20px 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .modal-title { font-size: 20px; font-weight: 700; text-transform: uppercase; color: var(--accent); letter-spacing: 0.5px; }
-        .modal-close { background: transparent; border: none; color: #aaa; font-size: 24px; cursor: pointer; transition: color 0.2s; }
+        .modal-box { background: #0f0f12; border: 1px solid var(--border); border-radius: 20px; max-width: 600px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.9); display: flex; flex-direction: column; }
+        .modal-header { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-size: 16px; font-weight: 700; text-transform: uppercase; color: var(--accent); }
+        .modal-close { background: transparent; border: none; color: #aaa; font-size: 20px; cursor: pointer; transition: color 0.2s; }
         .modal-close:hover { color: #fff; }
-        .modal-content { padding: 25px; overflow-y: auto; color: #ddd; font-size: 14px; line-height: 1.5; }
-        .modal-step-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; background: rgba(255,255,255,0.02); padding: 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04); }
-        .modal-step-checkbox { margin-top: 4px; width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; pointer-events: none;}
-        .footer { margin-top: 30px; font-size: 11px; opacity: 0.5; text-align: right; }
+        .modal-content { padding: 20px; overflow-y: auto; color: #ddd; font-size: 13px; line-height: 1.5; }
+        .modal-step-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; background: rgba(255,255,255,0.02); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04); }
+        .modal-step-checkbox { margin-top: 2px; width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; pointer-events: none;}
 
-        @media (max-width: 900px) { .content { grid-template-columns: 1fr; } .panel { margin-top: 80px; } }
         .hidden { display: none !important; }
+
+        @media (max-width: 960px) { 
+            body { height: auto; overflow-y: auto; padding: 10px;}
+            .app-container { height: auto; display: flex; flex-direction: column; }
+            .top-nav { flex-direction: column; gap: 15px; padding: 15px; }
+            .main-grid { display: flex; flex-direction: column; height: auto; }
+            .panel-col { overflow-y: visible; height: auto; }
+            .store-btn { position: static; justify-content: center; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Floating Store Return Button -->
-    <a href="https://strixsir.github.io/pricelist/" class="store-btn">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-        <span>Back to Store</span>
-    </a>
-
     <div class="app-container">
         
-        <div class="header-section">
-            <h1 id="pageTitle">Dinfar Brew Calc</h1>
-            <p id="pageSubtitle">Intelligent formulation engine for liquid and dry compounds.</p>
-        </div>
-
-        <div class="tab-container">
-            <button id="tabSingle" class="tab-btn active" onclick="switchTab('single')">Single Compound</button>
-            <button id="tabBlend" class="tab-btn" onclick="switchTab('blend')">Blend Calculator</button>
-            <button id="tabOral" class="tab-btn" onclick="switchTab('oral')">Oral Powder Blend</button>
-        </div>
+        <header class="top-nav">
+            <div class="brand">
+                <h1 id="pageTitle">Dinfar Brew Calc</h1>
+                <p id="pageSubtitle">Intelligent formulation engine</p>
+            </div>
+            <div class="tab-container">
+                <button id="tabSingle" class="tab-btn active" onclick="switchTab('single')">Single Compound</button>
+                <button id="tabBlend" class="tab-btn" onclick="switchTab('blend')">Blend Calculator</button>
+                <button id="tabOral" class="tab-btn" onclick="switchTab('oral')">Oral Powder</button>
+            </div>
+            <a href="https://strixsir.github.io/pricelist/" class="store-btn">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                <span>Store</span>
+            </a>
+        </header>
 
         <main class="main-grid" id="captureArea">
             
-            <!-- LEFT COLUMN: INPUTS -->
             <div class="panel-col">
                 
-                <!-- Quick Preset (Liquid Only) -->
-                <div id="presetCard" class="step-card" style="background: rgba(225, 29, 72, 0.05); border-color: rgba(225, 29, 72, 0.2);">
-                    <div class="field">
-                        <label style="color: var(--accent);">⚡ Load Fast Recipe Preset</label>
-                        <select id="presetSelect" onchange="loadPresetRecipe()">
-                            <option value="none">-- Start from scratch or pick a preset --</option>
-                            <optgroup label="Standard Recipes (1.5% BA / 20% BB)">
-                                <option value='{"blend":false,"c":"test-c","mg":200,"ba":1.5,"bb":20,"oil":"mct"}'>Test C (200 mg/ml)</option>
-                                <option value='{"blend":false,"c":"tren-a","mg":100,"ba":1.5,"bb":20,"oil":"mct"}'>Tren A (100 mg/ml)</option>
-                                <option value='{"blend":false,"c":"tren-e","mg":200,"ba":1.5,"bb":20,"oil":"mct"}'>Tren E (200 mg/ml)</option>
-                                <option value='{"blend":false,"c":"npp","mg":100,"ba":1.5,"bb":20,"oil":"mct"}'>NPP (100 mg/ml)</option>
-                                <option value='{"blend":false,"c":"test-p","mg":100,"ba":1.5,"bb":20,"oil":"mct"}'>Test P (100 mg/ml)</option>
-                            </optgroup>
-                            <optgroup label="Optimized Solutions (Low BB / Thinning)">
-                                <option value='{"blend":false,"c":"eq","mg":500,"ba":1.5,"bb":18,"oil":"mct"}'>EQ (500 mg/ml)</option>
-                                <option value='{"blend":false,"c":"masteron-e","mg":200,"ba":1.5,"bb":15,"oil":"mct"}'>Mast E (200 mg/ml)</option>
-                                <option value='{"blend":false,"c":"deca","mg":300,"ba":1.5,"bb":18,"oil":"mct"}'>Deca (300 mg/ml)</option>
-                                <option value='{"blend":false,"c":"test-e","mg":250,"ba":1.5,"bb":15,"oil":"mct"}'>Test E (250 mg/ml)</option>
-                                <option value='{"blend":false,"c":"primo-e","mg":150,"ba":1.5,"bb":18,"oil":"mct"}'>Primo E (150 mg/ml)</option>
-                            </optgroup>
-                            <optgroup label="High Concentration Recipes">
-                                <option value='{"blend":false,"c":"test-deca","mg":500,"ba":1.5,"bb":24,"oil":"mct"}'>Test D (500 mg/ml)</option>
-                                <option value='{"blend":false,"c":"test-undecanoate","mg":200,"ba":1.5,"bb":25,"oil":"mct"}'>Test U (200 mg/ml - MCT)</option>
-                                <option value='{"blend":false,"c":"npp","mg":150,"ba":1.5,"bb":24,"oil":"mct"}'>NPP (150 mg/ml)</option>
-                                <option value='{"blend":false,"c":"test-c","mg":250,"ba":1.5,"bb":25,"oil":"mct"}'>Test C (250 mg/ml)</option>
-                                <option value='{"blend":false,"c":"masteron-e","mg":300,"ba":1.5,"bb":22,"oil":"mct"}'>Mast E (300 mg/ml)</option>
-                                <option value='{"blend":false,"c":"test-undecanoate","mg":250,"ba":1.5,"bb":45,"oil":"castor"}'>Test U (250 mg/ml - Castor)</option>
-                                <option value='{"blend":false,"c":"test-undecanoate","mg":350,"ba":1.5,"bb":50,"oil":"castor"}'>Test U (350 mg/ml - Castor)</option>
-                            </optgroup>
-                            <optgroup label="Blend Recipes (Auto-Switches to Blend)">
-                                <option value='{"blend":true,"c1":"test-p","mg1":30,"c2":"test-phenyl","mg2":60,"c3":"test-iso","mg3":60,"c4":"test-deca","mg4":100,"ba":2,"bb":20,"oil":"gso"}'>Sustanon 250 (4 Compounds)</option>
-                            </optgroup>
-                        </select>
-                    </div>
+                <div id="presetCard" class="step-card preset-row" style="background: rgba(225, 29, 72, 0.05); border-color: rgba(225, 29, 72, 0.2);">
+                    <label style="color: var(--accent);">⚡ Fast Preset</label>
+                    <select id="presetSelect" onchange="loadPresetRecipe()" style="flex:1;">
+                        <option value="none">-- Pick a preset --</option>
+                        <optgroup label="Standard Recipes (1.5% BA / 20% BB)">
+                            <option value='{"blend":false,"c":"test-c","mg":200,"ba":1.5,"bb":20,"oil":"mct"}'>Test C (200 mg/ml)</option>
+                            <option value='{"blend":false,"c":"tren-a","mg":100,"ba":1.5,"bb":20,"oil":"mct"}'>Tren A (100 mg/ml)</option>
+                            <option value='{"blend":false,"c":"tren-e","mg":200,"ba":1.5,"bb":20,"oil":"mct"}'>Tren E (200 mg/ml)</option>
+                            <option value='{"blend":false,"c":"npp","mg":100,"ba":1.5,"bb":20,"oil":"mct"}'>NPP (100 mg/ml)</option>
+                            <option value='{"blend":false,"c":"test-p","mg":100,"ba":1.5,"bb":20,"oil":"mct"}'>Test P (100 mg/ml)</option>
+                        </optgroup>
+                        <optgroup label="Optimized Solutions (Low BB / Thinning)">
+                            <option value='{"blend":false,"c":"eq","mg":500,"ba":1.5,"bb":18,"oil":"mct"}'>EQ (500 mg/ml)</option>
+                            <option value='{"blend":false,"c":"masteron-e","mg":200,"ba":1.5,"bb":15,"oil":"mct"}'>Mast E (200 mg/ml)</option>
+                            <option value='{"blend":false,"c":"deca","mg":300,"ba":1.5,"bb":18,"oil":"mct"}'>Deca (300 mg/ml)</option>
+                            <option value='{"blend":false,"c":"test-e","mg":250,"ba":1.5,"bb":15,"oil":"mct"}'>Test E (250 mg/ml)</option>
+                            <option value='{"blend":false,"c":"primo-e","mg":150,"ba":1.5,"bb":18,"oil":"mct"}'>Primo E (150 mg/ml)</option>
+                        </optgroup>
+                        <optgroup label="High Concentration Recipes">
+                            <option value='{"blend":false,"c":"test-deca","mg":500,"ba":1.5,"bb":24,"oil":"mct"}'>Test D (500 mg/ml)</option>
+                            <option value='{"blend":false,"c":"test-undecanoate","mg":200,"ba":1.5,"bb":25,"oil":"mct"}'>Test U (200 mg/ml - MCT)</option>
+                            <option value='{"blend":false,"c":"npp","mg":150,"ba":1.5,"bb":24,"oil":"mct"}'>NPP (150 mg/ml)</option>
+                            <option value='{"blend":false,"c":"test-c","mg":250,"ba":1.5,"bb":25,"oil":"mct"}'>Test C (250 mg/ml)</option>
+                            <option value='{"blend":false,"c":"masteron-e","mg":300,"ba":1.5,"bb":22,"oil":"mct"}'>Mast E (300 mg/ml)</option>
+                            <option value='{"blend":false,"c":"test-undecanoate","mg":250,"ba":1.5,"bb":45,"oil":"castor"}'>Test U (250 mg/ml - Castor)</option>
+                            <option value='{"blend":false,"c":"test-undecanoate","mg":350,"ba":1.5,"bb":50,"oil":"castor"}'>Test U (350 mg/ml - Castor)</option>
+                        </optgroup>
+                        <optgroup label="Blend Recipes (Auto-Switches to Blend)">
+                            <option value='{"blend":true,"c1":"test-p","mg1":30,"c2":"test-phenyl","mg2":60,"c3":"test-iso","mg3":60,"c4":"test-deca","mg4":100,"ba":2,"bb":20,"oil":"gso"}'>Sustanon 250 (4 Compounds)</option>
+                        </optgroup>
+                    </select>
                 </div>
 
-                <!-- ========================================== -->
-                <!-- LIQUID INPUTS                              -->
-                <!-- ========================================== -->
-                <div id="liquidInputs" style="display: flex; flex-direction: column; gap: 20px;">
+                <div id="liquidInputs" style="display: flex; flex-direction: column; gap: 12px;">
                     
-                    <!-- STEP 1: Compound -->
                     <div class="step-card">
                         <div class="step-header"><div class="step-badge">1</div> <span id="lblComp1">Base Compound Profile</span></div>
                         
-                        <!-- Single Compound 1 -->
                         <div class="input-row">
-                            <div class="field" style="flex: 2; min-width: 200px;">
+                            <div class="field" style="flex: 2; min-width: 140px;">
                                 <label>Compound API</label>
                                 <select id="compound" onchange="updateDisplacement(1)">
-                                    <option value="test-c">Testosterone Cypionate</option>
-                                    <option value="test-e">Testosterone Enanthate</option>
-                                    <option value="test-p">Testosterone Propionate</option>
-                                    <option value="tren-a">Trenbolone Acetate</option>
-                                    <option value="tren-e">Trenbolone Enanthate</option>
-                                    <option value="masteron-p">Masteron Propionate</option>
-                                    <option value="masteron-e">Masteron Enanthate</option>
-                                    <option value="deca">Nandrolone Decanoate</option>
-                                    <option value="npp">NPP</option>
-                                    <option value="eq">Equipoise (EQ)</option>
-                                    <option value="primo-e">Primobolan Enanthate</option>
-                                    <option value="custom">Custom (Manual Input)</option>
-                                    <!-- Full list loaded invisibly to power custom logic mappings -->
-                                    <option value="test-base" class="hidden">Test Base</option>
-                                    <option value="test-phenyl" class="hidden">Test Phenyl</option>
-                                    <option value="test-iso" class="hidden">Test Iso</option>
-                                    <option value="test-deca" class="hidden">Test Deca</option>
-                                    <option value="test-undecanoate" class="hidden">Test U</option>
+                                    <optgroup label="Testosterones">
+                                        <option value="test-c">Testosterone Cypionate</option>
+                                        <option value="test-e">Testosterone Enanthate</option>
+                                        <option value="test-p">Testosterone Propionate</option>
+                                        <option value="test-base">Testosterone Base</option>
+                                        <option value="test-phenyl">Testosterone Phenylpropionate</option>
+                                        <option value="test-iso">Testosterone Isocaproate</option>
+                                        <option value="test-deca">Testosterone Decanoate</option>
+                                        <option value="test-undecanoate">Testosterone Undecanoate</option>
+                                        <option value="test-susp">Testosterone Suspension (Aqueous)</option>
+                                    </optgroup>
+                                    <optgroup label="Nandrolones & Trenbolones">
+                                        <option value="deca">Nandrolone Decanoate (Deca)</option>
+                                        <option value="npp">Nandrolone Phenylpropionate (NPP)</option>
+                                        <option value="nandrolone-base">Nandrolone Base</option>
+                                        <option value="tren-a">Trenbolone Acetate</option>
+                                        <option value="tren-e">Trenbolone Enanthate</option>
+                                        <option value="tren-hex">Trenbolone Hexahydrobenzylcarbonate</option>
+                                        <option value="tren-base">Trenbolone Base</option>
+                                        <option value="mTren">Methyltrienolone (MTREN)</option>
+                                    </optgroup>
+                                    <optgroup label="DHT Derivatives & Others">
+                                        <option value="masteron-p">Masteron Propionate</option>
+                                        <option value="masteron-e">Masteron Enanthate</option>
+                                        <option value="primo-e">Primobolan Enanthate</option>
+                                        <option value="eq">Equipoise (Boldenone Undecylenate)</option>
+                                        <option value="bold-cyp">Boldenone Cypionate</option>
+                                        <option value="dhb">DHB (1-Test Cyp)</option>
+                                        <option value="trestolone">Trestolone (MENT Base)</option>
+                                        <option value="trestolone-a">Trestolone Acetate</option>
+                                    </optgroup>
+                                    <optgroup label="Injectable Orals">
+                                        <option value="winstrol">Winstrol (Stanozolol)</option>
+                                        <option value="dbol">Dianabol (Methandrostenolone)</option>
+                                        <option value="anadrol">Anadrol (Oxymetholone)</option>
+                                        <option value="anavar">Anavar (Oxandrolone)</option>
+                                        <option value="tbol">Turinabol</option>
+                                        <option value="sdrol">Superdrol (Methasterone)</option>
+                                        <option value="proviron">Proviron (Mesterolone)</option>
+                                    </optgroup>
+                                    <optgroup label="Hormones & Misc">
+                                        <option value="progesterone">Progesterone</option>
+                                        <option value="est-val">Estrogen Valerate</option>
+                                        <option value="est-cyp">Estrogen Cypionate</option>
+                                        <option value="est-enan">Estrogen Enanthate</option>
+                                        <option value="est-ace">Estrogen Acetate</option>
+                                        <option value="est-udy">Estrogen Undecylenate</option>
+                                        <option value="dhea">DHEA</option>
+                                        <option value="7dhea">7-Keto-DHEA</option>
+                                        <option value="dhea-sulf">DHEA Sulfate</option>
+                                        <option value="yk11">YK-11</option>
+                                        <option value="l-carn">L-Carnitine Base</option>
+                                        <option value="glut">Glutathione Base</option>
+                                    </optgroup>
+                                    <option value="custom">Custom (Manual)</option>
                                 </select>
                             </div>
                             <div class="field">
@@ -325,28 +305,20 @@
                             </div>
                         </div>
 
-                        <!-- Advanced Settings -->
                         <details class="advanced-settings">
                             <summary>Advanced API Settings</summary>
                             <div class="advanced-content input-row">
-                                <div class="field">
-                                    <label>Displacement (ml/g)</label>
-                                    <input id="disp" type="number" step="0.001" value="0.909" oninput="calc()">
-                                </div>
-                                <div class="field">
-                                    <label>Raw Purity (%)</label>
-                                    <input id="purity" type="number" value="100" oninput="calc()">
-                                </div>
+                                <div class="field"><label>Disp (ml/g)</label><input id="disp" type="number" step="0.001" value="0.909" oninput="calc()"></div>
+                                <div class="field"><label>Purity (%)</label><input id="purity" type="number" value="100" oninput="calc()"></div>
                             </div>
                         </details>
 
-                        <!-- Blend Group (C2-C4) -->
-                        <div id="blendGroup" class="hidden" style="margin-top: 15px; display:none; flex-direction:column; gap:10px; border-top: 1px solid var(--border); padding-top:15px;">
+                        <div id="blendGroup" class="hidden" style="margin-top: 10px; display:none; flex-direction:column; gap:8px; border-top: 1px solid var(--border); padding-top:10px;">
                             <div class="toggle-row">
                                 <label for="enableC2">Add Compound 2</label>
                                 <label class="switch"><input type="checkbox" id="enableC2" onchange="toggleCompoundRow(2)"><span class="slider"></span></label>
                             </div>
-                            <div id="c2Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; display:none;">
+                            <div id="c2Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none;">
                                 <div class="field" style="flex:2"><label>Comp 2</label><select id="compound2" onchange="updateDisplacement(2)"></select></div>
                                 <div class="field"><label>mg/ml</label><input id="mgml2" type="number" value="100" oninput="calc()"></div>
                                 <div class="field hidden" style="display:none;"><input id="disp2" type="number" value="0.909"><input id="purity2" type="number" value="100"></div>
@@ -356,7 +328,7 @@
                                 <label for="enableC3">Add Compound 3</label>
                                 <label class="switch"><input type="checkbox" id="enableC3" onchange="toggleCompoundRow(3)"><span class="slider"></span></label>
                             </div>
-                            <div id="c3Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; display:none;">
+                            <div id="c3Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none;">
                                 <div class="field" style="flex:2"><label>Comp 3</label><select id="compound3" onchange="updateDisplacement(3)"></select></div>
                                 <div class="field"><label>mg/ml</label><input id="mgml3" type="number" value="100" oninput="calc()"></div>
                                 <div class="field hidden" style="display:none;"><input id="disp3" type="number" value="0.909"><input id="purity3" type="number" value="100"></div>
@@ -366,7 +338,7 @@
                                 <label for="enableC4">Add Compound 4</label>
                                 <label class="switch"><input type="checkbox" id="enableC4" onchange="toggleCompoundRow(4)"><span class="slider"></span></label>
                             </div>
-                            <div id="c4Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; display:none;">
+                            <div id="c4Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none;">
                                 <div class="field" style="flex:2"><label>Comp 4</label><select id="compound4" onchange="updateDisplacement(4)"></select></div>
                                 <div class="field"><label>mg/ml</label><input id="mgml4" type="number" value="100" oninput="calc()"></div>
                                 <div class="field hidden" style="display:none;"><input id="disp4" type="number" value="0.909"><input id="purity4" type="number" value="100"></div>
@@ -374,12 +346,11 @@
                         </div>
                     </div>
 
-                    <!-- STEP 2: Batch Size -->
                     <div class="step-card">
                         <div class="step-header"><div class="step-badge">2</div> Batch Sizing</div>
                         <div class="segmented-control">
-                            <button id="btnModeVol" class="active" onclick="setLiquidMode('volume')">Target Volume Mode</button>
-                            <button id="btnModePowder" onclick="setLiquidMode('powder')">Fixed Powder Mode</button>
+                            <button id="btnModeVol" class="active" onclick="setLiquidMode('volume')">Target Volume</button>
+                            <button id="btnModePowder" onclick="setLiquidMode('powder')">Fixed Powder</button>
                         </div>
                         <div id="inputVolumeGroup" class="field">
                             <label>Desired Final Volume (ml)</label>
@@ -391,15 +362,14 @@
                         </div>
                     </div>
 
-                    <!-- STEP 3: Solvents -->
                     <div class="step-card">
                         <div class="step-header"><div class="step-badge">3</div> Solvents & Carrier</div>
-                        <div class="input-row" style="margin-bottom: 15px;">
+                        <div class="input-row" style="margin-bottom: 12px;">
                             <div class="field"><label>BA (Alcohol) %</label><input id="baPct" type="number" value="2" step="0.5" oninput="calc()"></div>
                             <div class="field"><label>BB (Benzoate) %</label><input id="bbPct" type="number" value="18" step="1" oninput="calc()"></div>
                         </div>
                         <div class="field">
-                            <label>Primary Carrier Oil</label>
+                            <label>Primary Carrier Oil <span id="mainCarrierAutoLbl" style="color:var(--accent); font-weight:700;">(Auto: 100%)</span></label>
                             <select id="mainCarrier" onchange="calc()">
                                 <option value="mct" selected>MCT Oil (Thin)</option>
                                 <option value="gso">Grapeseed Oil (Standard)</option>
@@ -411,15 +381,14 @@
                                 <option value="water">Water (Suspensions)</option>
                                 <option value="custom">Custom Density</option>
                             </select>
-                            <input id="customMainCarrierDensity" class="hidden" style="margin-top:8px; display:none;" type="number" step="0.01" value="0.92" placeholder="Density g/ml" oninput="calc()">
+                            <input id="customMainCarrierDensity" class="hidden" style="margin-top:6px; display:none;" type="number" step="0.01" value="0.92" placeholder="Density g/ml" oninput="calc()">
                         </div>
 
                         <details class="advanced-settings">
                             <summary>Advanced Solvents & Filtering</summary>
                             <div class="advanced-content">
-                                <!-- Extra Solvent -->
                                 <div class="toggle-row" style="background:transparent; padding:0;">
-                                    <label for="enableExtraSolvent">Use Guaiacol / PEG</label>
+                                    <label for="enableExtraSolvent">Use Super Solvents</label>
                                     <label class="switch"><input type="checkbox" id="enableExtraSolvent" onchange="toggleExtraSolvent()"><span class="slider"></span></label>
                                 </div>
                                 <div id="extraSolventGroup" class="hidden input-row" style="display:none;">
@@ -430,44 +399,52 @@
                                             <option value="peg400">PEG 400 (1.128 g/ml)</option>
                                             <option value="dmso">DMSO (1.10 g/ml)</option>
                                             <option value="ethyl-lactate">Ethyl L-Lactate (1.035 g/ml)</option>
-                                            <option value="custom">Custom (manual density)</option>
+                                            <option value="custom">Custom</option>
                                         </select>
                                     </div>
                                     <div class="field"><label>Percentage %</label><input id="extraSolventPct" type="number" value="0" oninput="calc()"></div>
                                 </div>
                                 <div class="field hidden" id="customExtraSolventDensityField" style="display:none;">
-                                    <label>Custom Extra Solvent Density (g/ml)</label>
+                                    <label>Custom Density</label>
                                     <input id="customExtraSolventDensity" type="number" step="0.001" value="1.1" oninput="calc()">
                                 </div>
 
-                                <!-- Dual Carrier -->
                                 <div class="toggle-row" style="background:transparent; padding:0;">
-                                    <label for="enableSecondCarrier">Blend Two Carrier Oils</label>
+                                    <label for="enableSecondCarrier">Add Secondary Carrier Oil</label>
                                     <label class="switch"><input type="checkbox" id="enableSecondCarrier" onchange="toggleSecondCarrier()"><span class="slider"></span></label>
                                 </div>
-                                <div id="secondCarrierGroup" class="hidden input-row" style="display:none;">
-                                    <div class="field">
-                                        <label>Secondary Oil</label>
-                                        <select id="secondCarrier" onchange="calc()">
-                                            <option value="eo">Ethyl Oleate (EO)</option>
-                                            <option value="castor">Castor Oil</option>
-                                            <option value="mct">MCT Oil</option>
-                                            <option value="gso">Grapeseed Oil</option>
-                                            <option value="sesame">Sesame Oil</option>
-                                            <option value="mig840">Miglyol 840</option>
-                                            <option value="mig812">Miglyol 812</option>
-                                            <option value="water">Water</option>
-                                            <option value="custom">Custom Density</option>
-                                        </select>
+                                <div id="secondCarrierGroup" class="hidden" style="display:none; flex-direction:column; gap:12px;">
+                                    <div class="input-row">
+                                        <div class="field">
+                                            <label>Oil 2</label>
+                                            <select id="carrier2" onchange="calc()">
+                                                <option value="eo">Ethyl Oleate</option><option value="castor">Castor Oil</option><option value="mct">MCT Oil</option><option value="gso">Grapeseed</option><option value="sesame">Sesame Oil</option><option value="mig840">Miglyol 840</option><option value="mig812">Miglyol 812</option><option value="water">Water</option><option value="custom">Custom</option>
+                                            </select>
+                                        </div>
+                                        <div class="field"><label>Mix %</label><input id="carrier2Pct" type="number" value="0" oninput="calc()"></div>
+                                        <div class="field hidden" id="customCarrier2Field" style="display:none;">
+                                            <label>Density</label><input id="customCarrier2Density" type="number" step="0.001" value="0.96" oninput="calc()">
+                                        </div>
                                     </div>
-                                    <div class="field"><label>Mix %</label><input id="carrierMixPct" type="number" value="0" oninput="calc()"></div>
-                                </div>
-                                <div class="field hidden" id="customSecondCarrierField" style="display:none;">
-                                    <label>Custom Second Carrier Density (g/ml)</label>
-                                    <input id="customSecondCarrierDensity" type="number" step="0.001" value="0.96" oninput="calc()">
+
+                                    <div class="toggle-row" style="background:transparent; padding:0; margin-top:4px;">
+                                        <label for="enableThirdCarrier">Add Tertiary Carrier Oil</label>
+                                        <label class="switch"><input type="checkbox" id="enableThirdCarrier" onchange="toggleThirdCarrier()"><span class="slider"></span></label>
+                                    </div>
+                                    <div id="thirdCarrierGroup" class="hidden input-row" style="display:none;">
+                                        <div class="field">
+                                            <label>Oil 3</label>
+                                            <select id="carrier3" onchange="calc()">
+                                                <option value="eo">Ethyl Oleate</option><option value="castor">Castor Oil</option><option value="mct">MCT Oil</option><option value="gso">Grapeseed</option><option value="sesame">Sesame Oil</option><option value="mig840">Miglyol 840</option><option value="mig812">Miglyol 812</option><option value="water">Water</option><option value="custom">Custom</option>
+                                            </select>
+                                        </div>
+                                        <div class="field"><label>Mix %</label><input id="carrier3Pct" type="number" value="0" oninput="calc()"></div>
+                                        <div class="field hidden" id="customCarrier3Field" style="display:none;">
+                                            <label>Density</label><input id="customCarrier3Density" type="number" step="0.001" value="0.96" oninput="calc()">
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <!-- Filter Loss -->
                                 <div class="field">
                                     <label>Sterile Filter Loss Comp.</label>
                                     <select id="filter" onchange="calc()">
@@ -476,16 +453,15 @@
                                         <option value="0.22">0.22µm Filter (~1.6ml)</option>
                                         <option value="custom">Custom Loss (ml)</option>
                                     </select>
-                                    <input id="customLoss" class="hidden" style="margin-top:8px; display:none;" type="number" step="0.1" value="1.5" placeholder="Loss ml" oninput="calc()">
+                                    <input id="customLoss" class="hidden" style="margin-top:6px; display:none;" type="number" step="0.1" value="1.5" placeholder="Loss ml" oninput="calc()">
                                 </div>
                             </div>
                         </details>
                     </div>
 
-                    <!-- STEP 4: Economics (Liquid Only) -->
                     <div class="step-card" id="economicsCard">
                         <div class="step-header"><div class="step-badge">$</div> Batch Economics</div>
-                        <details class="advanced-settings">
+                        <details class="advanced-settings" style="margin-top:0;">
                             <summary>Calculate Cost Per Vial</summary>
                             <div class="advanced-content">
                                 <div class="input-row">
@@ -494,13 +470,13 @@
                                 </div>
                                 <div class="input-row">
                                     <div class="field"><label>BA/BB ($/100ml)</label><input type="number" id="costSolvent" value="12" oninput="calc()"></div>
-                                    <div class="field"><label>Vial+Filter ($/vial)</label><input type="number" id="costHardware" value="1.50" step="0.1" oninput="calc()"></div>
+                                    <div class="field"><label>Vial/Hardware ($)</label><input type="number" id="costHardware" value="1.50" step="0.1" oninput="calc()"></div>
                                 </div>
                                 <div class="field"><label>Vial Size (ml)</label><input type="number" id="vialSize" value="10" oninput="calc()"></div>
                                 
-                                <div style="margin-top: 10px; padding: 15px; background: rgba(225, 29, 72, 0.1); border: 1px solid var(--accent); border-radius: 10px; display: flex; justify-content: space-between; align-items: center;">
-                                    <span style="font-size: 13px; font-weight: 600; color: #fff;">Est. Cost Per Vial</span>
-                                    <strong id="outCostPerVial" style="color: var(--accent); font-size: 20px;">$0.00</strong>
+                                <div style="margin-top: 5px; padding: 12px; background: rgba(225, 29, 72, 0.1); border: 1px solid var(--accent); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 11px; font-weight: 600; color: #fff;">Est. Cost Per Vial</span>
+                                    <strong id="outCostPerVial" style="color: var(--accent); font-size: 16px;">$0.00</strong>
                                 </div>
                             </div>
                         </details>
@@ -511,7 +487,7 @@
                 <!-- ========================================== -->
                 <!-- ORAL INPUTS                                -->
                 <!-- ========================================== -->
-                <div id="oralInputs" class="hidden" style="display: none; flex-direction: column; gap: 20px;">
+                <div id="oralInputs" class="hidden" style="display: none; flex-direction: column; gap: 15px;">
                     
                     <div class="segmented-control">
                         <button id="btnOralModeWeight" class="active" onclick="setOralMode('weight')">Standard Blend</button>
@@ -539,7 +515,7 @@
                     <!-- Weight Target Mode -->
                     <div id="oralWeightTargetArea" class="step-card">
                         <div class="step-header"><div class="step-badge">2</div> Mixture Target</div>
-                        <div class="sub-mode-toggle" style="background: rgba(0,0,0,0.2);">
+                        <div class="segmented-control" style="background: rgba(0,0,0,0.2);">
                             <button id="btnOralTargetConc" class="active" onclick="setOralTarget('conc')">Target Conc/g</button>
                             <button id="btnOralTargetBatch" onclick="setOralTarget('batch')">Batch Size</button>
                             <button id="btnOralTargetFiller" onclick="setOralTarget('filler')">Fixed Filler</button>
@@ -553,7 +529,7 @@
                     <!-- Capsule Target Mode -->
                     <div id="oralCapsuleArea" class="step-card hidden" style="display: none;">
                         <div class="step-header"><div class="step-badge">2</div> Capsule Specs</div>
-                        <div class="input-row" style="margin-bottom:15px;">
+                        <div class="input-row" style="margin-bottom:12px;">
                             <div class="field"><label>API/Cap (mg)</label><input id="oralCapApiPerCapsule" type="number" value="25" oninput="calc()"></div>
                             <div class="field"><label>Total Caps</label><input id="oralCapCount" type="number" value="100" oninput="calc()"></div>
                         </div>
@@ -569,7 +545,7 @@
                                 <option value="custom">Manual Step Cap</option>
                             </select>
                         </div>
-                        <div class="field hidden" id="oralCustomStepsField" style="margin-top: 15px; display:none;">
+                        <div class="field hidden" id="oralCustomStepsField" style="margin-top: 10px; display:none;">
                             <label>Max Steps Allowed</label>
                             <input id="oralMaxSteps" type="number" value="5" min="1" max="15" oninput="calc()">
                         </div>
@@ -588,98 +564,63 @@
                 </div>
 
                 <!-- 1. LIQUID OUTPUTS -->
-                <div id="liquidResults" style="display: flex; flex-direction: column; gap: 20px;">
+                <div id="liquidResults" style="display: flex; flex-direction: column; gap: 15px;">
                     
-                    <!-- Recipe Card -->
                     <div class="recipe-card">
                         <div class="recipe-header">
                             Recipe Sheet <span>Gravimetric (Weight) Optimized</span>
                         </div>
                         <div class="recipe-list">
-                            <!-- Comp 1 -->
                             <div class="recipe-item">
                                 <div class="recipe-item-name"><span class="dot" style="background: var(--powder-color)"></span> Base Powder</div>
-                                <div style="text-align: right;">
-                                    <div class="recipe-item-value" id="powder" style="color: var(--powder-color)">0.000 g</div>
-                                </div>
+                                <div style="text-align: right;"><div class="recipe-item-value" id="powder" style="color: var(--powder-color)">0.000 g</div></div>
                             </div>
-                            <!-- Comps 2-4 -->
                             <div id="powder2Row" class="recipe-item hidden" style="display:none;"><div class="recipe-item-name"><span class="dot" style="background: var(--powder-color)"></span> Compound 2</div><div class="recipe-item-value" id="powder2" style="color: var(--powder-color)">0.000 g</div></div>
                             <div id="powder3Row" class="recipe-item hidden" style="display:none;"><div class="recipe-item-name"><span class="dot" style="background: var(--powder-color)"></span> Compound 3</div><div class="recipe-item-value" id="powder3" style="color: var(--powder-color)">0.000 g</div></div>
                             <div id="powder4Row" class="recipe-item hidden" style="display:none;"><div class="recipe-item-name"><span class="dot" style="background: var(--powder-color)"></span> Compound 4</div><div class="recipe-item-value" id="powder4" style="color: var(--powder-color)">0.000 g</div></div>
 
-                            <!-- Solvents -->
                             <div class="recipe-item">
                                 <div class="recipe-item-name"><span class="dot" style="background: var(--ba-color)"></span> Benzyl Alcohol</div>
-                                <div style="text-align: right;">
-                                    <div class="recipe-item-value" id="baWeight" style="color: var(--ba-color)">0.000 g</div>
-                                    <div class="recipe-item-sub" id="baVol">0.00 ml</div>
-                                </div>
+                                <div style="text-align: right;"><div class="recipe-item-value" id="baWeight" style="color: var(--ba-color)">0.000 g</div><div class="recipe-item-sub" id="baVol">0.00 ml</div></div>
                             </div>
                             <div class="recipe-item">
                                 <div class="recipe-item-name"><span class="dot" style="background: var(--bb-color)"></span> Benzyl Benzoate</div>
-                                <div style="text-align: right;">
-                                    <div class="recipe-item-value" id="bbWeight" style="color: var(--bb-color)">0.000 g</div>
-                                    <div class="recipe-item-sub" id="bbVol">0.00 ml</div>
-                                </div>
+                                <div style="text-align: right;"><div class="recipe-item-value" id="bbWeight" style="color: var(--bb-color)">0.000 g</div><div class="recipe-item-sub" id="bbVol">0.00 ml</div></div>
                             </div>
                             <div id="extraRow" class="recipe-item hidden" style="display:none;">
-                                <div class="recipe-item-name"><span class="dot" style="background: var(--extra-color)"></span> Extra Solvent</div>
-                                <div style="text-align: right;">
-                                    <div class="recipe-item-value" id="extraSolventWeight" style="color: var(--extra-color)">0.000 g</div>
-                                    <div class="recipe-item-sub" id="extraSolventVol">0.00 ml</div>
-                                </div>
+                                <div class="recipe-item-name"><span class="dot" style="background: var(--extra-color)"></span> Super Solvent</div>
+                                <div style="text-align: right;"><div class="recipe-item-value" id="extraSolventWeight" style="color: var(--extra-color)">0.000 g</div><div class="recipe-item-sub" id="extraSolventVol">0.00 ml</div></div>
                             </div>
 
-                            <!-- Oils -->
-                            <div id="secondCarrierRow" class="recipe-item hidden" style="display:none;">
-                                <div class="recipe-item-name"><span class="dot" style="background: var(--carrier-color)"></span> Second Carrier Oil</div>
-                                <div style="text-align: right;">
-                                    <div class="recipe-item-value" id="secondCarrierWeight" style="color: var(--carrier-color)">0.000 g</div>
-                                    <div class="recipe-item-sub" id="secondCarrierVol">0.00 ml</div>
-                                </div>
+                            <div id="carrier2Row" class="recipe-item hidden" style="display:none;">
+                                <div class="recipe-item-name"><span class="dot" style="background: #8b5cf6"></span> <span id="outCarrier2Label">Carrier Oil 2</span></div>
+                                <div style="text-align: right;"><div class="recipe-item-value" id="outCarrier2Weight" style="color: #8b5cf6">0.000 g</div><div class="recipe-item-sub" id="outCarrier2Vol">0.00 ml</div></div>
+                            </div>
+                            <div id="carrier3Row" class="recipe-item hidden" style="display:none;">
+                                <div class="recipe-item-name"><span class="dot" style="background: #d946ef"></span> <span id="outCarrier3Label">Carrier Oil 3</span></div>
+                                <div style="text-align: right;"><div class="recipe-item-value" id="outCarrier3Weight" style="color: #d946ef">0.000 g</div><div class="recipe-item-sub" id="outCarrier3Vol">0.00 ml</div></div>
                             </div>
                             <div class="recipe-item" style="border: 1px dashed var(--border); background: rgba(192, 132, 252, 0.05);">
-                                <div class="recipe-item-name"><span class="dot" style="background: var(--carrier-color)"></span> Carrier Oil (Top-Off)</div>
-                                <div style="text-align: right;">
-                                    <div class="recipe-item-value" id="mainCarrierWeight" style="color: var(--carrier-color)">0.000 g</div>
-                                    <div class="recipe-item-sub" id="mainCarrierVol">0.00 ml</div>
-                                </div>
+                                <div class="recipe-item-name"><span class="dot" style="background: var(--carrier-color)"></span> <span id="outMainCarrierLabel">Main Oil (Top-Off)</span></div>
+                                <div style="text-align: right;"><div class="recipe-item-value" id="mainCarrierWeight" style="color: var(--carrier-color)">0.000 g</div><div class="recipe-item-sub" id="mainCarrierVol">0.00 ml</div></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Stats Grid -->
                     <div class="stats-grid">
-                        <div class="stat-box highlight">
-                            <span>Target Total Scale Mass</span>
-                            <strong id="totalMass">0.000 g</strong>
-                        </div>
-                        <div class="stat-box">
-                            <span>Final Brew Yield</span>
-                            <strong id="finalYield">0.00 ml</strong>
-                        </div>
-                        <div class="stat-box">
-                            <span>Est. Viscosity (<span id="tempVal">25°C</span>)</span>
-                            <strong id="outViscosityVal" style="color: var(--ba-color);">0.0 cP</strong>
-                        </div>
+                        <div class="stat-box highlight"><span>Target Total Scale Mass</span><strong id="totalMass">0.000 g</strong></div>
+                        <div class="stat-box"><span>Final Brew Yield</span><strong id="finalYield">0.00 ml</strong></div>
+                        <div class="stat-box"><span>Est. Viscosity (<span id="tempVal">25°C</span>)</span><strong id="outViscosityVal" style="color: var(--ba-color);">0.0 cP</strong></div>
                     </div>
-
                 </div>
 
                 <!-- 2. ORAL OUTPUTS -->
-                <div id="oralResults" class="hidden" style="display: none; flex-direction: column; gap: 20px;">
+                <div id="oralResults" class="hidden" style="display: none; flex-direction: column; gap: 15px;">
                     <div class="recipe-card">
                         <div class="recipe-header">Dry Blend Target <span><span id="outOralApiCapsuleEquivalent"></span></span></div>
                         <div class="recipe-list">
-                            <div class="recipe-item">
-                                <div class="recipe-item-name"><span class="dot" style="background: var(--powder-color)"></span> Active API</div>
-                                <div class="recipe-item-value" id="outOralTotalApi" style="color: var(--powder-color)">0.000 g</div>
-                            </div>
-                            <div class="recipe-item">
-                                <div class="recipe-item-name"><span class="dot" style="background: var(--bb-color)"></span> Excipient/Filler</div>
-                                <div class="recipe-item-value" id="outOralTotalFiller" style="color: var(--bb-color)">0.000 g</div>
-                            </div>
+                            <div class="recipe-item"><div class="recipe-item-name"><span class="dot" style="background: var(--powder-color)"></span> Active API</div><div class="recipe-item-value" id="outOralTotalApi" style="color: var(--powder-color)">0.000 g</div></div>
+                            <div class="recipe-item"><div class="recipe-item-name"><span class="dot" style="background: var(--bb-color)"></span> Excipient/Filler</div><div class="recipe-item-value" id="outOralTotalFiller" style="color: var(--bb-color)">0.000 g</div></div>
                         </div>
                     </div>
                     <div class="stats-grid">
@@ -689,13 +630,10 @@
                     </div>
                 </div>
 
-                <!-- Shared Output Housings -->
-                <div id="chartHousing" class="chart-box">
-                    <canvas id="pieChart"></canvas>
-                </div>
+                <div id="chartHousing" class="chart-box"><canvas id="pieChart"></canvas></div>
 
                 <div id="scheduleHousing" class="schedule-container hidden" style="display: none;">
-                    <div class="schedule-title">Trituration / Geometric Dilution Matrix</div>
+                    <div class="schedule-title">Trituration Matrix (Click steps to track)</div>
                     <div id="oralDilutionStepsRaw" class="schedule-steps"></div>
                 </div>
 
@@ -711,135 +649,70 @@
     <!-- LAB PROTOCOL MODAL -->
     <div id="protocolModal" class="modal-overlay hidden" style="display: none;">
         <div class="modal-box">
-            <div class="modal-header">
-                <h2 id="modalTitle">Lab Protocol</h2>
-                <button class="modal-close" onclick="closeProtocolModal()">&times;</button>
-            </div>
+            <div class="modal-header"><h2 id="modalTitle">Lab Protocol</h2><button class="modal-close" onclick="closeProtocolModal()">&times;</button></div>
             <div class="modal-content" id="protocolContent"></div>
-            <div style="padding: 20px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end;">
-                <button class="btn-primary" style="width: auto; padding: 10px 24px;" onclick="window.print()">Print Checklist</button>
+            <div style="padding: 15px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end;">
+                <button class="btn-primary" style="width: auto; padding: 10px 24px; flex: none;" onclick="window.print()">Print Checklist</button>
             </div>
         </div>
     </div>
 
-    <div class="footer">
-        Dinfar Brew ©
-    </div>
-
     <script>
-        // Data Dictionaries
-        const displacements = {
-            "custom": 0.909, "test-base": 0.909, "test-p": 0.916, "test-phenyl": 0.954,
-            "test-c": 0.909, "test-e": 0.943, "test-iso": 0.935, "test-deca": 0.962,
-            "test-susp": 1.000, "tren-base": 0.841, "tren-a": 0.848, "tren-e": 0.909,
-            "deca": 0.962, "npp": 0.877, "eq": 0.952, "masteron-p": 0.935,
-            "masteron-e": 0.962, "primo-e": 0.952
-        };
-
-        const densities = {
-            ba: 1.044, bb: 1.118, castor: 0.96, gso: 0.92, sesame: 0.92,
-            mct: 0.95, mig840: 0.94, mig812: 0.95, eo: 0.87, water: 1.0,
-            guaiacol: 1.129, peg400: 1.128, dmso: 1.10, "ethyl-lactate": 1.035, none: 1.0
-        };
-
+        // Dictionary Configs
+        const displacements = { "custom": 0.909, "test-base": 0.909, "test-p": 0.916, "test-phenyl": 0.954, "test-c": 0.909, "test-e": 0.943, "test-iso": 0.935, "test-deca": 0.962, "test-undecanoate": 0.970, "test-susp": 1.000, "tren-base": 0.841, "tren-a": 0.848, "tren-e": 0.909, "tren-hex": 0.909, "mTren": 0.855, "nandrolone-base": 0.890, "deca": 0.962, "npp": 0.877, "eq": 0.952, "bold-cyp": 0.909, "masteron-p": 0.935, "masteron-e": 0.962, "primo-e": 0.952, "trestolone": 0.900, "trestolone-a": 0.901, "dhb": 0.970, "winstrol": 0.885, "dbol": 0.892, "anadrol": 0.860, "anavar": 0.900, "tbol": 0.830, "sdrol": 0.909, "proviron": 0.909, "progesterone": 0.854, "est-val": 0.910, "est-cyp": 0.869, "est-enan": 0.900, "est-ace": 0.865, "est-udy": 0.935, "dhea": 0.893, "7dhea": 0.840, "dhea-sulf": 0.850, "yk11": 0.820, "l-carn": 0.625, "glut": 0.694 };
+        const densities = { ba: 1.044, bb: 1.118, castor: 0.96, gso: 0.92, sesame: 0.92, mct: 0.95, mig840: 0.94, mig812: 0.95, eo: 0.87, water: 1.0, guaiacol: 1.129, peg400: 1.128, dmso: 1.10, "ethyl-lactate": 1.035, none: 1.0 };
         const baseViscosity = { ba: 5.5, bb: 8.5, castor: 650, gso: 50, sesame: 45, mct: 28, mig840: 25, mig812: 30, eo: 5.5, water: 1.0, guaiacol: 5, peg400: 90, dmso: 2, "ethyl-lactate": 3, none: 1.0 };
         const tempCoeff = { ba: 0.015, bb: 0.015, castor: 0.065, gso: 0.035, sesame: 0.035, mct: 0.025, mig840: 0.025, mig812: 0.025, eo: 0.015, water: 0.01, guaiacol: 0.01, peg400: 0.04, dmso: 0.01, "ethyl-lactate": 0.01, none: 0 };
 
-        // State Objects safely initialized to prevent any null reference errors on early interaction
-        let currentTab = 'single';
-        let calcMode = 'volume';
-        let oralMode = 'weight';
-        let oralWeightTarget = 'conc';
-        let chart;
-        let latestCalculations = { p1: '0.000', n1: 'Base', vBa: '0.00', wBa: '0.000', vBb: '0.00', wBb: '0.000', nM: 'Oil', tMass: '0.000', b: false, fn: 'None' };
+        let currentTab = 'single', calcMode = 'volume', oralMode = 'weight', oralWeightTarget = 'conc', chart;
+        let latestCalculations = { pow1: '0.000', comp1Name: 'Base', baVol: '0.00', baWeight: '0.000', bbVol: '0.00', bbWeight: '0.000', mainOilName: 'Oil', totalMass: '0.000', isBlend: false, filterName: 'None (0ml)' };
         let oralCalculations = { a: 0, f: 0, t: 0, p: 0, h: '' };
 
-        // DOM Utility Functions
+        // DOM Utils
         const getEl = id => document.getElementById(id);
-        const getVal = (id, def = 0) => {
-            const el = getEl(id);
-            if (!el || el.value === "") return def;
-            const val = parseFloat(el.value);
-            return isNaN(val) ? def : val;
-        };
-        const getSelectText = (id, def = '') => {
-            const el = getEl(id);
-            return (el && el.selectedIndex >= 0) ? el.options[el.selectedIndex].text : def;
-        };
+        const getVal = (id, def = 0) => { const el = getEl(id); if (!el || el.value === "") return def; const val = parseFloat(el.value); return isNaN(val) ? def : val; };
+        const getSelectText = (id, def = '') => { const el = getEl(id); return (el && el.selectedIndex >= 0) ? el.options[el.selectedIndex].text : def; };
         const setTxt = (id, txt) => { const el = getEl(id); if(el) el.textContent = txt; };
         const setHtml = (id, html) => { const el = getEl(id); if(el) el.innerHTML = html; };
-        
-        const toggleVis = (id, isVisible) => { 
-            const el = getEl(id); 
-            if(el) {
-                if (isVisible) { el.classList.remove('hidden'); el.style.display = ''; } 
-                else { el.classList.add('hidden'); el.style.display = 'none'; }
-            }
-        };
-        
-        const safeToggleClass = (id, className, force) => { 
-            const el = getEl(id); 
-            if(el) el.classList.toggle(className, force); 
-        };
+        const toggleVis = (id, isVisible) => { const el = getEl(id); if(el) { if (isVisible) { el.classList.remove('hidden'); el.style.display = ''; } else { el.classList.add('hidden'); el.style.display = 'none'; } } };
+        const safeToggleClass = (id, className, force) => { const el = getEl(id); if(el) el.classList.toggle(className, force); };
 
-        // Initialize Compound Clones Safely
         const compSelect1 = getEl('compound');
-        if (compSelect1) {
-            const selectHTML = compSelect1.innerHTML;
-            ['compound2','compound3','compound4'].forEach(id => { if(getEl(id)) getEl(id).innerHTML = selectHTML; });
-        }
+        if (compSelect1) { const selectHTML = compSelect1.innerHTML; ['compound2','compound3','compound4'].forEach(id => { if(getEl(id)) getEl(id).innerHTML = selectHTML; }); }
 
-        // Tab Handling
         function switchTab(tab) {
             currentTab = tab;
-            
             ['tabSingle', 'tabBlend', 'tabOral'].forEach(id => safeToggleClass(id, 'active', false));
             safeToggleClass(tab === 'single' ? 'tabSingle' : tab === 'blend' ? 'tabBlend' : 'tabOral', 'active', true);
 
             if (tab === 'single' || tab === 'blend') {
                 setTxt('pageTitle', tab === 'single' ? "Dinfar Brew Calc" : "Dinfar Blend Calc");
                 setTxt('lblComp1', tab === 'single' ? "Base Compound Profile" : "Compound 1 Profile");
-                toggleVis('liquidInputs', true);
-                toggleVis('presetCard', true);
-                toggleVis('liquidResults', true);
-                toggleVis('chartHousing', true);
-                toggleVis('oralInputs', false);
-                toggleVis('oralResults', false);
-                toggleVis('scheduleHousing', false);
+                toggleVis('liquidInputs', true); toggleVis('presetCard', true); toggleVis('liquidResults', true); toggleVis('chartHousing', true);
+                toggleVis('oralInputs', false); toggleVis('oralResults', false); toggleVis('scheduleHousing', false);
                 toggleVis('blendGroup', tab === 'blend');
                 if (tab === 'blend') setLiquidMode('volume');
                 toggleVis('btnModePowder', tab === 'single');
                 toggleVis('economicsCard', true); 
             } else {
                 setTxt('pageTitle', "Oral Powder Calc");
-                toggleVis('liquidInputs', false);
-                toggleVis('presetCard', false);
-                toggleVis('liquidResults', false);
-                toggleVis('chartHousing', false);
-                toggleVis('oralInputs', true);
-                toggleVis('oralResults', true);
-                toggleVis('scheduleHousing', true);
-                toggleVis('economicsCard', false);
+                toggleVis('liquidInputs', false); toggleVis('presetCard', false); toggleVis('liquidResults', false); toggleVis('chartHousing', false);
+                toggleVis('oralInputs', true); toggleVis('oralResults', true); toggleVis('scheduleHousing', true); toggleVis('economicsCard', false);
             }
             calc();
         }
 
-        // Sub-Mode Toggles
         function setLiquidMode(mode) {
             calcMode = mode;
-            safeToggleClass('btnModeVol', 'active', mode === 'volume');
-            safeToggleClass('btnModePowder', 'active', mode === 'powder');
-            toggleVis('inputVolumeGroup', mode === 'volume');
-            toggleVis('inputPowderGroup', mode === 'powder');
+            safeToggleClass('btnModeVol', 'active', mode === 'volume'); safeToggleClass('btnModePowder', 'active', mode === 'powder');
+            toggleVis('inputVolumeGroup', mode === 'volume'); toggleVis('inputPowderGroup', mode === 'powder');
             calc();
         }
 
         function setOralMode(mode) {
             oralMode = mode;
-            safeToggleClass('btnOralModeWeight', 'active', mode === 'weight');
-            safeToggleClass('btnOralModeCapsule', 'active', mode === 'capsule');
-            toggleVis('oralWeightTargetArea', mode === 'weight');
-            toggleVis('oralCapsuleArea', mode === 'capsule');
+            safeToggleClass('btnOralModeWeight', 'active', mode === 'weight'); safeToggleClass('btnOralModeCapsule', 'active', mode === 'capsule');
+            toggleVis('oralWeightTargetArea', mode === 'weight'); toggleVis('oralCapsuleArea', mode === 'capsule');
             setTxt('lblOralApiAmt', mode === 'capsule' ? "API Pre-Weighed Mass" : "API Weight");
             calc();
         }
@@ -852,133 +725,65 @@
             calc();
         }
 
-        function toggleOralCustomSteps() {
-            const el = getEl('oralStepsMode');
-            toggleVis('oralCustomStepsField', el && el.value === 'custom');
-            calc();
-        }
-
-        function updateDisplacement(n) {
-            const selEl = getEl(n === 1 ? 'compound' : `compound${n}`);
-            const dispEl = getEl(n === 1 ? 'disp' : `disp${n}`);
-            if (selEl && dispEl && selEl.value !== 'custom' && displacements[selEl.value]) {
-                dispEl.value = displacements[selEl.value];
-            }
-            calc();
-        }
-
-        // Feature UI Toggles
-        function toggleCompoundRow(n) {
-            const el = getEl(`enableC${n}`);
-            const isChecked = el ? el.checked : false;
-            toggleVis(`c${n}Inputs`, isChecked);
-            toggleVis(`powder${n}Row`, isChecked);
-            calc();
-        }
-
-        function toggleExtraSolvent() {
-            const el = getEl('enableExtraSolvent');
-            const isChecked = el ? el.checked : false;
-            toggleVis('extraSolventGroup', isChecked);
-            toggleVis('extraRow', isChecked);
-            calc();
-        }
-
+        function toggleOralCustomSteps() { toggleVis('oralCustomStepsField', getEl('oralStepsMode')?.value === 'custom'); calc(); }
+        function updateDisplacement(n) { const selEl = getEl(n === 1 ? 'compound' : `compound${n}`); const dispEl = getEl(n === 1 ? 'disp' : `disp${n}`); if (selEl && dispEl && selEl.value !== 'custom' && displacements[selEl.value]) { dispEl.value = displacements[selEl.value]; } calc(); }
+        function toggleCompoundRow(n) { const isChecked = getEl(`enableC${n}`)?.checked; toggleVis(`c${n}Inputs`, isChecked); toggleVis(`powder${n}Row`, isChecked); calc(); }
+        function toggleExtraSolvent() { const isChecked = getEl('enableExtraSolvent')?.checked; toggleVis('extraSolventGroup', isChecked); toggleVis('extraRow', isChecked); calc(); }
+        
         function toggleSecondCarrier() {
-            const el = getEl('enableSecondCarrier');
-            const isChecked = el ? el.checked : false;
-            toggleVis('secondCarrierGroup', isChecked);
-            toggleVis('secondCarrierRow', isChecked);
+            const isChecked = getEl('enableSecondCarrier')?.checked;
+            toggleVis('secondCarrierGroup', isChecked); toggleVis('carrier2Row', isChecked);
+            if (!isChecked) { const thirdEl = getEl('enableThirdCarrier'); if(thirdEl) thirdEl.checked = false; toggleThirdCarrier(); }
             calc();
         }
 
-        function toggleStepCheck(el) {
-            el.classList.toggle('completed');
-            const cb = el.querySelector('input[type="checkbox"]');
-            if (cb) cb.checked = el.classList.contains('completed');
+        function toggleThirdCarrier() {
+            const isChecked = getEl('enableThirdCarrier')?.checked;
+            toggleVis('thirdCarrierGroup', isChecked); toggleVis('carrier3Row', isChecked);
+            calc();
         }
 
-        // Preset Loading
+        function toggleStepCheck(el) { el.classList.toggle('completed'); const cb = el.querySelector('input[type="checkbox"]'); if (cb) cb.checked = el.classList.contains('completed'); }
+
         function loadPresetRecipe() {
-            const selectEl = getEl('presetSelect');
-            if (!selectEl || selectEl.value === 'none') return;
-            const d = JSON.parse(selectEl.value);
-            
-            switchTab(d.blend ? 'blend' : 'single');
-            
+            const selectEl = getEl('presetSelect'); if (!selectEl || selectEl.value === 'none') return;
+            const d = JSON.parse(selectEl.value); switchTab(d.blend ? 'blend' : 'single');
             const c1El = getEl('compound'); if(c1El) c1El.value = d.blend ? d.c1 : d.c;
             const m1El = getEl('mgml'); if(m1El) m1El.value = d.blend ? d.mg1 : d.mg;
-            
-            [2,3,4].forEach(i => {
-                const enEl = getEl(`enableC${i}`);
-                if (enEl) {
-                    enEl.checked = d.blend && !!d[`c${i}`];
-                    toggleCompoundRow(i);
-                    if(enEl.checked) {
-                        const cEl = getEl(`compound${i}`); if(cEl) cEl.value = d[`c${i}`];
-                        const mEl = getEl(`mgml${i}`); if(mEl) mEl.value = d[`mg${i}`];
-                    }
-                }
-            });
-
-            const baEl = getEl('baPct'); if(baEl) baEl.value = d.ba;
-            const bbEl = getEl('bbPct'); if(bbEl) bbEl.value = d.bb;
-            const oilEl = getEl('mainCarrier'); if(oilEl) oilEl.value = d.oil;
-            
-            const exEl = getEl('enableExtraSolvent'); if(exEl) exEl.checked = false;
-            const secEl = getEl('enableSecondCarrier'); if(secEl) secEl.checked = false;
-            
-            toggleExtraSolvent();
-            toggleSecondCarrier();
-            updateDisplacement(1);
-            if (d.blend) {
-                if (d.c2) updateDisplacement(2);
-                if (d.c3) updateDisplacement(3);
-                if (d.c4) updateDisplacement(4);
-            }
+            [2,3,4].forEach(i => { const enEl = getEl(`enableC${i}`); if (enEl) { enEl.checked = d.blend && !!d[`c${i}`]; toggleCompoundRow(i); if(enEl.checked) { const cEl = getEl(`compound${i}`); if(cEl) cEl.value = d[`c${i}`]; const mEl = getEl(`mgml${i}`); if(mEl) mEl.value = d[`mg${i}`]; } } });
+            if(getEl('baPct')) getEl('baPct').value = d.ba; if(getEl('bbPct')) getEl('bbPct').value = d.bb; if(getEl('mainCarrier')) getEl('mainCarrier').value = d.oil;
+            if(getEl('enableExtraSolvent')) getEl('enableExtraSolvent').checked = false; if(getEl('enableSecondCarrier')) getEl('enableSecondCarrier').checked = false;
+            toggleExtraSolvent(); toggleSecondCarrier(); updateDisplacement(1);
+            if (d.blend) { if (d.c2) updateDisplacement(2); if (d.c3) updateDisplacement(3); if (d.c4) updateDisplacement(4); }
             calc();
         }
 
         function showCustomFields() {
-            const fEl = getEl('filter');
-            toggleVis('customLossField', fEl && fEl.value === 'custom');
-            
-            const exTypeEl = getEl('extraSolventType');
-            const enExEl = getEl('enableExtraSolvent');
-            toggleVis('customExtraSolventDensityField', exTypeEl && exTypeEl.value === 'custom' && enExEl && enExEl.checked);
-            
-            const mcEl = getEl('mainCarrier');
-            toggleVis('customMainCarrierField', mcEl && mcEl.value === 'custom');
-            
-            const scEl = getEl('secondCarrier');
-            const enScEl = getEl('enableSecondCarrier');
-            toggleVis('customSecondCarrierField', scEl && scEl.value === 'custom' && enScEl && enScEl.checked);
+            toggleVis('customLossField', getEl('filter')?.value === 'custom');
+            toggleVis('customExtraSolventDensityField', getEl('extraSolventType')?.value === 'custom' && getEl('enableExtraSolvent')?.checked);
+            toggleVis('customMainCarrierField', getEl('mainCarrier')?.value === 'custom');
+            toggleVis('customCarrier2Field', getEl('carrier2')?.value === 'custom' && getEl('enableSecondCarrier')?.checked);
+            toggleVis('customCarrier3Field', getEl('carrier3')?.value === 'custom' && getEl('enableThirdCarrier')?.checked);
         }
 
-        // Master Calculation Hub
-        function calc() {
-            if (currentTab === 'oral') {
-                calcOral();
-            } else {
-                showCustomFields();
-                calcLiquid();
-            }
-        }
+        function calc() { currentTab === 'oral' ? calcOral() : (showCustomFields(), calcLiquid()); }
 
         function calcLiquid() {
             const isBlend = currentTab === 'blend';
-            const baPct = getVal('baPct');
-            const bbPct = getVal('bbPct');
+            const baPct = getVal('baPct'), bbPct = getVal('bbPct');
+            const exPct = getEl('enableExtraSolvent')?.checked ? getVal('extraSolventPct') : 0;
             
-            const enExtraEl = getEl('enableExtraSolvent');
-            const exPct = (enExtraEl && enExtraEl.checked) ? getVal('extraSolventPct') : 0;
-            
-            const enSecEl = getEl('enableSecondCarrier');
-            const secPct = (enSecEl && enSecEl.checked) ? getVal('carrierMixPct') : 0;
-            
-            const fEl = getEl('filter');
-            const fv = fEl ? fEl.value : 'none';
-            let fl = fv === '0.45' ? 1.0 : fv === '0.22' ? 1.6 : fv === 'double' ? 2.5 : fv === 'custom' ? getVal('customLoss') : 0;
+            // Frictionless Auto-Capping Carrier Logic
+            let c2Pct = getEl('enableSecondCarrier')?.checked ? getVal('carrier2Pct') : 0;
+            let c3Pct = getEl('enableThirdCarrier')?.checked ? getVal('carrier3Pct') : 0;
+
+            if (c2Pct > 100) { c2Pct = 100; if (getEl('carrier2Pct')) getEl('carrier2Pct').value = 100; }
+            if (c2Pct + c3Pct > 100) { c3Pct = 100 - c2Pct; if (getEl('carrier3Pct')) getEl('carrier3Pct').value = c3Pct; }
+            const mainPct = 100 - c2Pct - c3Pct;
+            setTxt('mainCarrierAutoLbl', `(Auto: ${mainPct.toFixed(0)}%)`);
+
+            const fv = getEl('filter')?.value || 'none';
+            const fl = fv === '0.45' ? 1.0 : fv === '0.22' ? 1.6 : fv === 'double' ? 2.5 : fv === 'custom' ? getVal('customLoss') : 0;
             
             let tv = 0, y = 0, p1 = 0;
             const c1 = getVal('mgml'), d1 = getVal('disp', 0.909);
@@ -995,130 +800,99 @@
 
             let p2 = 0, p3 = 0, p4 = 0, cv = p1 * d1;
             if (isBlend) {
-                const enC2 = getEl('enableC2');
-                if(enC2 && enC2.checked) { p2 = getVal('mgml2') > 0 ? (tv * getVal('mgml2') / 1000) / (Math.max(0.1, getVal('purity2',100))/100) : 0; cv += p2 * getVal('disp2', 0.909); }
-                const enC3 = getEl('enableC3');
-                if(enC3 && enC3.checked) { p3 = getVal('mgml3') > 0 ? (tv * getVal('mgml3') / 1000) / (Math.max(0.1, getVal('purity3',100))/100) : 0; cv += p3 * getVal('disp3', 0.909); }
-                const enC4 = getEl('enableC4');
-                if(enC4 && enC4.checked) { p4 = getVal('mgml4') > 0 ? (tv * getVal('mgml4') / 1000) / (Math.max(0.1, getVal('purity4',100))/100) : 0; cv += p4 * getVal('disp4', 0.909); }
+                if(getEl('enableC2')?.checked) { p2 = getVal('mgml2') > 0 ? (tv * getVal('mgml2') / 1000) / (Math.max(0.1, getVal('purity2',100))/100) : 0; cv += p2 * getVal('disp2', 0.909); }
+                if(getEl('enableC3')?.checked) { p3 = getVal('mgml3') > 0 ? (tv * getVal('mgml3') / 1000) / (Math.max(0.1, getVal('purity3',100))/100) : 0; cv += p3 * getVal('disp3', 0.909); }
+                if(getEl('enableC4')?.checked) { p4 = getVal('mgml4') > 0 ? (tv * getVal('mgml4') / 1000) / (Math.max(0.1, getVal('purity4',100))/100) : 0; cv += p4 * getVal('disp4', 0.909); }
             }
 
             const vBa = tv * (baPct / 100), vBb = tv * (bbPct / 100), vEx = tv * (exPct / 100);
             const vRem = tv - cv - vBa - vBb - vEx;
 
-            let vM = 0, vS = 0, err = vRem < 0;
-            if (!err) { vM = vRem * ((100 - secPct) / 100); vS = vRem * (secPct / 100); }
-
-            const mcEl = getEl('mainCarrier');
-            const mainCarrierVal = mcEl ? mcEl.value : 'mct';
-            const dM = mainCarrierVal === 'custom' ? getVal('customMainCarrierDensity', 0.92) : (densities[mainCarrierVal] || 0.92);
+            let vM = 0, vC2 = 0, vC3 = 0, err = false;
             
-            const scEl = getEl('secondCarrier');
-            const secondCarrierVal = scEl ? scEl.value : 'none';
-            const dS = secondCarrierVal === 'custom' ? getVal('customSecondCarrierDensity', 0.92) : (densities[secondCarrierVal] || 0.92);
-            
-            const exTEl = getEl('extraSolventType');
-            const extraSolventTypeVal = exTEl ? exTEl.value : 'none';
-            const dEx = extraSolventTypeVal === 'custom' ? getVal('customExtraSolventDensity', 1) : (densities[extraSolventTypeVal] || 1);
+            if (vRem < 0) {
+                err = true;
+            } else {
+                vC2 = vRem * (c2Pct / 100);
+                vC3 = vRem * (c3Pct / 100);
+                vM = vRem - vC2 - vC3;
+            }
 
-            const wBa = vBa * densities.ba, wBb = vBb * densities.bb, wEx = vEx * dEx, wM = vM * dM, wS = vS * dS;
-            const tMass = p1 + p2 + p3 + p4 + wBa + wBb + wEx + wM + wS;
+            const mcVal = getEl('mainCarrier')?.value || 'mct', dM = mcVal === 'custom' ? getVal('customMainCarrierDensity', 0.92) : (densities[mcVal] || 0.92);
+            const c2Val = getEl('carrier2')?.value || 'none', dC2 = c2Val === 'custom' ? getVal('customCarrier2Density', 0.92) : (densities[c2Val] || 0.92);
+            const c3Val = getEl('carrier3')?.value || 'none', dC3 = c3Val === 'custom' ? getVal('customCarrier3Density', 0.92) : (densities[c3Val] || 0.92);
+            const exVal = getEl('extraSolventType')?.value || 'none', dEx = exVal === 'custom' ? getVal('customExtraSolventDensity', 1) : (densities[exVal] || 1);
 
+            const wBa = vBa * densities.ba, wBb = vBb * densities.bb, wEx = vEx * dEx, wC2 = vC2 * dC2, wC3 = vC3 * dC3, wM = vM * dM;
+            const tMass = p1 + p2 + p3 + p4 + wBa + wBb + wEx + wM + wC2 + wC3;
+
+            const nameM = getSelectText('mainCarrier', 'Main Oil'), nameC2 = getSelectText('carrier2', 'Secondary Oil'), nameC3 = getSelectText('carrier3', 'Tertiary Oil');
+            setTxt('outMainCarrierLabel', nameM + ' (Top-Off)'); setTxt('outCarrier2Label', nameC2); setTxt('outCarrier3Label', nameC3);
             setTxt('powder', p1.toFixed(3) + ' g'); setTxt('powder2', p2.toFixed(3) + ' g'); setTxt('powder3', p3.toFixed(3) + ' g'); setTxt('powder4', p4.toFixed(3) + ' g');
             setTxt('baVol', vBa.toFixed(2) + ' ml'); setTxt('baWeight', wBa.toFixed(3) + ' g');
             setTxt('bbVol', vBb.toFixed(2) + ' ml'); setTxt('bbWeight', wBb.toFixed(3) + ' g');
             setTxt('extraSolventVol', vEx.toFixed(2) + ' ml'); setTxt('extraSolventWeight', wEx.toFixed(3) + ' g');
+            setTxt('outCarrier2Vol', vC2.toFixed(2) + ' ml'); setTxt('outCarrier2Weight', wC2.toFixed(3) + ' g');
+            setTxt('outCarrier3Vol', vC3.toFixed(2) + ' ml'); setTxt('outCarrier3Weight', wC3.toFixed(3) + ' g');
             setTxt('mainCarrierVol', vM.toFixed(2) + ' ml'); setTxt('mainCarrierWeight', wM.toFixed(3) + ' g');
-            setTxt('secondCarrierVol', vS.toFixed(2) + ' ml'); setTxt('secondCarrierWeight', wS.toFixed(3) + ' g');
             setTxt('totalMass', tMass.toFixed(3) + ' g'); setTxt('finalYield', y.toFixed(2) + ' ml');
 
             // Viscosity Simulation
-            const tempSlider = getEl('tempSlider');
-            const tempC = tempSlider ? parseFloat(tempSlider.value) || 25 : 25;
+            const tempC = getVal('tempSlider', 25);
             setTxt('tempVal', tempC + '°C');
 
             let cp = "N/A", cl = "#fff";
-            const totalLiq = vBa + vBb + vEx + vM + vS;
+            const totalLiq = vBa + vBb + vEx + vM + vC2 + vC3;
 
             if (!err && totalLiq > 0) {
-                const gm = k => (baseViscosity[k] || 50) * Math.exp(-(tempCoeff[k] || 0.03) * (tempC - 25));
-                const lV = (vBa * Math.log(gm('ba')) + vBb * Math.log(gm('bb')) + vEx * Math.log(gm(extraSolventTypeVal)) + vM * Math.log(gm(mainCarrierVal)) + vS * Math.log(gm(secondCarrierVal))) / totalLiq;
+                const gm = k => (baseViscosity[k] || 50) * Math.exp(-(tempCoeff[k] || 0.03) * (tempC - 25)); 
+                let lV = 0;
+                if(vBa>0) lV += vBa * Math.log(gm('ba')); if(vBb>0) lV += vBb * Math.log(gm('bb')); if(vEx>0) lV += vEx * Math.log(gm(exVal));
+                if(vC2>0) lV += vC2 * Math.log(gm(c2Val)); if(vC3>0) lV += vC3 * Math.log(gm(c3Val)); if(vM>0)  lV += vM * Math.log(gm(mcVal));
+                lV /= totalLiq;
+
                 let est = Math.exp(lV) * Math.exp((getVal('mgml') + getVal('mgml2') + getVal('mgml3') + getVal('mgml4')) / 1100);
-                
-                if(est < 15) { cp = "Very Thin"; cl = "var(--ba-color)"; } 
-                else if(est < 35) { cp = "Thin"; cl = "var(--ba-color)"; } 
-                else if(est < 65) { cp = "Medium"; cl = "var(--bb-color)"; } 
-                else { cp = "Thick"; cl = "var(--extra-color)"; }
-                
+                if(est < 15) cl = "var(--ba-color)"; else if(est < 35) cl = "var(--ba-color)"; else if(est < 65) cl = "var(--bb-color)"; else cl = "var(--extra-color)";
                 setTxt('outViscosityVal', '~' + est.toFixed(1) + ' cP');
-                const outVisValEl = getEl('outViscosityVal'); if(outVisValEl) outVisValEl.style.color = cl;
+                const viscEl = getEl('outViscosityVal'); if(viscEl) viscEl.style.color = cl;
             }
 
-            if (err) {
-                toggleVis('errorAlert', true);
-                setTxt('errorText', "Saturation Exceeded. Combined displacement volume exceeds Target Batch size.");
-            } else {
-                toggleVis('errorAlert', false);
-            }
-
-            updatePieChart([cv, vBa, vBb, vEx, vM + vS]);
+            toggleVis('errorAlert', err);
+            if (err) setTxt('errorText', "Saturation Exceeded. Combined displacement volume exceeds Target Batch size.");
+            updatePieChart([cv, vBa, vBb, vEx, vM, vC2, vC3]);
             
-            // Economics Calculus
-            const pCost = getVal('costPowder', 15);
-            const oCost = getVal('costOil', 10);
-            const sCost = getVal('costSolvent', 12);
-            const hCost = getVal('costHardware', 1.50);
-            const vSize = getVal('vialSize', 10);
-            
-            const numVials = (vSize > 0 && y > 0) ? y / vSize : 0;
-            const batchPowderCost = ((p1+p2+p3+p4) / 10) * pCost;
-            const batchOilCost = ((vM+vS) / 100) * oCost;
-            const batchSolventCost = ((vBa+vBb+vEx) / 100) * sCost;
+            // Economics
+            const numVials = (getVal('vialSize', 10) > 0 && y > 0) ? y / getVal('vialSize', 10) : 0;
             let costPerVial = 0;
-            
             if (numVials > 0) {
-                costPerVial = ((batchPowderCost + batchOilCost + batchSolventCost) / numVials) + hCost;
+                costPerVial = (((p1+p2+p3+p4) / 10 * getVal('costPowder', 15)) + ((vM+vC2+vC3) / 100 * getVal('costOil', 10)) + ((vBa+vBb+vEx) / 100 * getVal('costSolvent', 12)) / numVials) + getVal('costHardware', 1.50);
             }
             setTxt('outCostPerVial', '$' + costPerVial.toFixed(2));
 
             // State Save
             latestCalculations = { 
-                pow1: p1.toFixed(3), 
-                comp1Name: getSelectText('compound', 'Base Compound'), 
-                baVol: vBa.toFixed(2), baWeight: wBa.toFixed(3), 
-                bbVol: vBb.toFixed(2), bbWeight: wBb.toFixed(3), 
-                mainOilName: getSelectText('mainCarrier', 'Primary Oil'), 
-                totalMass: tMass.toFixed(3), isBlend: isBlend, 
-                filterName: getSelectText('filter', 'None'), 
-                extraSolvents: vEx > 0 ? `${vEx.toFixed(2)}ml of ${getSelectText('extraSolventType')}` : null, 
-                secondCarrier: vS > 0 ? `${vS.toFixed(2)}ml of ${getSelectText('secondCarrier')}` : null, 
-                mainCarrierWeight: wM.toFixed(3) 
+                pow1: p1.toFixed(3), comp1Name: getSelectText('compound', 'Base Compound'), baVol: vBa.toFixed(2), baWeight: wBa.toFixed(3), 
+                bbVol: vBb.toFixed(2), bbWeight: wBb.toFixed(3), mainOilName: nameM, totalMass: tMass.toFixed(3), isBlend: isBlend, 
+                filterName: getSelectText('filter', 'None (0ml)'), extraSolvents: vEx > 0 ? `${vEx.toFixed(2)}ml of ${getSelectText('extraSolventType')}` : null, 
+                c2Name: nameC2, vC2: vC2, wC2: wC2.toFixed(3), c3Name: nameC3, vC3: vC3, wC3: wC3.toFixed(3), mainCarrierWeight: wM.toFixed(3) 
             };
-            
             if(isBlend) { 
-                const enC2 = getEl('enableC2'), enC3 = getEl('enableC3'), enC4 = getEl('enableC4');
-                latestCalculations.comp2 = (enC2 && enC2.checked) ? { name: getSelectText('compound2'), pow: p2.toFixed(3) } : null;
-                latestCalculations.comp3 = (enC3 && enC3.checked) ? { name: getSelectText('compound3'), pow: p3.toFixed(3) } : null;
-                latestCalculations.comp4 = (enC4 && enC4.checked) ? { name: getSelectText('compound4'), pow: p4.toFixed(3) } : null;
+                latestCalculations.comp2 = getEl('enableC2')?.checked ? { name: getSelectText('compound2'), pow: p2.toFixed(3) } : null;
+                latestCalculations.comp3 = getEl('enableC3')?.checked ? { name: getSelectText('compound3'), pow: p3.toFixed(3) } : null;
+                latestCalculations.comp4 = getEl('enableC4')?.checked ? { name: getSelectText('compound4'), pow: p4.toFixed(3) } : null;
             }
         }
 
         function calcOral() {
-            const apiUnitEl = getEl('oralApiUnit');
-            const apiUnit = apiUnitEl ? apiUnitEl.value : 'g';
+            const apiUnit = getEl('oralApiUnit')?.value || 'g';
             let api = getVal('oralApiAmount') * (apiUnit === 'mg' ? 0.001 : apiUnit === 'kg' ? 1000 : 1);
             let fil = 0, tot = 0, err = false;
 
             if (oralMode === 'weight') {
                 const tv = getVal('oralWeightTargetVal');
-                if (oralWeightTarget === 'batch') { 
-                    tot = tv; fil = tot - api; if (fil < 0) { err = true; fil = 0; } 
-                } else if (oralWeightTarget === 'filler') { 
-                    fil = tv; tot = api + fil; 
-                } else { 
-                    if (tv > 1000 || tv <= 0) { err = true; tot = api; } 
-                    else { tot = (api * 1000) / tv; fil = tot - api; if (fil < 0) { err = true; fil = 0; } } 
-                }
+                if (oralWeightTarget === 'batch') { tot = tv; fil = tot - api; if (fil < 0) { err = true; fil = 0; } } 
+                else if (oralWeightTarget === 'filler') { fil = tv; tot = api + fil; } 
+                else { if (tv > 1000 || tv <= 0) { err = true; tot = api; } else { tot = (api * 1000) / tv; fil = tot - api; if (fil < 0) { err = true; fil = 0; } } }
                 setTxt('outOralApiCapsuleEquivalent', "Bulk Dry Blend");
             } else {
                 const req = (getVal('oralCapApiPerCapsule') * getVal('oralCapCount')) / 1000;
@@ -1128,82 +902,39 @@
                 setTxt('outOralApiCapsuleEquivalent', `${getVal('oralCapCount')} caps @ ${getVal('oralCapFillWeight')}mg`);
             }
 
-            setTxt('outOralTotalApi', api.toFixed(3) + ' g'); 
-            setTxt('outOralTotalFiller', fil.toFixed(3) + ' g'); 
-            setTxt('outOralTotalBatchSize', tot.toFixed(3) + ' g');
-            setTxt('outOralApiPercentage', (tot > 0 ? (api / tot) * 100 : 0).toFixed(2) + ' %'); 
-            setTxt('outOralConcPerGram', (tot > 0 ? (api * 1000) / tot : 0).toFixed(2) + ' mg/g');
+            setTxt('outOralTotalApi', api.toFixed(3) + ' g'); setTxt('outOralTotalFiller', fil.toFixed(3) + ' g'); setTxt('outOralTotalBatchSize', tot.toFixed(3) + ' g');
+            setTxt('outOralApiPercentage', (tot > 0 ? (api / tot) * 100 : 0).toFixed(2) + ' %'); setTxt('outOralConcPerGram', (tot > 0 ? (api * 1000) / tot : 0).toFixed(2) + ' mg/g');
             
             toggleVis('errorAlert', err);
-            if(err) {
-                if (oralMode === 'weight' && oralWeightTarget === 'conc' && getVal('oralWeightTargetVal') > 1000) {
-                    setTxt('errorText', "Target concentration cannot exceed 1000 mg/g (pure active API).");
-                } else {
-                    setTxt('errorText', "API weight cannot exceed total dry target blend size.");
-                }
-            }
+            if(err) setTxt('errorText', oralMode === 'weight' && oralWeightTarget === 'conc' && getVal('oralWeightTargetVal') > 1000 ? "Target concentration cannot exceed 1000 mg/g (pure active API)." : "API weight cannot exceed total dry target blend size.");
 
-            // Steps Rendering
-            let h = "", r = fil, c = api, s = 1;
-            const stepsModeEl = getEl('oralStepsMode');
-            let m = (stepsModeEl && stepsModeEl.value === 'custom') ? getVal('oralMaxSteps', 99) : 99;
-            
+            let h = "", r = fil, c = api, s = 1, m = getEl('oralStepsMode')?.value === 'custom' ? getVal('oralMaxSteps', 99) : 99;
             if (api > 0 && r > 0 && !err) {
-                h += `
-                <div class="schedule-step transition-all duration-200" onclick="toggleStepCheck(this)" style="border-left: 3px solid var(--powder-color); background: rgba(0,0,0,0.4);">
-                    <div class="schedule-step-header" style="color: var(--powder-color);">
-                        <span>Initial Active Target Charge</span>
-                        <span style="font-size:10px;"><input type="checkbox" style="pointer-events:none; accent-color:var(--accent);"></span>
-                    </div>
-                    <div>Place exactly <b class="text-white">${api.toFixed(3)}g</b> of pure hormone API inside your mortar bowl.</div>
-                </div>`;
-
+                h += `<div class="schedule-step transition-all duration-200" onclick="toggleStepCheck(this)" style="border-left: 3px solid var(--powder-color); background: rgba(0,0,0,0.4);"><div class="schedule-step-header" style="color: var(--powder-color);"><span>Initial Active Target Charge</span><span style="font-size:10px;"><input type="checkbox" style="pointer-events:none; accent-color:var(--accent);"></span></div><div>Place exactly <b class="text-white">${api.toFixed(3)}g</b> of pure hormone API inside your mortar bowl.</div></div>`;
                 while (r > 0 && s <= m) {
                     let a = (r <= c || s === m) ? r : c; let p = c; c += a; r -= a; let f = r <= 0;
-                    h += `
-                    <div class="schedule-step transition-all duration-200" onclick="toggleStepCheck(this)" style="border-left: 3px solid ${f ? 'var(--ba-color)' : 'var(--bb-color)'};">
-                        <div class="schedule-step-header" style="color: ${f ? 'var(--ba-color)' : 'var(--bb-color)'};">
-                            <span>Step ${s}: Blend Multiplier (Ratio 1:1)</span>
-                            <span style="font-size:10px;"><input type="checkbox" style="pointer-events:none; accent-color:var(--accent);"></span>
-                        </div>
-                        <div>Add exactly <b class="text-white">${a.toFixed(3)}g</b> of filler bulking agent to current <b class="text-gray-400">${p.toFixed(3)}g</b> mixture. Triturate thoroughly.</div>
-                        <div style="font-size:10px; opacity:0.6; display:flex; justify-content:space-between; margin-top:6px;">
-                            <span>Combined Weight: ${c.toFixed(3)}g</span>
-                            <span>Remaining Filler Pool: ${Math.max(0, r).toFixed(3)}g</span>
-                        </div>
-                    </div>`;
+                    h += `<div class="schedule-step transition-all duration-200" onclick="toggleStepCheck(this)" style="border-left: 3px solid ${f ? 'var(--ba-color)' : 'var(--bb-color)'};"><div class="schedule-step-header" style="color: ${f ? 'var(--ba-color)' : 'var(--bb-color)'};"><span>Step ${s}: Blend Multiplier (Ratio 1:1)</span><span style="font-size:10px;"><input type="checkbox" style="pointer-events:none; accent-color:var(--accent);"></span></div><div>Add exactly <b class="text-white">${a.toFixed(3)}g</b> of filler bulking agent to current <b class="text-gray-400">${p.toFixed(3)}g</b> mixture. Triturate thoroughly.</div><div style="font-size:10px; opacity:0.6; display:flex; justify-content:space-between; margin-top:6px;"><span>Combined Weight: ${c.toFixed(3)}g</span><span>Remaining Filler Pool: ${Math.max(0, r).toFixed(3)}g</span></div></div>`;
                     if (f) break; s++;
                 }
-            } else if (err) {
-                h = `<div style="color: var(--powder-color); font-style:italic; text-align:center; font-size:13px; padding:15px;">Config Error: Adjust weight proportions.</div>`;
-            } else {
-                h = `<div style="color: #666; font-style:italic; text-align:center; font-size:13px; padding:15px;">Awaiting non-zero active weights.</div>`;
-            }
+            } else if (err) h = `<div style="color: var(--powder-color); font-style:italic; text-align:center; font-size:13px; padding:15px;">Config Error: Adjust weight proportions.</div>`;
+            else h = `<div style="color: #666; font-style:italic; text-align:center; font-size:13px; padding:15px;">Awaiting non-zero active weights.</div>`;
             
             setHtml('oralDilutionStepsRaw', h);
             oralCalculations = { a: api, f: fil, t: tot, p: (tot > 0 ? (api / tot) * 100 : 0), h: h };
         }
 
-        // Safe Pie Chart Updates
         function updatePieChart(data) {
             if (typeof Chart === 'undefined') return;
             const ctxEl = getEl('pieChart'); if (!ctxEl) return;
-            const ctx = ctxEl.getContext('2d');
             
-            const labels = ['Compound', 'BA', 'BB', 'Extra', 'Carrier'];
-            const colors = ['#e11d48', '#4ade80', '#facc15', '#f97316', '#c084fc'];
+            const labels = ['Compound', 'BA', 'BB', 'Extra', 'Main Oil', 'Oil 2', 'Oil 3'];
+            const colors = ['#e11d48', '#4ade80', '#facc15', '#f97316', '#c084fc', '#8b5cf6', '#d946ef'];
             const fd = [], fl = [], fc = [];
-            
-            data.forEach((v, i) => { 
-                if (v > 0.01) { 
-                    fd.push(v); fl.push(labels[i]); fc.push(colors[i]); 
-                } 
-            });
+            data.forEach((v, i) => { if (v > 0.01) { fd.push(v); fl.push(labels[i]); fc.push(colors[i]); } });
             
             if (chart) chart.destroy();
-            chart = new Chart(ctx, { 
-                type: 'doughnut', 
-                data: { labels: fl, datasets: [{ data: fd, backgroundColor: fc, borderColor: 'transparent', borderWidth: 2 }] }, 
+            chart = new Chart(ctxEl.getContext('2d'), { 
+                type: 'doughnut', data: { labels: fl, datasets: [{ data: fd, backgroundColor: fc, borderColor: 'transparent', borderWidth: 2 }] }, 
                 options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 12 }, usePointStyle: true } } } } 
             });
         }
@@ -1211,134 +942,38 @@
         function openProtocolModal() {
             let h = "";
             if (currentTab === 'oral') {
-                const c = oralCalculations; 
-                setTxt('modalTitle', "Geometric Dilution Checklist");
-                h = `
-                <div style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">
-                    <p style="opacity: 0.7; font-size: 13px;">Follow this geometric dilution protocol to ensure active ingredient homogeneity without micro-clustering.</p>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 12px; border: 1px solid var(--border); font-size: 12px;">
-                    <div>API Target Mass: <b style="color:var(--powder-color);">${(c.a||0).toFixed(3)}g</b></div>
-                    <div>Filler Target Mass: <b style="color:var(--bb-color);">${(c.f||0).toFixed(3)}g</b></div>
-                    <div>Target Active Concentration: <b style="color:var(--ba-color);">${(c.p||0).toFixed(2)}%</b></div>
-                    <div>Total Final Batch Mass: <b style="color:var(--carrier-color);">${(c.t||0).toFixed(3)}g</b></div>
-                </div>
-                <div class="space-y-4">
-                    <div class="modal-step-item">
-                        <input type="checkbox" class="modal-step-checkbox">
-                        <div>
-                            <strong>Phase 1: Environment Sanitation</strong><br>
-                            Ensure all ventilation drafts are minimized to prevent active powder drift. Sanitize the mortar bowl, pestle, and scale trays thoroughly.
-                        </div>
-                    </div>
-                    <div class="modal-step-item">
-                        <input type="checkbox" class="modal-step-checkbox">
-                        <div>
-                            <strong>Phase 2: Master Charge Portions</strong><br>
-                            Weigh out exactly <span style="color:var(--powder-color); font-weight:700;">${(c.a||0).toFixed(3)}g</span> of pure active hormone. Weigh out exactly <span style="color:var(--bb-color); font-weight:700;">${(c.f||0).toFixed(3)}g</span> of your dry excipient/bulking agent inside a secondary vessel.
-                        </div>
-                    </div>
-                    <div style="border-top: 1px solid var(--border); padding-top: 15px; margin-top: 15px;">
-                        <span style="font-weight:700; text-transform:uppercase; font-size:11px; color:#aaa; display:block; margin-bottom:12px;">Trituration Checklist</span>
-                        ${c.h || ''}
-                    </div>
-                    <div class="modal-step-item" style="border-top: 1px solid var(--border); padding-top: 15px; margin-top: 15px;">
-                        <input type="checkbox" class="modal-step-checkbox">
-                        <div>
-                            <strong>Phase 4: Sieve Screening</strong><br>
-                            Pour the finalized dry mix through an 80-mesh or 100-mesh sifting screen. This breaks down electrostatic clusters to lock in perfect homogeneity.
-                        </div>
-                    </div>
-                </div>`;
+                const c = oralCalculations; setTxt('modalTitle', "Geometric Dilution Checklist");
+                h = `<div style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;"><p style="opacity: 0.7; font-size: 13px;">Follow this geometric dilution protocol to ensure active ingredient homogeneity without micro-clustering.</p></div><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 12px; border: 1px solid var(--border); font-size: 12px;"><div>API Target Mass: <b style="color:var(--powder-color);">${(c.a||0).toFixed(3)}g</b></div><div>Filler Target Mass: <b style="color:var(--bb-color);">${(c.f||0).toFixed(3)}g</b></div><div>Target Active Concentration: <b style="color:var(--ba-color);">${(c.p||0).toFixed(2)}%</b></div><div>Total Final Batch Mass: <b style="color:var(--carrier-color);">${(c.t||0).toFixed(3)}g</b></div></div><div class="space-y-4"><div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Phase 1: Environment Sanitation</strong><br>Ensure all ventilation drafts are minimized to prevent active powder drift. Sanitize the mortar bowl, pestle, and scale trays thoroughly.</div></div><div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Phase 2: Master Charge Portions</strong><br>Weigh out exactly <span style="color:var(--powder-color); font-weight:700;">${(c.a||0).toFixed(3)}g</span> of pure active hormone. Weigh out exactly <span style="color:var(--bb-color); font-weight:700;">${(c.f||0).toFixed(3)}g</span> of your dry excipient/bulking agent inside a secondary vessel.</div></div><div style="border-top: 1px solid var(--border); padding-top: 15px; margin-top: 15px;"><span style="font-weight:700; text-transform:uppercase; font-size:11px; color:#aaa; display:block; margin-bottom:12px;">Trituration Checklist</span>${c.h || ''}</div><div class="modal-step-item" style="border-top: 1px solid var(--border); padding-top: 15px; margin-top: 15px;"><input type="checkbox" class="modal-step-checkbox"><div><strong>Phase 4: Sieve Screening</strong><br>Pour the finalized dry mix through an 80-mesh or 100-mesh sifting screen. This breaks down electrostatic clusters to lock in perfect homogeneity.</div></div></div>`;
             } else {
-                const c = latestCalculations; 
-                setTxt('modalTitle', "Gravimetric Protocol");
-                h = `
-                <div style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">
-                    <p style="opacity: 0.7; font-size: 13px;">This gravimetric recipe uses high-precision target masses instead of volumetric expansion lines to eliminate transfer loss.</p>
-                </div>
-                <div class="modal-step-item">
-                    <input type="checkbox" class="modal-step-checkbox">
-                    <div><strong>Step 1: Container Tare</strong><br>Place clean borosilicate beaker on scale and hit <b>TARE</b>.</div>
-                </div>
-                <div class="modal-step-item">
-                    <input type="checkbox" class="modal-step-checkbox">
-                    <div><strong>Step 2: Active API Weight</strong><br>Weigh out exactly <span style="color:var(--powder-color); font-weight:700;">${c.pow1||0}g</span> of ${c.comp1Name||'Base'}.</div>
-                </div>`;
-
+                const c = latestCalculations; setTxt('modalTitle', "Gravimetric Protocol");
+                h = `<div style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;"><p style="opacity: 0.7; font-size: 13px;">This gravimetric recipe uses high-precision target masses instead of volumetric expansion lines to eliminate transfer loss.</p></div><div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step 1: Container Tare</strong><br>Place clean borosilicate beaker on scale and hit <b>TARE</b>.</div></div><div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step 2: Active API Weight</strong><br>Weigh out exactly <span style="color:var(--powder-color); font-weight:700;">${c.pow1||0}g</span> of ${c.comp1Name||'Base'}.</div></div>`;
                 if (c.isBlend) {
                     if (c.comp2 && c.comp2.pow > 0) h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div>Weigh out exactly <span style="color:var(--powder-color); font-weight:700;">${c.comp2.pow}g</span> of ${c.comp2.name}.</div></div>`;
                     if (c.comp3 && c.comp3.pow > 0) h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div>Weigh out exactly <span style="color:var(--powder-color); font-weight:700;">${c.comp3.pow}g</span> of ${c.comp3.name}.</div></div>`;
                     if (c.comp4 && c.comp4.pow > 0) h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div>Weigh out exactly <span style="color:var(--powder-color); font-weight:700;">${c.comp4.pow}g</span> of ${c.comp4.name}.</div></div>`;
                 }
+                h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step 3: Solvent Weight Addition</strong><br>Leave beaker on scale. Add Benzyl Alcohol until scale increases by <span style="color:var(--ba-color); font-weight:700;">${c.baWeight||0}g</span> (${c.baVol||0}ml). Add Benzyl Benzoate until scale increases by another <span style="color:var(--bb-color); font-weight:700;">${c.bbWeight||0}g</span> (${c.bbVol||0}ml).</div></div>`;
+                if (c.extraSolvents) h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step 3b: Solvent Addition</strong><br>Add exactly <span style="color:var(--extra-color); font-weight:700;">${c.extraSolvents}</span> to solvent mixture.</div></div>`;
+                h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step 4: Dissolve under Gentle Heat</strong><br>Place clean plastic cling film on beaker top to stop volatile alcohol evaporation. Heat gently at 50-60°C and swirl until liquid is entirely amber and clear.</div></div>`;
 
-                h += `
-                <div class="modal-step-item">
-                    <input type="checkbox" class="modal-step-checkbox">
-                    <div><strong>Step 3: Solvent Weight Addition</strong><br>Leave beaker on scale. Add Benzyl Alcohol until scale increases by <span style="color:var(--ba-color); font-weight:700;">${c.baWeight||0}g</span> (${c.baVol||0}ml). Add Benzyl Benzoate until scale increases by another <span style="color:var(--bb-color); font-weight:700;">${c.bbWeight||0}g</span> (${c.bbVol||0}ml).</div>
-                </div>`;
-
-                if (c.extraSolvents) {
-                    h += `
-                    <div class="modal-step-item">
-                        <input type="checkbox" class="modal-step-checkbox">
-                        <div><strong>Step 3b: Solvent Addition</strong><br>Add exactly <span style="color:var(--extra-color); font-weight:700;">${c.extraSolvents}</span> to solvent mixture.</div>
-                    </div>`;
-                }
-
-                h += `
-                <div class="modal-step-item">
-                    <input type="checkbox" class="modal-step-checkbox">
-                    <div><strong>Step 4: Dissolve under Gentle Heat</strong><br>Place clean plastic cling film on beaker top to stop volatile alcohol evaporation. Heat gently at 50-60°C and swirl until liquid is entirely amber and clear.</div>
-                </div>`;
-
-                if (c.secondCarrier) {
-                    const firstCarrierTarget = (parseFloat(c.totalMass) - parseFloat(c.mainCarrierWeight)).toFixed(3);
-                    h += `
-                    <div class="modal-step-item">
-                        <input type="checkbox" class="modal-step-checkbox">
-                        <div><strong>Step 5a: Auxiliary Carrier Addition</strong><br>Leave beaker on scale. Pour ${c.secondCarrier} directly inside until scale reaches exactly <span style="color:var(--carrier-color); font-weight:700;">${firstCarrierTarget}g</span>.</div>
-                    </div>
-                    <div class="modal-step-item">
-                        <input type="checkbox" class="modal-step-checkbox">
-                        <div><strong>Step 5b: Primary Top-Off Target</strong><br>Pour ${c.mainOilName||'Oil'} directly inside beaker until the scale reads exactly <span style="color:var(--carrier-color); font-weight:700;">${c.totalMass||0}g</span>. Swirl thoroughly.</div>
-                    </div>`;
-                } else {
-                    h += `
-                    <div class="modal-step-item">
-                        <input type="checkbox" class="modal-step-checkbox">
-                        <div><strong>Step 5: Primary Top-Off Target</strong><br>Pour ${c.mainOilName||'Oil'} directly inside beaker until the scale reads exactly <span style="color:var(--carrier-color); font-weight:700;">${c.totalMass||0}g</span>. Swirl thoroughly.</div>
-                    </div>`;
-                }
-
-                let lossNote = (c.filterName && !c.filterName.includes("No")) ? `Draw solutions inside clean syringes and press through ${c.filterName} directly inside autoclaved clean vials.` : "Proceed directly to clean bottling as no filter loss adjustments were active.";
-                h += `
-                <div class="modal-step-item">
-                    <input type="checkbox" class="modal-step-checkbox">
-                    <div><strong>Step 6: Homogeneous Filtration</strong><br>${lossNote}</div>
-                </div>`;
+                let oilStep = 5, cumTarget = parseFloat(c.totalMass) - parseFloat(c.mainCarrierWeight) - (parseFloat(c.wC2)||0) - (parseFloat(c.wC3)||0);
+                if (c.vC2 > 0) { cumTarget += parseFloat(c.wC2); h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step ${oilStep}a: Add Oil 2</strong><br>Leave beaker on scale. Pour ${c.c2Name} until scale hits <span style="color:#8b5cf6; font-weight:700;">${cumTarget.toFixed(3)}g</span>.</div></div>`; }
+                if (c.vC3 > 0) { cumTarget += parseFloat(c.wC3); h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step ${oilStep}b: Add Oil 3</strong><br>Leave beaker on scale. Pour ${c.c3Name} until scale hits <span style="color:#d946ef; font-weight:700;">${cumTarget.toFixed(3)}g</span>.</div></div>`; }
+                
+                h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step ${oilStep}${c.vC2>0?'c':''}: Primary Top-Off Target</strong><br>Pour ${c.mainOilName||'Oil'} directly inside beaker until the scale reads exactly <span style="color:var(--carrier-color); font-weight:700; font-size:18px;">${c.totalMass||0}g</span>. Swirl thoroughly.</div></div>`;
+                let lossNote = (!c.filterName || c.filterName.startsWith("None")) ? "Proceed directly to clean bottling as no filter loss adjustments were active." : `Draw solutions inside clean syringes and press through ${c.filterName} directly inside autoclaved clean vials.`;
+                h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step 6: Homogeneous Filtration</strong><br>${lossNote}</div></div>`;
             }
-
             setHtml('protocolContent', h); toggleVis('protocolModal', true);
         }
         
         function closeProtocolModal() { toggleVis('protocolModal', false); }
         
         function downloadPDF() { 
-            if(typeof window.jspdf === 'undefined') {
-                alert("PDF library is still loading or blocked. Please wait a moment.");
-                return;
-            }
-            const { jsPDF } = window.jspdf; 
-            const doc = new jsPDF('p', 'pt', 'a4'); 
-            const cap = getEl('captureArea'); 
-            if(!cap) return;
+            if(typeof window.jspdf === 'undefined') { alert("PDF library is still loading or blocked. Please wait a moment."); return; }
+            const { jsPDF } = window.jspdf; const doc = new jsPDF('p', 'pt', 'a4'); const cap = getEl('captureArea'); if(!cap) return;
             cap.style.background = "#050505"; 
-            html2canvas(cap, { scale: 2 }).then(canvas => { 
-                doc.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 595, (canvas.height*595)/canvas.width); 
-                doc.save(`dinfar_${currentTab}.pdf`); 
-                cap.style.background = ""; 
-            }); 
+            html2canvas(cap, { scale: 2 }).then(canvas => { doc.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 595, (canvas.height*595)/canvas.width); doc.save(`dinfar_${currentTab}.pdf`); cap.style.background = ""; }); 
         }
         
         window.addEventListener('DOMContentLoaded', () => { switchTab('single'); });
