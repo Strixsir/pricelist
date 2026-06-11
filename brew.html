@@ -377,7 +377,7 @@
                     <!-- STEP 2: Batch Size -->
                     <div class="step-card">
                         <div class="step-header"><div class="step-badge">2</div> Batch Sizing</div>
-                        <div class="sub-mode-toggle">
+                        <div class="segmented-control">
                             <button id="btnModeVol" class="active" onclick="setLiquidMode('volume')">Target Volume Mode</button>
                             <button id="btnModePowder" onclick="setLiquidMode('powder')">Fixed Powder Mode</button>
                         </div>
@@ -404,8 +404,11 @@
                                 <option value="mct" selected>MCT Oil (Thin)</option>
                                 <option value="gso">Grapeseed Oil (Standard)</option>
                                 <option value="castor">Castor Oil (Thick / Depot)</option>
+                                <option value="sesame">Sesame Oil (Standard)</option>
                                 <option value="mig840">Miglyol 840 (Synthetic)</option>
+                                <option value="mig812">Miglyol 812 (Synthetic)</option>
                                 <option value="eo">Ethyl Oleate (EO - Solvent/Oil)</option>
+                                <option value="water">Water (Suspensions)</option>
                                 <option value="custom">Custom Density</option>
                             </select>
                             <input id="customMainCarrierDensity" class="hidden" style="margin-top:8px; display:none;" type="number" step="0.01" value="0.92" placeholder="Density g/ml" oninput="calc()">
@@ -420,8 +423,21 @@
                                     <label class="switch"><input type="checkbox" id="enableExtraSolvent" onchange="toggleExtraSolvent()"><span class="slider"></span></label>
                                 </div>
                                 <div id="extraSolventGroup" class="hidden input-row" style="display:none;">
-                                    <div class="field"><label>Type</label><select id="extraSolventType" onchange="calc()"><option value="guaiacol">Guaiacol</option><option value="peg400">PEG 400</option></select></div>
+                                    <div class="field">
+                                        <label>Type</label>
+                                        <select id="extraSolventType" onchange="calc()">
+                                            <option value="guaiacol">Guaiacol (1.129 g/ml)</option>
+                                            <option value="peg400">PEG 400 (1.128 g/ml)</option>
+                                            <option value="dmso">DMSO (1.10 g/ml)</option>
+                                            <option value="ethyl-lactate">Ethyl L-Lactate (1.035 g/ml)</option>
+                                            <option value="custom">Custom (manual density)</option>
+                                        </select>
+                                    </div>
                                     <div class="field"><label>Percentage %</label><input id="extraSolventPct" type="number" value="0" oninput="calc()"></div>
+                                </div>
+                                <div class="field hidden" id="customExtraSolventDensityField" style="display:none;">
+                                    <label>Custom Extra Solvent Density (g/ml)</label>
+                                    <input id="customExtraSolventDensity" type="number" step="0.001" value="1.1" oninput="calc()">
                                 </div>
 
                                 <!-- Dual Carrier -->
@@ -430,8 +446,25 @@
                                     <label class="switch"><input type="checkbox" id="enableSecondCarrier" onchange="toggleSecondCarrier()"><span class="slider"></span></label>
                                 </div>
                                 <div id="secondCarrierGroup" class="hidden input-row" style="display:none;">
-                                    <div class="field"><label>Secondary Oil</label><select id="secondCarrier" onchange="calc()"><option value="eo">Ethyl Oleate (EO)</option><option value="castor">Castor Oil</option></select></div>
+                                    <div class="field">
+                                        <label>Secondary Oil</label>
+                                        <select id="secondCarrier" onchange="calc()">
+                                            <option value="eo">Ethyl Oleate (EO)</option>
+                                            <option value="castor">Castor Oil</option>
+                                            <option value="mct">MCT Oil</option>
+                                            <option value="gso">Grapeseed Oil</option>
+                                            <option value="sesame">Sesame Oil</option>
+                                            <option value="mig840">Miglyol 840</option>
+                                            <option value="mig812">Miglyol 812</option>
+                                            <option value="water">Water</option>
+                                            <option value="custom">Custom Density</option>
+                                        </select>
+                                    </div>
                                     <div class="field"><label>Mix %</label><input id="carrierMixPct" type="number" value="0" oninput="calc()"></div>
+                                </div>
+                                <div class="field hidden" id="customSecondCarrierField" style="display:none;">
+                                    <label>Custom Second Carrier Density (g/ml)</label>
+                                    <input id="customSecondCarrierDensity" type="number" step="0.001" value="0.96" oninput="calc()">
                                 </div>
 
                                 <!-- Filter Loss -->
@@ -449,6 +482,30 @@
                         </details>
                     </div>
 
+                    <!-- STEP 4: Economics (Liquid Only) -->
+                    <div class="step-card" id="economicsCard">
+                        <div class="step-header"><div class="step-badge">$</div> Batch Economics</div>
+                        <details class="advanced-settings">
+                            <summary>Calculate Cost Per Vial</summary>
+                            <div class="advanced-content">
+                                <div class="input-row">
+                                    <div class="field"><label>Powder ($/10g)</label><input type="number" id="costPowder" value="15" oninput="calc()"></div>
+                                    <div class="field"><label>Oil ($/100ml)</label><input type="number" id="costOil" value="10" oninput="calc()"></div>
+                                </div>
+                                <div class="input-row">
+                                    <div class="field"><label>BA/BB ($/100ml)</label><input type="number" id="costSolvent" value="12" oninput="calc()"></div>
+                                    <div class="field"><label>Vial+Filter ($/vial)</label><input type="number" id="costHardware" value="1.50" step="0.1" oninput="calc()"></div>
+                                </div>
+                                <div class="field"><label>Vial Size (ml)</label><input type="number" id="vialSize" value="10" oninput="calc()"></div>
+                                
+                                <div style="margin-top: 10px; padding: 15px; background: rgba(225, 29, 72, 0.1); border: 1px solid var(--accent); border-radius: 10px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 13px; font-weight: 600; color: #fff;">Est. Cost Per Vial</span>
+                                    <strong id="outCostPerVial" style="color: var(--accent); font-size: 20px;">$0.00</strong>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+
                 </div>
 
                 <!-- ========================================== -->
@@ -456,7 +513,7 @@
                 <!-- ========================================== -->
                 <div id="oralInputs" class="hidden" style="display: none; flex-direction: column; gap: 20px;">
                     
-                    <div class="sub-mode-toggle">
+                    <div class="segmented-control">
                         <button id="btnOralModeWeight" class="active" onclick="setOralMode('weight')">Standard Blend</button>
                         <button id="btnOralModeCapsule" onclick="setOralMode('capsule')">Capsule Formulator</button>
                     </div>
@@ -665,6 +722,10 @@
         </div>
     </div>
 
+    <div class="footer">
+        Dinfar Brew ©
+    </div>
+
     <script>
         // Data Dictionaries
         const displacements = {
@@ -676,21 +737,22 @@
         };
 
         const densities = {
-            ba: 1.044, bb: 1.118, castor: 0.96, gso: 0.92,
-            mct: 0.95, mig840: 0.94, eo: 0.87, guaiacol: 1.129, peg400: 1.128, none: 1.0
+            ba: 1.044, bb: 1.118, castor: 0.96, gso: 0.92, sesame: 0.92,
+            mct: 0.95, mig840: 0.94, mig812: 0.95, eo: 0.87, water: 1.0,
+            guaiacol: 1.129, peg400: 1.128, dmso: 1.10, "ethyl-lactate": 1.035, none: 1.0
         };
 
-        const baseViscosity = { ba: 5.5, bb: 8.5, castor: 650, gso: 50, mct: 28, eo: 5.5, guaiacol: 5, none: 1.0 };
-        const tempCoeff = { ba: 0.015, bb: 0.015, castor: 0.065, gso: 0.035, mct: 0.025, eo: 0.015, guaiacol: 0.01, none: 0 };
+        const baseViscosity = { ba: 5.5, bb: 8.5, castor: 650, gso: 50, sesame: 45, mct: 28, mig840: 25, mig812: 30, eo: 5.5, water: 1.0, guaiacol: 5, peg400: 90, dmso: 2, "ethyl-lactate": 3, none: 1.0 };
+        const tempCoeff = { ba: 0.015, bb: 0.015, castor: 0.065, gso: 0.035, sesame: 0.035, mct: 0.025, mig840: 0.025, mig812: 0.025, eo: 0.015, water: 0.01, guaiacol: 0.01, peg400: 0.04, dmso: 0.01, "ethyl-lactate": 0.01, none: 0 };
 
-        // State Objects
+        // State Objects safely initialized to prevent any null reference errors on early interaction
         let currentTab = 'single';
         let calcMode = 'volume';
         let oralMode = 'weight';
         let oralWeightTarget = 'conc';
         let chart;
-        let latestCalculations = {};
-        let oralCalculations = {};
+        let latestCalculations = { p1: '0.000', n1: 'Base', vBa: '0.00', wBa: '0.000', vBb: '0.00', wBb: '0.000', nM: 'Oil', tMass: '0.000', b: false, fn: 'None' };
+        let oralCalculations = { a: 0, f: 0, t: 0, p: 0, h: '' };
 
         // DOM Utility Functions
         const getEl = id => document.getElementById(id);
@@ -747,6 +809,7 @@
                 toggleVis('blendGroup', tab === 'blend');
                 if (tab === 'blend') setLiquidMode('volume');
                 toggleVis('btnModePowder', tab === 'single');
+                toggleVis('economicsCard', true); 
             } else {
                 setTxt('pageTitle', "Oral Powder Calc");
                 toggleVis('liquidInputs', false);
@@ -756,6 +819,7 @@
                 toggleVis('oralInputs', true);
                 toggleVis('oralResults', true);
                 toggleVis('scheduleHousing', true);
+                toggleVis('economicsCard', false);
             }
             calc();
         }
@@ -848,7 +912,7 @@
             [2,3,4].forEach(i => {
                 const enEl = getEl(`enableC${i}`);
                 if (enEl) {
-                    enEl.checked = d.blend && d[`c${i}`] ? true : false;
+                    enEl.checked = d.blend && !!d[`c${i}`];
                     toggleCompoundRow(i);
                     if(enEl.checked) {
                         const cEl = getEl(`compound${i}`); if(cEl) cEl.value = d[`c${i}`];
@@ -906,11 +970,11 @@
             const baPct = getVal('baPct');
             const bbPct = getVal('bbPct');
             
-            const exEl = getEl('enableExtraSolvent');
-            const exPct = (exEl && exEl.checked) ? getVal('extraSolventPct') : 0;
+            const enExtraEl = getEl('enableExtraSolvent');
+            const exPct = (enExtraEl && enExtraEl.checked) ? getVal('extraSolventPct') : 0;
             
-            const secEl = getEl('enableSecondCarrier');
-            const secPct = (secEl && secEl.checked) ? getVal('carrierMixPct') : 0;
+            const enSecEl = getEl('enableSecondCarrier');
+            const secPct = (enSecEl && enSecEl.checked) ? getVal('carrierMixPct') : 0;
             
             const fEl = getEl('filter');
             const fv = fEl ? fEl.value : 'none';
@@ -946,13 +1010,16 @@
             if (!err) { vM = vRem * ((100 - secPct) / 100); vS = vRem * (secPct / 100); }
 
             const mcEl = getEl('mainCarrier');
-            const dM = (mcEl && mcEl.value === 'custom') ? getVal('customMainCarrierDensity', 0.92) : (densities[mcEl ? mcEl.value : 'mct'] || 0.92);
+            const mainCarrierVal = mcEl ? mcEl.value : 'mct';
+            const dM = mainCarrierVal === 'custom' ? getVal('customMainCarrierDensity', 0.92) : (densities[mainCarrierVal] || 0.92);
             
             const scEl = getEl('secondCarrier');
-            const dS = (scEl && scEl.value === 'custom') ? getVal('customSecondCarrierDensity', 0.92) : (densities[scEl ? scEl.value : 'none'] || 0.92);
+            const secondCarrierVal = scEl ? scEl.value : 'none';
+            const dS = secondCarrierVal === 'custom' ? getVal('customSecondCarrierDensity', 0.92) : (densities[secondCarrierVal] || 0.92);
             
             const exTEl = getEl('extraSolventType');
-            const dEx = (exTEl && exTEl.value === 'custom') ? getVal('customExtraSolventDensity', 1) : (densities[exTEl ? exTEl.value : 'none'] || 1);
+            const extraSolventTypeVal = exTEl ? exTEl.value : 'none';
+            const dEx = extraSolventTypeVal === 'custom' ? getVal('customExtraSolventDensity', 1) : (densities[extraSolventTypeVal] || 1);
 
             const wBa = vBa * densities.ba, wBb = vBb * densities.bb, wEx = vEx * dEx, wM = vM * dM, wS = vS * dS;
             const tMass = p1 + p2 + p3 + p4 + wBa + wBb + wEx + wM + wS;
@@ -966,14 +1033,16 @@
             setTxt('totalMass', tMass.toFixed(3) + ' g'); setTxt('finalYield', y.toFixed(2) + ' ml');
 
             // Viscosity Simulation
+            const tempSlider = getEl('tempSlider');
+            const tempC = tempSlider ? parseFloat(tempSlider.value) || 25 : 25;
+            setTxt('tempVal', tempC + '°C');
+
             let cp = "N/A", cl = "#fff";
-            if (!err && tv > 0) {
-                const gm = k => (baseViscosity[k] || 50) * Math.exp(-(tempCoeff[k] || 0.03) * 0); 
-                const mVal = mcEl ? mcEl.value : 'mct';
-                const sVal = scEl ? scEl.value : 'none';
-                const exVal = exTEl ? exTEl.value : 'none';
-                
-                const lV = (vBa * Math.log(gm('ba')) + vBb * Math.log(gm('bb')) + vEx * Math.log(gm(exVal)) + vM * Math.log(gm(mVal)) + vS * Math.log(gm(sVal))) / (vBa + vBb + vEx + vM + vS);
+            const totalLiq = vBa + vBb + vEx + vM + vS;
+
+            if (!err && totalLiq > 0) {
+                const gm = k => (baseViscosity[k] || 50) * Math.exp(-(tempCoeff[k] || 0.03) * (tempC - 25));
+                const lV = (vBa * Math.log(gm('ba')) + vBb * Math.log(gm('bb')) + vEx * Math.log(gm(extraSolventTypeVal)) + vM * Math.log(gm(mainCarrierVal)) + vS * Math.log(gm(secondCarrierVal))) / totalLiq;
                 let est = Math.exp(lV) * Math.exp((getVal('mgml') + getVal('mgml2') + getVal('mgml3') + getVal('mgml4')) / 1100);
                 
                 if(est < 15) { cp = "Very Thin"; cl = "var(--ba-color)"; } 
@@ -994,6 +1063,25 @@
 
             updatePieChart([cv, vBa, vBb, vEx, vM + vS]);
             
+            // Economics Calculus
+            const pCost = getVal('costPowder', 15);
+            const oCost = getVal('costOil', 10);
+            const sCost = getVal('costSolvent', 12);
+            const hCost = getVal('costHardware', 1.50);
+            const vSize = getVal('vialSize', 10);
+            
+            const numVials = (vSize > 0 && y > 0) ? y / vSize : 0;
+            const batchPowderCost = ((p1+p2+p3+p4) / 10) * pCost;
+            const batchOilCost = ((vM+vS) / 100) * oCost;
+            const batchSolventCost = ((vBa+vBb+vEx) / 100) * sCost;
+            let costPerVial = 0;
+            
+            if (numVials > 0) {
+                costPerVial = ((batchPowderCost + batchOilCost + batchSolventCost) / numVials) + hCost;
+            }
+            setTxt('outCostPerVial', '$' + costPerVial.toFixed(2));
+
+            // State Save
             latestCalculations = { 
                 pow1: p1.toFixed(3), 
                 comp1Name: getSelectText('compound', 'Base Compound'), 
