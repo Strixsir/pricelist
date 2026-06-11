@@ -25,23 +25,26 @@
 
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
+        /* Streamlined Single-Page Flow */
         body {
-            margin: 0; padding: 15px; height: 100vh; overflow: hidden; 
+            margin: 0; padding: 15px; min-height: 100vh;
             background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), url("https://images7.alphacoders.com/398/398372.jpg") center/cover fixed;
             color: var(--text-main); display: flex; flex-direction: column;
         }
 
-        .app-container { width: 100%; max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; height: 100%; }
+        .app-container { width: 100%; max-width: 1300px; margin: 0 auto 30px auto; display: flex; flex-direction: column; gap: 15px; }
 
+        /* Unified Top Navigation Bar */
         .top-nav {
             display: flex; justify-content: space-between; align-items: center;
             background: var(--panel-bg); border: 1px solid var(--border);
-            padding: 12px 24px; border-radius: 20px;
+            padding: 10px 20px; border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(20px);
         }
-        .brand h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; color: #fff; }
+        .brand h1 { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.5px; color: #fff; }
         .brand p { margin: 0; color: var(--text-muted); font-size: 11px; font-weight: 500; }
 
+        /* Navigation Tabs */
         .tab-container { display: flex; gap: 8px; }
         .tab-btn {
             background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); color: var(--text-muted);
@@ -53,6 +56,7 @@
             will-change: box-shadow; animation: tabPulse 2.5s infinite ease-in-out; cursor: default; transform: none !important;
         }
 
+        /* Store Button */
         .store-btn {
             background: rgba(225, 29, 72, 0.15); border: 1px solid var(--accent); color: #fff; 
             padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 12px; text-decoration: none;
@@ -61,28 +65,28 @@
         }
         .store-btn:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 5px 20px rgba(225, 29, 72, 0.5); }
 
+        /* Animations */
         @keyframes neonPulse { 0%, 100% { box-shadow: 0 0 8px rgba(196, 30, 58, 0.35); transform: translate3d(0, 0, 0); } 50% { box-shadow: 0 0 15px rgba(196, 30, 58, 0.7); transform: translate3d(0, -1px, 0); } }
         @keyframes tabPulse { 0%, 100% { box-shadow: 0 0 5px rgba(196, 30, 58, 0.3); } 50% { box-shadow: 0 0 12px rgba(196, 30, 58, 0.65); } }
 
-        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; flex: 1; min-height: 0; }
+        /* Clean Grid Layout */
+        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: start;}
         .panel-col {
-            background: var(--panel-bg); border: 1px solid var(--border); border-radius: 24px; padding: 20px; 
+            background: var(--panel-bg); border: 1px solid var(--border); border-radius: 20px; padding: 20px; 
             backdrop-filter: blur(20px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            display: flex; flex-direction: column; gap: 15px; overflow-y: auto; height: 100%;
+            display: flex; flex-direction: column; gap: 12px;
         }
-        .panel-col::-webkit-scrollbar { width: 6px; }
-        .panel-col::-webkit-scrollbar-track { background: transparent; }
-        .panel-col::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-        .panel-col::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 
-        .step-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 15px; transition: border-color 0.3s; }
+        /* Stepped Workflow Cards (Compacted) */
+        .step-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px 15px; transition: border-color 0.3s; }
         .step-card:focus-within { border-color: var(--border-highlight); }
-        .step-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-weight: 700; font-size: 13px; color: #fff; }
+        .step-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-weight: 700; font-size: 13px; color: #fff; }
         .step-badge { background: var(--accent); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; }
 
         .preset-row { display: flex; align-items: center; gap: 12px; }
         .preset-row label { margin: 0; font-size: 11px; white-space: nowrap; color: var(--accent); font-weight: 700; text-transform: uppercase;}
 
+        /* Form Elements */
         .input-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; }
         .field { display: flex; flex-direction: column; gap: 4px; position: relative; }
         .field label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -95,12 +99,14 @@
         optgroup { background: #1a1a1a; color: var(--accent); font-weight: 700; }
         option { background: #111; color: #fff; font-weight: 500; padding: 4px; }
 
-        details.advanced-settings { background: rgba(0, 0, 0, 0.2); border: 1px dashed rgba(255, 255, 255, 0.05); border-radius: 8px; margin-top: 12px; }
+        /* Advanced Settings / Details */
+        details.advanced-settings { background: rgba(0, 0, 0, 0.2); border: 1px dashed rgba(255, 255, 255, 0.05); border-radius: 8px; margin-top: 10px; }
         details.advanced-settings summary { padding: 8px 12px; font-size: 11px; font-weight: 600; color: var(--text-muted); cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; }
         details.advanced-settings summary::after { content: '+'; font-size: 14px; }
         details.advanced-settings[open] summary::after { content: '-'; }
         .advanced-content { padding: 12px; border-top: 1px dashed rgba(255, 255, 255, 0.05); display: flex; flex-direction: column; gap: 12px; }
 
+        /* Toggles */
         .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(0, 0, 0, 0.3); border-radius: 8px; margin-bottom: 8px; }
         .toggle-row label { font-size: 11px; font-weight: 600; cursor: pointer; flex: 1; margin: 0; color: #fff; text-transform: none; }
         .switch { position: relative; display: inline-block; width: 36px; height: 20px; }
@@ -110,35 +116,37 @@
         input:checked + .slider { background-color: var(--accent); }
         input:checked + .slider:before { transform: translateX(16px); background-color: #fff; }
 
+        /* Segmented Controls */
         .segmented-control { display: inline-flex; width: fit-content; max-width: 100%; background: rgba(0,0,0,0.4); padding: 3px; border-radius: 10px; margin-bottom: 12px; overflow-x: auto; }
         .segmented-control::-webkit-scrollbar { display: none; }
         .segmented-control button { flex: 0 1 auto; padding: 6px 12px; border: none; background: transparent; color: var(--text-muted); font-size: 11px; font-weight: 600; border-radius: 7px; cursor: pointer; transition: 0.2s; white-space: nowrap; }
         .segmented-control button.active { background: rgba(255,255,255,0.1); color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
-        .recipe-card { background: linear-gradient(180deg, rgba(30, 30, 35, 0.8) 0%, rgba(15, 15, 18, 0.9) 100%); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: 14px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        .recipe-header { font-size: 15px; font-weight: 800; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: flex-end; }
+        /* Outputs: The Recipe Card */
+        .recipe-card { background: linear-gradient(180deg, rgba(30, 30, 35, 0.8) 0%, rgba(15, 15, 18, 0.9) 100%); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: 14px; padding: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .recipe-header { font-size: 14px; font-weight: 800; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-end; }
         .recipe-header span { font-size: 10px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; }
-        .recipe-list { display: flex; flex-direction: column; gap: 8px; }
-        .recipe-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 10px 14px; border-radius: 8px; }
+        .recipe-list { display: flex; flex-direction: column; gap: 6px; }
+        .recipe-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 8px; }
         .recipe-item-name { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; }
         .dot { width: 8px; height: 8px; border-radius: 50%; }
-        .recipe-item-value { font-size: 15px; font-weight: 800; text-align: right; transition: color 0.2s; }
+        .recipe-item-value { font-size: 14px; font-weight: 800; text-align: right; transition: color 0.2s; }
         .recipe-item-sub { font-size: 10px; color: var(--text-muted); font-weight: 500; text-align: right; margin-top: 2px;}
 
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-        .stat-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 12px; border-radius: 10px; text-align: center; }
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+        .stat-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 10px; border-radius: 10px; text-align: center; }
         .stat-box span { display: block; font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 4px; }
-        .stat-box strong { font-size: 16px; color: #fff; }
+        .stat-box strong { font-size: 15px; color: #fff; }
         .stat-box.highlight { background: rgba(225, 29, 72, 0.1); border-color: rgba(225, 29, 72, 0.3); grid-column: 1 / -1; }
-        .stat-box.highlight strong { color: var(--accent); font-size: 20px; }
+        .stat-box.highlight strong { color: var(--accent); font-size: 18px; }
 
-        .chart-box { height: 160px; margin-top: 10px; position: relative; }
+        .chart-box { height: 140px; margin-top: 5px; position: relative; }
         
-        .schedule-container { background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 12px; padding: 15px; flex: 1; display: flex; flex-direction: column; min-height: 0;}
+        /* Dilution Schedule View (Oral Tab) */
+        .schedule-container { background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 12px; padding: 15px; display: flex; flex-direction: column;}
         .schedule-title { font-size: 11px; font-weight: 700; text-transform: uppercase; border-b: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 10px; color: var(--accent); }
-        .schedule-steps { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; padding-right: 5px;}
-        .schedule-steps::-webkit-scrollbar { width: 4px; }
-        .schedule-steps::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .schedule-steps { display: flex; flex-direction: column; gap: 8px; }
         .schedule-step { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 10px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); }
         .schedule-step:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.15); }
         .schedule-step.completed { opacity: 0.45; text-decoration: line-through; border-color: rgba(74, 222, 128, 0.2) !important; background: rgba(74, 222, 128, 0.02); }
@@ -146,6 +154,7 @@
 
         .alert-box { background: rgba(196, 30, 58, 0.15); border: 1px solid var(--accent); border-radius: 10px; padding: 12px; font-size: 12px; line-height: 1.4; display: flex; gap: 10px; align-items: flex-start; }
 
+        /* Action Buttons */
         .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: auto; padding-top: 15px;}
         .actions button { padding: 10px 20px; border-radius: 10px; color: #fff; font-weight: 600; font-size: 12px; cursor: pointer; transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); border: none; text-align: center;}
         .btn-primary { background: var(--accent); box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3); flex: 2; }
@@ -167,11 +176,8 @@
         .hidden { display: none !important; }
 
         @media (max-width: 960px) { 
-            body { height: auto; overflow-y: auto; padding: 10px;}
-            .app-container { height: auto; display: flex; flex-direction: column; }
             .top-nav { flex-direction: column; gap: 15px; padding: 15px; }
-            .main-grid { display: flex; flex-direction: column; height: auto; }
-            .panel-col { overflow-y: visible; height: auto; }
+            .main-grid { display: grid; grid-template-columns: 1fr; }
             .store-btn { position: static; justify-content: center; }
         }
     </style>
@@ -238,8 +244,8 @@
                     <div class="step-card">
                         <div class="step-header"><div class="step-badge">1</div> <span id="lblComp1">Base Compound Profile</span></div>
                         
-                        <div class="input-row">
-                            <div class="field" style="flex: 2; min-width: 140px;">
+                        <div class="input-row" style="grid-template-columns: 2fr 1fr 1fr;">
+                            <div class="field">
                                 <label>Compound API</label>
                                 <select id="compound" onchange="updateDisplacement(1)">
                                     <optgroup label="Testosterones">
@@ -303,13 +309,16 @@
                                 <label>Target (mg/ml)</label>
                                 <input id="mgml" type="number" value="250" oninput="calc()">
                             </div>
+                            <div class="field">
+                                <label>Purity (%)</label>
+                                <input id="purity" type="number" value="100" oninput="calc()">
+                            </div>
                         </div>
 
                         <details class="advanced-settings">
-                            <summary>Displacement and Purity Settings</summary>
-                            <div class="advanced-content input-row">
+                            <summary>Manual Displacement</summary>
+                            <div class="advanced-content">
                                 <div class="field"><label>Disp (ml/g)</label><input id="disp" type="number" step="0.001" value="0.909" oninput="calc()"></div>
-                                <div class="field"><label>Purity (%)</label><input id="purity" type="number" value="100" oninput="calc()"></div>
                             </div>
                         </details>
 
@@ -318,30 +327,33 @@
                                 <label for="enableC2">Add Compound 2</label>
                                 <label class="switch"><input type="checkbox" id="enableC2" onchange="toggleCompoundRow(2)"><span class="slider"></span></label>
                             </div>
-                            <div id="c2Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none;">
-                                <div class="field" style="flex:2"><label>Comp 2</label><select id="compound2" onchange="updateDisplacement(2)"></select></div>
+                            <div id="c2Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none; grid-template-columns: 2fr 1fr 1fr;">
+                                <div class="field"><label>Comp 2</label><select id="compound2" onchange="updateDisplacement(2)"></select></div>
                                 <div class="field"><label>mg/ml</label><input id="mgml2" type="number" value="100" oninput="calc()"></div>
-                                <div class="field hidden" style="display:none;"><input id="disp2" type="number" value="0.909"><input id="purity2" type="number" value="100"></div>
+                                <div class="field"><label>Purity (%)</label><input id="purity2" type="number" value="100" oninput="calc()"></div>
+                                <div class="field hidden" style="display:none;"><input id="disp2" type="number" value="0.909"></div>
                             </div>
 
                             <div class="toggle-row">
                                 <label for="enableC3">Add Compound 3</label>
                                 <label class="switch"><input type="checkbox" id="enableC3" onchange="toggleCompoundRow(3)"><span class="slider"></span></label>
                             </div>
-                            <div id="c3Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none;">
-                                <div class="field" style="flex:2"><label>Comp 3</label><select id="compound3" onchange="updateDisplacement(3)"></select></div>
+                            <div id="c3Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none; grid-template-columns: 2fr 1fr 1fr;">
+                                <div class="field"><label>Comp 3</label><select id="compound3" onchange="updateDisplacement(3)"></select></div>
                                 <div class="field"><label>mg/ml</label><input id="mgml3" type="number" value="100" oninput="calc()"></div>
-                                <div class="field hidden" style="display:none;"><input id="disp3" type="number" value="0.909"><input id="purity3" type="number" value="100"></div>
+                                <div class="field"><label>Purity (%)</label><input id="purity3" type="number" value="100" oninput="calc()"></div>
+                                <div class="field hidden" style="display:none;"><input id="disp3" type="number" value="0.909"></div>
                             </div>
 
                             <div class="toggle-row">
                                 <label for="enableC4">Add Compound 4</label>
                                 <label class="switch"><input type="checkbox" id="enableC4" onchange="toggleCompoundRow(4)"><span class="slider"></span></label>
                             </div>
-                            <div id="c4Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none;">
-                                <div class="field" style="flex:2"><label>Comp 4</label><select id="compound4" onchange="updateDisplacement(4)"></select></div>
+                            <div id="c4Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none; grid-template-columns: 2fr 1fr 1fr;">
+                                <div class="field"><label>Comp 4</label><select id="compound4" onchange="updateDisplacement(4)"></select></div>
                                 <div class="field"><label>mg/ml</label><input id="mgml4" type="number" value="100" oninput="calc()"></div>
-                                <div class="field hidden" style="display:none;"><input id="disp4" type="number" value="0.909"><input id="purity4" type="number" value="100"></div>
+                                <div class="field"><label>Purity (%)</label><input id="purity4" type="number" value="100" oninput="calc()"></div>
+                                <div class="field hidden" style="display:none;"><input id="disp4" type="number" value="0.909"></div>
                             </div>
                         </div>
                     </div>
