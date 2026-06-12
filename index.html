@@ -479,10 +479,12 @@
     <div class="discount-note">
         <strong style="font-size: 1.05rem;">🔥 Retail Bulk Discounts (Same Item)</strong>
         <div class="discount-tiers">
-            <span class="discount-tier">200g: 10% Off</span>
-            <span class="discount-tier">300g: 15% Off</span>
+            <span class="discount-tier">200g: 5% Off</span>
+            <span class="discount-tier">300g: 10% Off</span>
+            <span class="discount-tier">400g: 15% Off</span>
+            <span class="discount-tier">500g: 20% Off</span>
         </div>
-        <div style="font-size: 0.8rem; margin-top: 10px;">*Applies automatically in cart (Max 300g per item). For more, use 1KG Pre-order.</div>
+        <div style="font-size: 0.8rem; margin-top: 10px;">*Applies automatically in cart (Max 500g per item). For more, use 1KG Pre-order.</div>
     </div>
 
     <!-- START OF MAIN LAYOUT -->
@@ -823,7 +825,8 @@
             cart = cart.filter(item => item.qty > 0);
         }
 
-        function addToCart(name, price, size, batch, category) {
+        // Removed 'category' from the function parameters, we will fetch it securely
+        function addToCart(name, price, size, batch) {
             let totalItems = 0;
             cart.forEach(i => totalItems += i.qty);
             
@@ -836,21 +839,30 @@
             let productRecord = products.find(p => p.name === name && p.batch === batch);
             if (!productRecord) return; // Failsafe if name/batch was spoofed
             
+            // Securely determine the true category from the DB, defaulting to 'raw'
+            let trueCategory = productRecord.category || 'raw';
+            
+            // Fix Exploit: Enforce 1KG out-of-stock checks correctly
+            if (size === '1kg' && productRecord.s1k <= 0) {
+                alert("Sorry, 1KG Pre-orders are currently closed for this item.");
+                return;
+            }
+
             let maxStock = (size === '100g' || size === '10g') ? productRecord.stock100 : Infinity;
             
-            // Fix Exploit #1: Block users who remove the 'disabled' tag from out-of-stock buttons
+            // Fix Exploit: Block users who remove the 'disabled' tag from out-of-stock buttons
             if (maxStock <= 0) {
                 alert("Sorry, this item is currently out of stock.");
                 return;
             }
             
-            // Fix Exploit #2: Ignore HTML price parameter and fetch the true price
+            // Ignore HTML price parameter and fetch the true price
             let securePrice = size === '1kg' ? productRecord.p1k : productRecord.p100;
             // ----------------------------------------------------------------------
 
             let existingItem = cart.find(i => i.name === name && i.size === size && i.batch === batch);
             
-            if (category === 'addon') {
+            if (trueCategory === 'addon') {
                 let allowedIncrements = getRawIncrements();
                 if (allowedIncrements === 0) {
                     alert("You must add Raws to your cart before unlocking Add-ons.");
@@ -870,20 +882,20 @@
                     return;
                 }
                 
-                // Enforce 300g max limit rule for retail discount (Only for Raws)
-                if (category !== 'addon' && size === '100g' && existingItem.qty >= 3) {
-                    alert("Maximum 300g (3 units) allowed for retail bulk discount. For larger amounts, please use the 1KG Pre-order option!");
+                // Enforce 500g max limit rule for retail discount (Only for Raws)
+                if (trueCategory !== 'addon' && size === '100g' && existingItem.qty >= 5) {
+                    alert("Maximum 500g (5 units) allowed for retail bulk discount. For larger amounts, please use the 1KG Pre-order option!");
                     return;
                 }
                 
                 existingItem.qty += 1;
             } else {
-                // Use the securePrice here instead of the parameter
-                cart.push({ name, price: securePrice, size, batch, qty: 1, category });
+                // Use the secure parameters here
+                cart.push({ name, price: securePrice, size, batch, qty: 1, category: trueCategory });
             }
             
             // Trigger visual and audio effects
-            if (category === 'addon') {
+            if (trueCategory === 'addon') {
                 triggerSFX('addon');
             } else if (size === '100g') {
                 triggerSFX('retail');
@@ -900,8 +912,10 @@
             
             // Apply bulk discounts ONLY to 100g Raws
             if (item.category !== 'addon' && item.size === '100g') {
-                if (item.qty === 2) discountPercent = 0.10;      // 200g = 10% off
-                else if (item.qty === 3) discountPercent = 0.15; // 300g = 15% off
+                if (item.qty === 2) discountPercent = 0.05;      // 200g = 5% off
+                else if (item.qty === 3) discountPercent = 0.10; // 300g = 10% off
+                else if (item.qty === 4) discountPercent = 0.15; // 400g = 15% off
+                else if (item.qty === 5) discountPercent = 0.20; // 500g = 20% off
             }
             
             let finalTotal = baseTotal * (1 - discountPercent);
