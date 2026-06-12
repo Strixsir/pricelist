@@ -252,8 +252,8 @@
                     <div class="step-card">
                         <div class="step-header"><div class="step-badge">1</div> <span id="lblComp1">Compound Profile</span></div>
                         
-                        <div class="input-row">
-                            <div class="field" style="flex: 2; min-width: 140px;">
+                        <div class="input-row" style="grid-template-columns: 2fr 1fr 1fr;">
+                            <div class="field">
                                 <label>Compound API</label>
                                 <select id="compound" onchange="updateDisplacement(1)">
                                     <optgroup label="Testosterones">
@@ -317,13 +317,16 @@
                                 <label>Target (mg/ml)</label>
                                 <input id="mgml" type="number" min="0" value="250" oninput="calc()">
                             </div>
+                            <div class="field">
+                                <label>Purity (%)</label>
+                                <input id="purity" type="number" min="0" value="100" oninput="calc()">
+                            </div>
                         </div>
 
                         <details class="advanced-settings">
-                            <summary>Advanced API Settings</summary>
-                            <div class="advanced-content input-row">
+                            <summary>Manual Displacement</summary>
+                            <div class="advanced-content">
                                 <div class="field"><label>Disp (ml/g)</label><input id="disp" type="number" min="0" step="0.001" value="0.909" oninput="calc()"></div>
-                                <div class="field"><label>Purity (%)</label><input id="purity" type="number" min="0" value="100" oninput="calc()"></div>
                             </div>
                         </details>
 
@@ -332,30 +335,33 @@
                                 <label for="enableC2">Add Compound 2</label>
                                 <label class="switch"><input type="checkbox" id="enableC2" onchange="toggleCompoundRow(2)"><span class="slider"></span></label>
                             </div>
-                            <div id="c2Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none;">
-                                <div class="field" style="flex:2"><label>Comp 2</label><select id="compound2" onchange="updateDisplacement(2)"></select></div>
+                            <div id="c2Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none; grid-template-columns: 2fr 1fr 1fr;">
+                                <div class="field"><label>Comp 2</label><select id="compound2" onchange="updateDisplacement(2)"></select></div>
                                 <div class="field"><label>mg/ml</label><input id="mgml2" type="number" min="0" value="100" oninput="calc()"></div>
-                                <div class="field hidden" style="display:none;"><input id="disp2" type="number" value="0.909"><input id="purity2" type="number" value="100"></div>
+                                <div class="field"><label>Purity (%)</label><input id="purity2" type="number" min="0" value="100" oninput="calc()"></div>
+                                <div class="field hidden" style="display:none;"><input id="disp2" type="number" value="0.909"></div>
                             </div>
 
                             <div class="toggle-row">
                                 <label for="enableC3">Add Compound 3</label>
                                 <label class="switch"><input type="checkbox" id="enableC3" onchange="toggleCompoundRow(3)"><span class="slider"></span></label>
                             </div>
-                            <div id="c3Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none;">
-                                <div class="field" style="flex:2"><label>Comp 3</label><select id="compound3" onchange="updateDisplacement(3)"></select></div>
+                            <div id="c3Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none; grid-template-columns: 2fr 1fr 1fr;">
+                                <div class="field"><label>Comp 3</label><select id="compound3" onchange="updateDisplacement(3)"></select></div>
                                 <div class="field"><label>mg/ml</label><input id="mgml3" type="number" min="0" value="100" oninput="calc()"></div>
-                                <div class="field hidden" style="display:none;"><input id="disp3" type="number" value="0.909"><input id="purity3" type="number" value="100"></div>
+                                <div class="field"><label>Purity (%)</label><input id="purity3" type="number" min="0" value="100" oninput="calc()"></div>
+                                <div class="field hidden" style="display:none;"><input id="disp3" type="number" value="0.909"></div>
                             </div>
 
                             <div class="toggle-row">
                                 <label for="enableC4">Add Compound 4</label>
                                 <label class="switch"><input type="checkbox" id="enableC4" onchange="toggleCompoundRow(4)"><span class="slider"></span></label>
                             </div>
-                            <div id="c4Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none;">
-                                <div class="field" style="flex:2"><label>Comp 4</label><select id="compound4" onchange="updateDisplacement(4)"></select></div>
+                            <div id="c4Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none; grid-template-columns: 2fr 1fr 1fr;">
+                                <div class="field"><label>Comp 4</label><select id="compound4" onchange="updateDisplacement(4)"></select></div>
                                 <div class="field"><label>mg/ml</label><input id="mgml4" type="number" min="0" value="100" oninput="calc()"></div>
-                                <div class="field hidden" style="display:none;"><input id="disp4" type="number" value="0.909"><input id="purity4" type="number" value="100"></div>
+                                <div class="field"><label>Purity (%)</label><input id="purity4" type="number" min="0" value="100" oninput="calc()"></div>
+                                <div class="field hidden" style="display:none;"><input id="disp4" type="number" value="0.909"></div>
                             </div>
                         </div>
                     </div>
