@@ -21,15 +21,14 @@
 
 
 
-
+  { "name": "Proviron",  "category": "addon", "batch": "P1", "labLink": "https://verify.janoshik.com/tests/197470-Sample_6_E99C5ZM6NC5S", "labResult": "96+", "p100": 400, "stock100": 5 },
 
 { "name": "Anavar", "category": "addon", "batch": "China baby!!!", "labLink": "Transit", "labResult": "--", "p100": 100, "stock100": 100 },
 { "name": "Anadrol", "category": "addon", "batch": "Oxy/FP/26", "labLink": "At Jano", "labResult": "At Jano", "p100": 60, "stock100": 0 },
  { "name": "D-Bol 10g", "category": "addon", "batch": "C_1Db", "labLink": "At Jano", "labResult": "At Jano", "p100": 50, "stock100": 50 },
   { "name": "Winstrol 10g", "category": "addon", "batch": "--", "labLink": "At Jano", "labResult": "At Jano", "p100": 55, "stock100": 50 },
-  { "name": "fluoxymesterone(Halo)",  "category": "addon", "batch": "h1", "labLink": "https://verify.janoshik.com/tests/197470-Sample_6_E99C5ZM6NC5S", "labResult": "96+", "p100": 400, "stock100": 7 },
-    { "name": "Proviron",  "category": "addon", "batch": "P1", "labLink": "https://verify.janoshik.com/tests/197470-Sample_6_E99C5ZM6NC5S", "labResult": "96+", "p100": 400, "stock100": 5 }
-
+  { "name": "fluoxymesterone(Halo)",  "category": "addon", "batch": "h1", "labLink": "https://verify.janoshik.com/tests/197470-Sample_6_E99C5ZM6NC5S", "labResult": "96+", "p100": 400, "stock100": 7 }
+  
 
 
 ]
