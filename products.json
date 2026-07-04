@@ -46,9 +46,9 @@
     "labLink": "https://verify.janoshik.com/tests/148722-Sample_1_7PVJ4SXQXMFJ",
     "labResult": "92.99%",
     "p100": 240,
-    "stock100": 10,
+    "stock100": 0,
     "p1k": 1600,
-    "s1k": 1
+    "s1k": 0
   },
   {
     "name": "Test Decanoate",
@@ -56,9 +56,9 @@
     "labLink": "https://verify.janoshik.com/tests/165853-sample_1_raws_NGH7QKFI772P",
     "labResult": "96+%",
     "p100": 260,
-    "stock100": 22,
+    "stock100": 6,
     "p1k": 1670,
-    "s1k": 1
+    "s1k": 0
   },
   {
     "name": "Test Isocap (Caviar Of Test Esters)",
@@ -86,9 +86,9 @@
     "labLink": "https://verify.janoshik.com/tests/156902-ND_ZBLQTAWM2TGM",
     "labResult": "92.03%",
     "p100": 360,
-    "stock100": 6,
+    "stock100": 0,
     "p1k": 2300,
-    "s1k": 1
+    "s1k": 0
   },
   {
     "name": "Nandrolone phenylpropionate (NPP)",
@@ -96,9 +96,9 @@
     "labLink": "https://verify.janoshik.com/tests/164151-Sample_2_2JFUUAH97UZF",
     "labResult": "89%",
     "p100": 360,
-    "stock100": 10,
+    "stock100": 0,
     "p1k": 2300,
-    "s1k": 1
+    "s1k": 0
   },
   {
     "name": "Boldenone Undecylenate (EQ)",
@@ -106,7 +106,7 @@
     "labLink": "https://verify.janoshik.com/tests/164151-Sample_2_2JFUUAH97UZF",
     "labResult": "At jano",
     "p100": 260,
-    "stock100": 10,
+    "stock100": 0,
     "p1k": 99999,
     "s1k": 0
   },
@@ -117,7 +117,7 @@
     "labResult": "92%",
     "p100": 360,
     "stock100": 8,
-    "p1k": 300,
+    "p1k": 2800,
     "s1k": 0
   },
   {
