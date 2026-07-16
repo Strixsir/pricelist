@@ -30,17 +30,6 @@
     "p1k": 1550,
     "s1k": 1
   },
-   {
-    "name": "Anavar 100G",
-   "batch": "Var001",
- "labLink": "https://verify.janoshik.com/tests/206357-Anavar_raw_powder_S33NH3BY846D",
-    "labResult": "98+",
-    "p100": 1300,
-    "stock100": 100
-    "p1k": 1650,
-    "s1k": 0
-  },
-   
   {
     "name": "Test Cyp",
     "batch": "TTC-FP-126",
@@ -177,7 +166,7 @@
     "labLink": "https://verify.janoshik.com/tests/206357-Anavar_raw_powder_S33NH3BY846D",
     "labResult": "98+",
     "p100": 100,
-    "stock100": 100
+    "stock100": 0
   },
   {
     "name": "Anadrol",
