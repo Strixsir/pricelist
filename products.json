@@ -39,7 +39,7 @@
     "p100": 240,
     "stock100": 10,
     "p1k": 1650,
-    "s1k": 0
+    "s1k": 1
   },
   {
     "name": "Test Ent (potential PIP)",
@@ -59,7 +59,7 @@
     "p100": 260,
     "stock100": 6,
     "p1k": 1670,
-    "s1k": 0
+    "s1k": 1
   },
   {
     "name": "Test Isocap (Caviar Of Test Esters)",
@@ -79,7 +79,7 @@
     "p100": 260,
     "stock100": 20,
     "p1k": 1640,
-    "s1k": 1
+    "s1k": 0
   },
   {
     "name": "Nandrolone Decanoate",
