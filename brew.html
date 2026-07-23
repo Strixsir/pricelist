@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Stolen Brew Calc</title>
+    <title>Brew Calc - Dashboard UI</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -178,8 +178,8 @@
         
         <header class="top-nav">
             <div class="brand">
-                <h1 id="pageTitle">Stolen Brew Calc</h1>
-                <p id="pageSubtitle">.</p>
+                <h1 id="pageTitle">Brew Calc</h1>
+                <p id="pageSubtitle">Intelligent formulation engine</p>
             </div>
             <div class="tab-container">
                 <button id="tabSingle" class="tab-btn active" onclick="switchTab('single')">Single Compound</button>
@@ -677,7 +677,7 @@
             safeToggleClass(tab === 'single' ? 'tabSingle' : tab === 'blend' ? 'tabBlend' : 'tabOral', 'active', true);
 
             if (tab === 'single' || tab === 'blend') {
-                setTxt('pageTitle', tab === 'single' ? "Dinfar Brew Calc" : "Dinfar Blend Calc");
+                setTxt('pageTitle', tab === 'single' ? "Brew Calc" : "Blend Calc");
                 setTxt('lblComp1', tab === 'single' ? "Base Compound Profile" : "Compound 1 Profile");
                 toggleVis('liquidInputs', true); toggleVis('presetCard', true); toggleVis('liquidResults', true); toggleVis('chartHousing', true);
                 toggleVis('oralInputs', false); toggleVis('oralResults', false); toggleVis('scheduleHousing', false);
@@ -1251,7 +1251,7 @@
             html2canvas(cap, { scale: 2, useCORS: true, logging: false })
                 .then(canvas => { 
                     doc.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 595, (canvas.height*595)/canvas.width); 
-                    doc.save(`dinfar_${currentTab}.pdf`); 
+                    doc.save(`brew_calc_${currentTab}.pdf`); 
                     cap.style.background = ""; 
                 })
                 .catch(error => {
