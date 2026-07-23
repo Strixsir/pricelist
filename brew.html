@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Dinfar Brew Calc - Dashboard UI</title>
+    <title>Stolen Brew Calc</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Clean, Robust Public CDNs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -25,7 +24,6 @@
 
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
-        /* Dashboard Full Screen Lock */
         body {
             margin: 0; padding: 15px; height: 100vh; overflow: hidden; 
             background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), url("https://images7.alphacoders.com/398/398372.jpg") center/cover fixed;
@@ -34,7 +32,6 @@
 
         .app-container { width: 100%; max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; height: 100%; }
 
-        /* Unified Top Navigation Bar */
         .top-nav {
             display: flex; justify-content: space-between; align-items: center;
             background: var(--panel-bg); border: 1px solid var(--border);
@@ -44,7 +41,6 @@
         .brand h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; color: #fff; }
         .brand p { margin: 0; color: var(--text-muted); font-size: 11px; font-weight: 500; }
 
-        /* Navigation Tabs */
         .tab-container { display: flex; gap: 8px; }
         .tab-btn {
             background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); color: var(--text-muted);
@@ -56,7 +52,6 @@
             will-change: box-shadow; animation: tabPulse 2.5s infinite ease-in-out; cursor: default; transform: none !important;
         }
 
-        /* Store Button */
         .store-btn {
             background: rgba(225, 29, 72, 0.15); border: 1px solid var(--accent); color: #fff; 
             padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 12px; text-decoration: none;
@@ -65,11 +60,9 @@
         }
         .store-btn:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 5px 20px rgba(225, 29, 72, 0.5); }
 
-        /* Animations */
         @keyframes neonPulse { 0%, 100% { box-shadow: 0 0 8px rgba(196, 30, 58, 0.35); transform: translate3d(0, 0, 0); } 50% { box-shadow: 0 0 15px rgba(196, 30, 58, 0.7); transform: translate3d(0, -1px, 0); } }
         @keyframes tabPulse { 0%, 100% { box-shadow: 0 0 5px rgba(196, 30, 58, 0.3); } 50% { box-shadow: 0 0 12px rgba(196, 30, 58, 0.65); } }
 
-        /* Scrollable Grid Layout */
         .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; flex: 1; min-height: 0; }
         .panel-col {
             background: var(--panel-bg); border: 1px solid var(--border); border-radius: 24px; padding: 20px; 
@@ -81,7 +74,6 @@
         .panel-col::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
         .panel-col::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 
-        /* Stepped Workflow Cards (Compacted) */
         .step-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 15px; transition: border-color 0.3s; }
         .step-card:focus-within { border-color: var(--border-highlight); }
         .step-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-weight: 700; font-size: 13px; color: #fff; }
@@ -90,7 +82,6 @@
         .preset-row { display: flex; align-items: center; gap: 12px; }
         .preset-row label { margin: 0; font-size: 11px; white-space: nowrap; color: var(--accent); font-weight: 700; text-transform: uppercase;}
 
-        /* Form Elements */
         .input-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; }
         .field { display: flex; flex-direction: column; gap: 4px; position: relative; }
         .field label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -107,7 +98,6 @@
         details.advanced-settings[open] summary::after { content: '-'; }
         .advanced-content { padding: 12px; border-top: 1px dashed rgba(255, 255, 255, 0.05); display: flex; flex-direction: column; gap: 12px; }
 
-        /* Toggles */
         .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(0, 0, 0, 0.3); border-radius: 8px; margin-bottom: 8px; }
         .toggle-row label { font-size: 11px; font-weight: 600; cursor: pointer; flex: 1; margin: 0; color: #fff; text-transform: none; }
         .switch { position: relative; display: inline-block; width: 36px; height: 20px; }
@@ -117,13 +107,11 @@
         input:checked + .slider { background-color: var(--accent); }
         input:checked + .slider:before { transform: translateX(16px); background-color: #fff; }
 
-        /* Segmented Controls */
         .segmented-control { display: inline-flex; width: fit-content; max-width: 100%; background: rgba(0,0,0,0.4); padding: 3px; border-radius: 10px; margin-bottom: 12px; overflow-x: auto; }
         .segmented-control::-webkit-scrollbar { display: none; }
         .segmented-control button { flex: 0 1 auto; padding: 6px 12px; border: none; background: transparent; color: var(--text-muted); font-size: 11px; font-weight: 600; border-radius: 7px; cursor: pointer; transition: 0.2s; white-space: nowrap; }
         .segmented-control button.active { background: rgba(255,255,255,0.1); color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
-        /* Outputs: The Recipe Card */
         .recipe-card { background: linear-gradient(180deg, rgba(30, 30, 35, 0.8) 0%, rgba(15, 15, 18, 0.9) 100%); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: 14px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
         .recipe-header { font-size: 15px; font-weight: 800; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: flex-end; }
         .recipe-header span { font-size: 10px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; }
@@ -134,7 +122,6 @@
         .recipe-item-value { font-size: 15px; font-weight: 800; text-align: right; transition: color 0.2s; }
         .recipe-item-sub { font-size: 10px; color: var(--text-muted); font-weight: 500; text-align: right; margin-top: 2px;}
 
-        /* Stats Grid */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
         .stat-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 12px; border-radius: 10px; text-align: center; }
         .stat-box span { display: block; font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 4px; }
@@ -144,9 +131,8 @@
 
         .chart-box { height: 160px; margin-top: 10px; position: relative; }
         
-        /* Dilution Schedule View (Oral Tab) */
         .schedule-container { background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 12px; padding: 15px; flex: 1; display: flex; flex-direction: column; min-height: 0;}
-        .schedule-title { font-size: 11px; font-weight: 700; text-transform: uppercase; border-b: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 10px; color: var(--accent); }
+        .schedule-title { font-size: 11px; font-weight: 700; text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 10px; color: var(--accent); }
         .schedule-steps { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; padding-right: 5px;}
         .schedule-steps::-webkit-scrollbar { width: 4px; }
         .schedule-steps::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
@@ -157,7 +143,6 @@
 
         .alert-box { background: rgba(196, 30, 58, 0.15); border: 1px solid var(--accent); border-radius: 10px; padding: 12px; font-size: 12px; line-height: 1.4; display: flex; gap: 10px; align-items: flex-start; }
 
-        /* Action Buttons */
         .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: auto; padding-top: 15px;}
         .actions button { padding: 10px 20px; border-radius: 10px; color: #fff; font-weight: 600; font-size: 12px; cursor: pointer; transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); border: none; text-align: center;}
         .btn-primary { background: var(--accent); box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3); flex: 2; }
@@ -165,7 +150,6 @@
         .btn-secondary { background: rgba(255,255,255,0.05); border: 1px solid var(--border); flex: 1; }
         .btn-secondary:hover { background: rgba(255,255,255,0.1); }
 
-        /* Lab Protocol Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .modal-box { background: #0f0f12; border: 1px solid var(--border); border-radius: 20px; max-width: 600px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.9); display: flex; flex-direction: column; }
         .modal-header { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
@@ -210,10 +194,8 @@
 
         <main class="main-grid" id="captureArea">
             
-            <!-- LEFT COLUMN: INPUTS -->
             <div class="panel-col">
                 
-                <!-- Quick Preset (Liquid Only) -->
                 <div id="presetCard" class="step-card preset-row" style="background: rgba(225, 29, 72, 0.05); border-color: rgba(225, 29, 72, 0.2);">
                     <label style="color: var(--accent);">⚡ Fast Preset</label>
                     <select id="presetSelect" onchange="loadPresetRecipe()" style="flex:1;">
@@ -319,7 +301,7 @@
                             </div>
                             <div class="field">
                                 <label>Purity (%)</label>
-                                <input id="purity" type="number" min="0" value="100" oninput="calc()">
+                                <input id="purity" type="number" min="0" max="100" value="100" oninput="calc()">
                             </div>
                         </div>
 
@@ -338,7 +320,7 @@
                             <div id="c2Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none; grid-template-columns: 2fr 1fr 1fr;">
                                 <div class="field"><label>Comp 2</label><select id="compound2" onchange="updateDisplacement(2)"></select></div>
                                 <div class="field"><label>mg/ml</label><input id="mgml2" type="number" min="0" value="100" oninput="calc()"></div>
-                                <div class="field"><label>Purity (%)</label><input id="purity2" type="number" min="0" value="100" oninput="calc()"></div>
+                                <div class="field"><label>Purity (%)</label><input id="purity2" type="number" min="0" max="100" value="100" oninput="calc()"></div>
                                 <div class="field hidden" style="display:none;"><input id="disp2" type="number" value="0.909"></div>
                             </div>
 
@@ -349,7 +331,7 @@
                             <div id="c3Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none; grid-template-columns: 2fr 1fr 1fr;">
                                 <div class="field"><label>Comp 3</label><select id="compound3" onchange="updateDisplacement(3)"></select></div>
                                 <div class="field"><label>mg/ml</label><input id="mgml3" type="number" min="0" value="100" oninput="calc()"></div>
-                                <div class="field"><label>Purity (%)</label><input id="purity3" type="number" min="0" value="100" oninput="calc()"></div>
+                                <div class="field"><label>Purity (%)</label><input id="purity3" type="number" min="0" max="100" value="100" oninput="calc()"></div>
                                 <div class="field hidden" style="display:none;"><input id="disp3" type="number" value="0.909"></div>
                             </div>
 
@@ -360,7 +342,7 @@
                             <div id="c4Inputs" class="hidden input-row" style="background:rgba(0,0,0,0.2); padding:8px; border-radius:8px; display:none; grid-template-columns: 2fr 1fr 1fr;">
                                 <div class="field"><label>Comp 4</label><select id="compound4" onchange="updateDisplacement(4)"></select></div>
                                 <div class="field"><label>mg/ml</label><input id="mgml4" type="number" min="0" value="100" oninput="calc()"></div>
-                                <div class="field"><label>Purity (%)</label><input id="purity4" type="number" min="0" value="100" oninput="calc()"></div>
+                                <div class="field"><label>Purity (%)</label><input id="purity4" type="number" min="0" max="100" value="100" oninput="calc()"></div>
                                 <div class="field hidden" style="display:none;"><input id="disp4" type="number" value="0.909"></div>
                             </div>
                         </div>
@@ -385,11 +367,11 @@
                     <div class="step-card">
                         <div class="step-header"><div class="step-badge">3</div> Solvents & Carrier</div>
                         <div class="input-row" style="margin-bottom: 12px;">
-                            <div class="field"><label>BA (Alcohol) %</label><input id="baPct" type="number" min="0" value="2" step="0.5" oninput="calc()"></div>
-                            <div class="field"><label>BB (Benzoate) %</label><input id="bbPct" type="number" min="0" value="18" step="1" oninput="calc()"></div>
+                            <div class="field"><label>BA (Alcohol) %</label><input id="baPct" type="number" min="0" max="100" value="2" step="0.5" oninput="calc()"></div>
+                            <div class="field"><label>BB (Benzoate) %</label><input id="bbPct" type="number" min="0" max="100" value="18" step="1" oninput="calc()"></div>
                         </div>
                         <div class="field">
-                            <label>Primary Carrier Oil <span id="mainCarrierAutoLbl" style="color:var(--accent); font-weight:700;">(Auto: 100%)</span></label>
+                            <label>Primary Carrier Oil <span id="mainCarrierAutoLbl" style="color:var(--accent); font-weight:700;">(Auto: 100% of remaining)</span></label>
                             <select id="mainCarrier" onchange="calc()">
                                 <option value="mct" selected>MCT Oil (Thin)</option>
                                 <option value="gso">Grapeseed Oil (Standard)</option>
@@ -422,7 +404,7 @@
                                             <option value="custom">Custom</option>
                                         </select>
                                     </div>
-                                    <div class="field"><label>Percentage %</label><input id="extraSolventPct" type="number" min="0" value="0" oninput="calc()"></div>
+                                    <div class="field"><label>Percentage %</label><input id="extraSolventPct" type="number" min="0" max="100" value="0" oninput="calc()"></div>
                                 </div>
                                 <div class="field hidden" id="customExtraSolventDensityField" style="display:none;">
                                     <label>Custom Density</label>
@@ -436,12 +418,12 @@
                                 <div id="secondCarrierGroup" class="hidden" style="display:none; flex-direction:column; gap:12px;">
                                     <div class="input-row">
                                         <div class="field">
-                                            <label>Oil 2</label>
+                                            <label>Oil 2 (% of remaining oil)</label>
                                             <select id="carrier2" onchange="calc()">
                                                 <option value="eo">Ethyl Oleate</option><option value="castor">Castor Oil</option><option value="mct">MCT Oil</option><option value="gso">Grapeseed</option><option value="sesame">Sesame Oil</option><option value="mig840">Miglyol 840</option><option value="mig812">Miglyol 812</option><option value="water">Water</option><option value="custom">Custom</option>
                                             </select>
                                         </div>
-                                        <div class="field"><label>Mix %</label><input id="carrier2Pct" type="number" min="0" value="0" oninput="calc()"></div>
+                                        <div class="field"><label>Mix %</label><input id="carrier2Pct" type="number" min="0" max="100" value="0" oninput="calc()"></div>
                                         <div class="field hidden" id="customCarrier2Field" style="display:none;">
                                             <label>Density</label><input id="customCarrier2Density" type="number" min="0" step="0.001" value="0.96" oninput="calc()">
                                         </div>
@@ -453,12 +435,12 @@
                                     </div>
                                     <div id="thirdCarrierGroup" class="hidden input-row" style="display:none;">
                                         <div class="field">
-                                            <label>Oil 3</label>
+                                            <label>Oil 3 (% of remaining oil)</label>
                                             <select id="carrier3" onchange="calc()">
                                                 <option value="eo">Ethyl Oleate</option><option value="castor">Castor Oil</option><option value="mct">MCT Oil</option><option value="gso">Grapeseed</option><option value="sesame">Sesame Oil</option><option value="mig840">Miglyol 840</option><option value="mig812">Miglyol 812</option><option value="water">Water</option><option value="custom">Custom</option>
                                             </select>
                                         </div>
-                                        <div class="field"><label>Mix %</label><input id="carrier3Pct" type="number" min="0" value="0" oninput="calc()"></div>
+                                        <div class="field"><label>Mix %</label><input id="carrier3Pct" type="number" min="0" max="100" value="0" oninput="calc()"></div>
                                         <div class="field hidden" id="customCarrier3Field" style="display:none;">
                                             <label>Density</label><input id="customCarrier3Density" type="number" min="0" step="0.001" value="0.96" oninput="calc()">
                                         </div>
@@ -504,9 +486,6 @@
 
                 </div>
 
-                <!-- ========================================== -->
-                <!-- ORAL INPUTS                                -->
-                <!-- ========================================== -->
                 <div id="oralInputs" class="hidden" style="display: none; flex-direction: column; gap: 15px;">
                     
                     <div class="segmented-control">
@@ -532,7 +511,6 @@
                         </div>
                     </div>
 
-                    <!-- Weight Target Mode -->
                     <div id="oralWeightTargetArea" class="step-card">
                         <div class="step-header"><div class="step-badge">2</div> Mixture Target</div>
                         <div class="segmented-control" style="background: rgba(0,0,0,0.2);">
@@ -546,7 +524,6 @@
                         </div>
                     </div>
 
-                    <!-- Capsule Target Mode -->
                     <div id="oralCapsuleArea" class="step-card hidden" style="display: none;">
                         <div class="step-header"><div class="step-badge">2</div> Capsule Specs</div>
                         <div class="input-row" style="margin-bottom:12px;">
@@ -575,7 +552,6 @@
 
             </div>
 
-            <!-- RIGHT COLUMN: OUTPUTS -->
             <div class="panel-col">
                 
                 <div id="errorAlert" class="alert-box hidden" style="display: none;">
@@ -583,7 +559,6 @@
                     <div><strong class="font-bold text-red-400 block mb-1">Configuration Error</strong><span id="errorText">Adjust inputs.</span></div>
                 </div>
 
-                <!-- 1. LIQUID OUTPUTS -->
                 <div id="liquidResults" style="display: flex; flex-direction: column; gap: 15px;">
                     
                     <div class="recipe-card">
@@ -630,11 +605,10 @@
                     <div class="stats-grid">
                         <div class="stat-box highlight"><span>Target Total Scale Mass</span><strong id="totalMass">0.000 g</strong></div>
                         <div class="stat-box"><span>Final Brew Yield</span><strong id="finalYield">0.00 ml</strong></div>
-                        <div class="stat-box"><span>Est. Viscosity (<span id="tempVal">25°C</span>)</span><strong id="outViscosityVal" style="color: var(--ba-color);">0.0 cP</strong></div>
+                        <div class="stat-box"><span>Est. Viscosity (25°C)</span><strong id="outViscosityVal" style="color: var(--ba-color);">0.0 cP</strong></div>
                     </div>
                 </div>
 
-                <!-- 2. ORAL OUTPUTS -->
                 <div id="oralResults" class="hidden" style="display: none; flex-direction: column; gap: 15px;">
                     <div class="recipe-card">
                         <div class="recipe-header">Dry Blend Target <span><span id="outOralApiCapsuleEquivalent"></span></span></div>
@@ -663,10 +637,9 @@
                 </div>
 
             </div>
-        </div>
+        </main>
     </div>
 
-    <!-- LAB PROTOCOL MODAL -->
     <div id="protocolModal" class="modal-overlay hidden" style="display: none;">
         <div class="modal-box">
             <div class="modal-header"><h2 id="modalTitle">Lab Protocol</h2><button class="modal-close" onclick="closeProtocolModal()">&times;</button></div>
@@ -678,7 +651,6 @@
     </div>
 
     <script>
-        // Dictionary Configs (Audited)
         const displacements = { "custom": 0.909, "test-base": 0.909, "test-p": 0.916, "test-phenyl": 0.954, "test-c": 0.909, "test-e": 0.943, "test-iso": 0.935, "test-deca": 0.962, "test-undecanoate": 0.970, "test-susp": 1.000, "tren-base": 0.841, "tren-a": 0.848, "tren-e": 0.909, "tren-hex": 0.909, "mTren": 0.855, "nandrolone-base": 0.890, "deca": 0.962, "npp": 0.877, "eq": 0.948, "bold-cyp": 0.909, "masteron-p": 0.935, "masteron-e": 0.962, "primo-e": 0.952, "trestolone": 0.900, "trestolone-a": 0.901, "dhb": 0.970, "winstrol": 0.885, "dbol": 0.892, "anadrol": 0.860, "anavar": 0.900, "tbol": 0.830, "sdrol": 0.909, "proviron": 0.909, "progesterone": 0.854, "est-val": 0.910, "est-cyp": 0.869, "est-enan": 0.900, "est-ace": 0.865, "est-udy": 0.935, "dhea": 0.893, "7dhea": 0.840, "dhea-sulf": 0.850, "yk11": 0.820, "l-carn": 0.625, "glut": 0.694 };
         const densities = { ba: 1.044, bb: 1.118, castor: 0.96, gso: 0.92, sesame: 0.92, mct: 0.95, mig840: 0.94, mig812: 0.95, eo: 0.87, water: 1.0, guaiacol: 1.129, peg400: 1.128, dmso: 1.10, "ethyl-lactate": 1.035, none: 1.0 };
         const baseViscosity = { ba: 5.5, bb: 8.3, castor: 650, gso: 50, sesame: 45, mct: 28, mig840: 11, mig812: 30, eo: 5.5, water: 1.0, guaiacol: 5, peg400: 90, dmso: 2, "ethyl-lactate": 3, none: 1.0 };
@@ -688,7 +660,6 @@
         let latestCalculations = { pow1: '0.000', comp1Name: 'Base', baVol: '0.00', baWeight: '0.000', bbVol: '0.00', bbWeight: '0.000', mainOilName: 'Oil', totalMass: '0.000', isBlend: false, filterName: 'None (0ml)' };
         let oralCalculations = { a: 0, f: 0, t: 0, p: 0, h: '' };
 
-        // DOM Utils
         const getEl = id => document.getElementById(id);
         const getVal = (id, def = 0) => { const el = getEl(id); if (!el || el.value === "") return def; const val = parseFloat(el.value); return isNaN(val) ? def : val; };
         const getSelectText = (id, def = '') => { const el = getEl(id); return (el && el.selectedIndex >= 0) ? el.options[el.selectedIndex].text : def; };
@@ -746,76 +717,172 @@
         }
 
         function toggleOralCustomSteps() { toggleVis('oralCustomStepsField', getEl('oralStepsMode')?.value === 'custom'); calc(); }
-        function updateDisplacement(n) { const selEl = getEl(n === 1 ? 'compound' : `compound${n}`); const dispEl = getEl(n === 1 ? 'disp' : `disp${n}`); if (selEl && dispEl && selEl.value !== 'custom' && displacements[selEl.value]) { dispEl.value = displacements[selEl.value]; } calc(); }
-        function toggleCompoundRow(n) { const isChecked = getEl(`enableC${n}`)?.checked; toggleVis(`c${n}Inputs`, isChecked); toggleVis(`powder${n}Row`, isChecked); calc(); }
-        function toggleExtraSolvent() { const isChecked = getEl('enableExtraSolvent')?.checked; toggleVis('extraSolventGroup', isChecked); toggleVis('extraRow', isChecked); calc(); }
+        
+        function updateDisplacement(n) { 
+            const selEl = getEl(n === 1 ? 'compound' : `compound${n}`); 
+            const dispEl = getEl(n === 1 ? 'disp' : `disp${n}`); 
+            if (selEl && dispEl && selEl.value !== 'custom' && displacements[selEl.value]) { 
+                dispEl.value = displacements[selEl.value]; 
+            } 
+            calc(); 
+        }
+        
+        function toggleCompoundRow(n) { 
+            const isChecked = getEl(`enableC${n}`)?.checked; 
+            toggleVis(`c${n}Inputs`, isChecked); 
+            toggleVis(`powder${n}Row`, isChecked); 
+            calc(); 
+        }
+        
+        function toggleExtraSolvent() { 
+            const isChecked = getEl('enableExtraSolvent')?.checked; 
+            toggleVis('extraSolventGroup', isChecked); 
+            toggleVis('extraRow', isChecked); 
+            showCustomFields();
+            calc(); 
+        }
         
         function toggleSecondCarrier() {
             const isChecked = getEl('enableSecondCarrier')?.checked;
-            toggleVis('secondCarrierGroup', isChecked); toggleVis('carrier2Row', isChecked);
-            if (!isChecked) { const thirdEl = getEl('enableThirdCarrier'); if(thirdEl) thirdEl.checked = false; toggleThirdCarrier(); }
+            toggleVis('secondCarrierGroup', isChecked); 
+            toggleVis('carrier2Row', isChecked);
+            if (!isChecked) { 
+                const thirdEl = getEl('enableThirdCarrier'); 
+                if(thirdEl) thirdEl.checked = false; 
+                toggleThirdCarrier(); 
+            }
+            showCustomFields();
             calc();
         }
 
         function toggleThirdCarrier() {
             const isChecked = getEl('enableThirdCarrier')?.checked;
-            toggleVis('thirdCarrierGroup', isChecked); toggleVis('carrier3Row', isChecked);
+            toggleVis('thirdCarrierGroup', isChecked); 
+            toggleVis('carrier3Row', isChecked);
+            showCustomFields();
             calc();
         }
 
-        function toggleStepCheck(el) { el.classList.toggle('completed'); const cb = el.querySelector('input[type="checkbox"]'); if (cb) cb.checked = el.classList.contains('completed'); }
+        function toggleStepCheck(el) { 
+            el.classList.toggle('completed'); 
+            const cb = el.querySelector('input[type="checkbox"]'); 
+            if (cb) cb.checked = el.classList.contains('completed'); 
+        }
 
         function loadPresetRecipe() {
-            const selectEl = getEl('presetSelect'); if (!selectEl || selectEl.value === 'none') return;
-            const d = JSON.parse(selectEl.value); switchTab(d.blend ? 'blend' : 'single');
-            const c1El = getEl('compound'); if(c1El) c1El.value = d.blend ? d.c1 : d.c;
-            const m1El = getEl('mgml'); if(m1El) m1El.value = d.blend ? d.mg1 : d.mg;
-            [2,3,4].forEach(i => { const enEl = getEl(`enableC${i}`); if (enEl) { enEl.checked = d.blend && !!d[`c${i}`]; toggleCompoundRow(i); if(enEl.checked) { const cEl = getEl(`compound${i}`); if(cEl) cEl.value = d[`c${i}`]; const mEl = getEl(`mgml${i}`); if(mEl) mEl.value = d[`mg${i}`]; } } });
-            if(getEl('baPct')) getEl('baPct').value = d.ba; if(getEl('bbPct')) getEl('bbPct').value = d.bb; if(getEl('mainCarrier')) getEl('mainCarrier').value = d.oil;
-            if(getEl('enableExtraSolvent')) getEl('enableExtraSolvent').checked = false; if(getEl('enableSecondCarrier')) getEl('enableSecondCarrier').checked = false;
-            toggleExtraSolvent(); toggleSecondCarrier(); updateDisplacement(1);
-            if (d.blend) { if (d.c2) updateDisplacement(2); if (d.c3) updateDisplacement(3); if (d.c4) updateDisplacement(4); }
+            const selectEl = getEl('presetSelect'); 
+            if (!selectEl || selectEl.value === 'none') return;
+            
+            const d = JSON.parse(selectEl.value); 
+            switchTab(d.blend ? 'blend' : 'single');
+            
+            const c1El = getEl('compound'); 
+            if(c1El) c1El.value = d.blend ? d.c1 : d.c;
+            
+            const m1El = getEl('mgml'); 
+            if(m1El) m1El.value = d.blend ? d.mg1 : d.mg;
+            
+            [2,3,4].forEach(i => { 
+                const enEl = getEl(`enableC${i}`); 
+                if (enEl) { 
+                    enEl.checked = d.blend && !!d[`c${i}`]; 
+                    toggleVis(`c${i}Inputs`, enEl.checked);
+                    toggleVis(`powder${i}Row`, enEl.checked);
+                    if(enEl.checked) { 
+                        const cEl = getEl(`compound${i}`); 
+                        if(cEl) cEl.value = d[`c${i}`]; 
+                        const mEl = getEl(`mgml${i}`); 
+                        if(mEl) mEl.value = d[`mg${i}`]; 
+                    } 
+                } 
+            });
+            
+            if(getEl('baPct')) getEl('baPct').value = d.ba; 
+            if(getEl('bbPct')) getEl('bbPct').value = d.bb; 
+            if(getEl('mainCarrier')) getEl('mainCarrier').value = d.oil;
+            
+            if(getEl('enableExtraSolvent')) getEl('enableExtraSolvent').checked = false; 
+            if(getEl('enableSecondCarrier')) getEl('enableSecondCarrier').checked = false;
+            
+            toggleVis('extraSolventGroup', false);
+            toggleVis('extraRow', false);
+            toggleVis('secondCarrierGroup', false);
+            toggleVis('carrier2Row', false);
+            
+            updateDisplacement(1);
+            if (d.blend) { 
+                if (d.c2) updateDisplacement(2); 
+                if (d.c3) updateDisplacement(3); 
+                if (d.c4) updateDisplacement(4); 
+            }
+            
+            selectEl.value = 'none';
             calc();
         }
 
         function showCustomFields() {
-            toggleVis('customLossField', getEl('filter')?.value === 'custom');
-            toggleVis('customExtraSolventDensityField', getEl('extraSolventType')?.value === 'custom' && getEl('enableExtraSolvent')?.checked);
-            toggleVis('customMainCarrierField', getEl('mainCarrier')?.value === 'custom');
-            toggleVis('customCarrier2Field', getEl('carrier2')?.value === 'custom' && getEl('enableSecondCarrier')?.checked);
-            toggleVis('customCarrier3Field', getEl('carrier3')?.value === 'custom' && getEl('enableThirdCarrier')?.checked);
+            const filterVal = getEl('filter')?.value;
+            toggleVis('customLoss', filterVal === 'custom');
+            
+            const extraType = getEl('extraSolventType')?.value;
+            const extraEnabled = getEl('enableExtraSolvent')?.checked;
+            toggleVis('customExtraSolventDensityField', extraType === 'custom' && extraEnabled);
+            
+            const mainCarrier = getEl('mainCarrier')?.value;
+            toggleVis('customMainCarrierDensity', mainCarrier === 'custom');
+            
+            const carrier2Val = getEl('carrier2')?.value;
+            const carrier2Enabled = getEl('enableSecondCarrier')?.checked;
+            toggleVis('customCarrier2Field', carrier2Val === 'custom' && carrier2Enabled);
+            
+            const carrier3Val = getEl('carrier3')?.value;
+            const carrier3Enabled = getEl('enableThirdCarrier')?.checked;
+            toggleVis('customCarrier3Field', carrier3Val === 'custom' && carrier3Enabled);
         }
 
-        function calc() { currentTab === 'oral' ? calcOral() : (showCustomFields(), calcLiquid()); }
+        function calc() { 
+            showCustomFields();
+            currentTab === 'oral' ? calcOral() : calcLiquid(); 
+        }
 
         function calcLiquid() {
             const isBlend = currentTab === 'blend';
-            const baPct = Math.max(0, getVal('baPct'));
-            const bbPct = Math.max(0, getVal('bbPct'));
+            const baPct = Math.max(0, Math.min(100, getVal('baPct')));
+            const bbPct = Math.max(0, Math.min(100, getVal('bbPct')));
             
             const enExtraEl = getEl('enableExtraSolvent');
-            const exPct = (enExtraEl && enExtraEl.checked) ? Math.max(0, getVal('extraSolventPct')) : 0;
+            const exPct = (enExtraEl && enExtraEl.checked) ? Math.max(0, Math.min(100, getVal('extraSolventPct'))) : 0;
             
-            // Auto-Capping Carrier Logic
+            if (baPct + bbPct + exPct > 100) {
+                toggleVis('errorAlert', true);
+                setTxt('errorText', `Solvent percentages (BA ${baPct}% + BB ${bbPct}% + Extra ${exPct}%) = ${baPct + bbPct + exPct}% exceed 100% of total volume.`);
+                return;
+            }
+            
             const enSecEl = getEl('enableSecondCarrier');
             const enThirdEl = getEl('enableThirdCarrier');
-            let c2Pct = (enSecEl && enSecEl.checked) ? Math.max(0, getVal('carrier2Pct')) : 0;
-            let c3Pct = (enThirdEl && enThirdEl.checked) ? Math.max(0, getVal('carrier3Pct')) : 0;
+            let c2Pct = (enSecEl && enSecEl.checked) ? Math.max(0, Math.min(100, getVal('carrier2Pct'))) : 0;
+            let c3Pct = (enThirdEl && enThirdEl.checked) ? Math.max(0, Math.min(100, getVal('carrier3Pct'))) : 0;
 
-            if (c2Pct > 100) { c2Pct = 100; if (getEl('carrier2Pct')) getEl('carrier2Pct').value = 100; }
-            if (c2Pct + c3Pct > 100) { c3Pct = 100 - c2Pct; if (getEl('carrier3Pct')) getEl('carrier3Pct').value = c3Pct; }
+            if (c2Pct + c3Pct > 100) {
+                c3Pct = 100 - c2Pct;
+                if (getEl('carrier3Pct')) getEl('carrier3Pct').value = c3Pct;
+                console.warn(`Carrier percentages exceeded 100%. Oil 3 auto-adjusted to ${c3Pct}%`);
+            }
+            
             const mainPct = 100 - c2Pct - c3Pct;
-            setTxt('mainCarrierAutoLbl', `(Auto: ${mainPct.toFixed(0)}%)`);
+            setTxt('mainCarrierAutoLbl', `(Auto: ${mainPct.toFixed(0)}% of remaining oil)`);
 
             const fv = getEl('filter')?.value || 'none';
             const fl = fv === '0.45' ? 1.0 : fv === '0.22' ? 1.6 : fv === 'double' ? 2.5 : fv === 'custom' ? Math.max(0, getVal('customLoss')) : 0;
             
             let tv = 0, y = 0, p1 = 0;
             const c1 = Math.max(0, getVal('mgml')), d1 = Math.max(0, getVal('disp', 0.909));
-            let pur1 = Math.max(0.1, getVal('purity', 100));
+            let pur1 = Math.max(0.1, Math.min(100, getVal('purity', 100)));
 
             if (calcMode === 'volume') {
-                y = Math.max(0, getVal('totalVol')); tv = y + fl;
+                y = Math.max(0, getVal('totalVol')); 
+                tv = y + fl;
                 p1 = c1 > 0 ? (tv * c1 / 1000) / (pur1 / 100) : 0;
             } else {
                 p1 = Math.max(0, getVal('availablePowder'));
@@ -825,12 +892,23 @@
 
             let p2 = 0, p3 = 0, p4 = 0, cv = p1 * d1;
             if (isBlend) {
-                if(getEl('enableC2')?.checked) { p2 = Math.max(0, getVal('mgml2')) > 0 ? (tv * Math.max(0, getVal('mgml2')) / 1000) / (Math.max(0.1, getVal('purity2',100))/100) : 0; cv += p2 * Math.max(0, getVal('disp2', 0.909)); }
-                if(getEl('enableC3')?.checked) { p3 = Math.max(0, getVal('mgml3')) > 0 ? (tv * Math.max(0, getVal('mgml3')) / 1000) / (Math.max(0.1, getVal('purity3',100))/100) : 0; cv += p3 * Math.max(0, getVal('disp3', 0.909)); }
-                if(getEl('enableC4')?.checked) { p4 = Math.max(0, getVal('mgml4')) > 0 ? (tv * Math.max(0, getVal('mgml4')) / 1000) / (Math.max(0.1, getVal('purity4',100))/100) : 0; cv += p4 * Math.max(0, getVal('disp4', 0.909)); }
+                if(getEl('enableC2')?.checked) { 
+                    p2 = Math.max(0, getVal('mgml2')) > 0 ? (tv * Math.max(0, getVal('mgml2')) / 1000) / (Math.max(0.1, getVal('purity2',100))/100) : 0; 
+                    cv += p2 * Math.max(0, getVal('disp2', 0.909)); 
+                }
+                if(getEl('enableC3')?.checked) { 
+                    p3 = Math.max(0, getVal('mgml3')) > 0 ? (tv * Math.max(0, getVal('mgml3')) / 1000) / (Math.max(0.1, getVal('purity3',100))/100) : 0; 
+                    cv += p3 * Math.max(0, getVal('disp3', 0.909)); 
+                }
+                if(getEl('enableC4')?.checked) { 
+                    p4 = Math.max(0, getVal('mgml4')) > 0 ? (tv * Math.max(0, getVal('mgml4')) / 1000) / (Math.max(0.1, getVal('purity4',100))/100) : 0; 
+                    cv += p4 * Math.max(0, getVal('disp4', 0.909)); 
+                }
             }
 
-            const vBa = tv * (baPct / 100), vBb = tv * (bbPct / 100), vEx = tv * (exPct / 100);
+            const vBa = tv * (baPct / 100);
+            const vBb = tv * (bbPct / 100);
+            const vEx = tv * (exPct / 100);
             const vRem = tv - cv - vBa - vBb - vEx;
 
             let vM = 0, vC2 = 0, vC3 = 0, err = false;
@@ -843,15 +921,26 @@
                 vM = vRem - vC2 - vC3;
             }
 
-            const mcVal = getEl('mainCarrier')?.value || 'mct', dM = mcVal === 'custom' ? Math.max(0, getVal('customMainCarrierDensity', 0.92)) : (densities[mcVal] || 0.92);
-            const c2Val = getEl('carrier2')?.value || 'none', dC2 = c2Val === 'custom' ? Math.max(0, getVal('customCarrier2Density', 0.92)) : (densities[c2Val] || 0.92);
-            const c3Val = getEl('carrier3')?.value || 'none', dC3 = c3Val === 'custom' ? Math.max(0, getVal('customCarrier3Density', 0.92)) : (densities[c3Val] || 0.92);
-            const exVal = getEl('extraSolventType')?.value || 'none', dEx = exVal === 'custom' ? Math.max(0, getVal('customExtraSolventDensity', 1)) : (densities[exVal] || 1);
+            const mcVal = getEl('mainCarrier')?.value || 'mct';
+            const dM = mcVal === 'custom' ? Math.max(0.01, getVal('customMainCarrierDensity', 0.92)) : (densities[mcVal] || 0.92);
+            
+            const c2Val = getEl('carrier2')?.value || 'none';
+            const dC2 = c2Val === 'custom' ? Math.max(0.01, getVal('customCarrier2Density', 0.92)) : (densities[c2Val] || 0.92);
+            
+            const c3Val = getEl('carrier3')?.value || 'none';
+            const dC3 = c3Val === 'custom' ? Math.max(0.01, getVal('customCarrier3Density', 0.92)) : (densities[c3Val] || 0.92);
+            
+            const exVal = getEl('extraSolventType')?.value || 'none';
+            const dEx = exVal === 'custom' ? Math.max(0.01, getVal('customExtraSolventDensity', 1)) : (densities[exVal] || 1);
 
-            const wBa = vBa * densities.ba, wBb = vBb * densities.bb, wEx = vEx * dEx, wC2 = vC2 * dC2, wC3 = vC3 * dC3, wM = vM * dM;
+            const wBa = vBa * densities.ba;
+            const wBb = vBb * densities.bb;
+            const wEx = vEx * dEx;
+            const wC2 = vC2 * dC2;
+            const wC3 = vC3 * dC3;
+            const wM = vM * dM;
             const tMass = p1 + p2 + p3 + p4 + wBa + wBb + wEx + wM + wC2 + wC3;
 
-            // Dynamic Naming for UI
             const nameC1 = getSelectText('compound', 'Base Powder');
             const nameC2 = getSelectText('compound2', 'Compound 2');
             const nameC3 = getSelectText('compound3', 'Compound 3');
@@ -870,42 +959,58 @@
             setTxt('outCarrier2Label', nameOil2); 
             setTxt('outCarrier3Label', nameOil3);
 
-            setTxt('powder', p1.toFixed(3) + ' g'); setTxt('powder2', p2.toFixed(3) + ' g'); setTxt('powder3', p3.toFixed(3) + ' g'); setTxt('powder4', p4.toFixed(3) + ' g');
-            setTxt('baVol', vBa.toFixed(2) + ' ml'); setTxt('baWeight', wBa.toFixed(3) + ' g');
-            setTxt('bbVol', vBb.toFixed(2) + ' ml'); setTxt('bbWeight', wBb.toFixed(3) + ' g');
-            setTxt('extraSolventVol', vEx.toFixed(2) + ' ml'); setTxt('extraSolventWeight', wEx.toFixed(3) + ' g');
-            setTxt('outCarrier2Vol', vC2.toFixed(2) + ' ml'); setTxt('outCarrier2Weight', wC2.toFixed(3) + ' g');
-            setTxt('outCarrier3Vol', vC3.toFixed(2) + ' ml'); setTxt('outCarrier3Weight', wC3.toFixed(3) + ' g');
-            setTxt('mainCarrierVol', vM.toFixed(2) + ' ml'); setTxt('mainCarrierWeight', wM.toFixed(3) + ' g');
-            setTxt('totalMass', tMass.toFixed(3) + ' g'); setTxt('finalYield', y.toFixed(2) + ' ml');
+            setTxt('powder', p1.toFixed(3) + ' g'); 
+            setTxt('powder2', p2.toFixed(3) + ' g'); 
+            setTxt('powder3', p3.toFixed(3) + ' g'); 
+            setTxt('powder4', p4.toFixed(3) + ' g');
+            setTxt('baVol', vBa.toFixed(2) + ' ml'); 
+            setTxt('baWeight', wBa.toFixed(3) + ' g');
+            setTxt('bbVol', vBb.toFixed(2) + ' ml'); 
+            setTxt('bbWeight', wBb.toFixed(3) + ' g');
+            setTxt('extraSolventVol', vEx.toFixed(2) + ' ml'); 
+            setTxt('extraSolventWeight', wEx.toFixed(3) + ' g');
+            setTxt('outCarrier2Vol', vC2.toFixed(2) + ' ml'); 
+            setTxt('outCarrier2Weight', wC2.toFixed(3) + ' g');
+            setTxt('outCarrier3Vol', vC3.toFixed(2) + ' ml'); 
+            setTxt('outCarrier3Weight', wC3.toFixed(3) + ' g');
+            setTxt('mainCarrierVol', vM.toFixed(2) + ' ml'); 
+            setTxt('mainCarrierWeight', wM.toFixed(3) + ' g');
+            setTxt('totalMass', tMass.toFixed(3) + ' g'); 
+            setTxt('finalYield', y.toFixed(2) + ' ml');
 
-            // Viscosity Simulation
-            const tempC = getVal('tempSlider', 25);
-            setTxt('tempVal', tempC + '°C');
-
-            let cp = "N/A", cl = "#fff";
+            const tempC = 25;
+            let cl = "#fff";
             const totalLiq = vBa + vBb + vEx + vM + vC2 + vC3;
 
             if (!err && totalLiq > 0) {
                 const gm = k => (baseViscosity[k] || 50) * Math.exp(-(tempCoeff[k] || 0.03) * (tempC - 25)); 
                 let lV = 0;
-                if(vBa>0) lV += vBa * Math.log(gm('ba')); if(vBb>0) lV += vBb * Math.log(gm('bb')); if(vEx>0) lV += vEx * Math.log(gm(exVal));
-                if(vC2>0) lV += vC2 * Math.log(gm(c2Val)); if(vC3>0) lV += vC3 * Math.log(gm(c3Val)); if(vM>0)  lV += vM * Math.log(gm(mcVal));
+                if(vBa>0) lV += vBa * Math.log(gm('ba')); 
+                if(vBb>0) lV += vBb * Math.log(gm('bb')); 
+                if(vEx>0) lV += vEx * Math.log(gm(exVal));
+                if(vC2>0) lV += vC2 * Math.log(gm(c2Val)); 
+                if(vC3>0) lV += vC3 * Math.log(gm(c3Val)); 
+                if(vM>0) lV += vM * Math.log(gm(mcVal));
                 lV /= totalLiq;
 
-                let est = Math.exp(lV) * Math.exp((getVal('mgml') + getVal('mgml2') + getVal('mgml3') + getVal('mgml4')) / 1100);
-                if(est < 15) cl = "var(--ba-color)"; else if(est < 35) cl = "var(--ba-color)"; else if(est < 65) cl = "var(--bb-color)"; else cl = "var(--extra-color)";
+                const totalMgml = getVal('mgml') + (isBlend ? getVal('mgml2') + getVal('mgml3') + getVal('mgml4') : 0);
+                let est = Math.exp(lV) * Math.exp(totalMgml / 1100);
+                
+                if(est < 15) cl = "var(--ba-color)"; 
+                else if(est < 35) cl = "var(--ba-color)"; 
+                else if(est < 65) cl = "var(--bb-color)"; 
+                else cl = "var(--extra-color)";
+                
                 setTxt('outViscosityVal', '~' + est.toFixed(1) + ' cP');
-                const viscEl = getEl('outViscosityVal'); if(viscEl) viscEl.style.color = cl;
+                const viscEl = getEl('outViscosityVal'); 
+                if(viscEl) viscEl.style.color = cl;
             }
 
             toggleVis('errorAlert', err);
             if (err) setTxt('errorText', "Saturation Exceeded. Combined displacement volume exceeds Target Batch size.");
             
-            // Update Pie Chart with dynamic names
-            updatePieChart([cv, vBa, vBb, vEx, vM, vC2, vC3], ['Total API', 'BA', 'BB', nameEx, nameM, nameOil2, nameOil3]);
+            updatePieChart([p1, vBa, vBb, vEx, vM, vC2, vC3], [nameC1, 'BA', 'BB', nameEx, nameM, nameOil2, nameOil3]);
             
-            // Economics Calculus
             const pCost = Math.max(0, getVal('costPowder', 15));
             const oCost = Math.max(0, getVal('costOil', 10));
             const sCost = Math.max(0, getVal('costSolvent', 12));
@@ -914,7 +1019,8 @@
             
             const numVials = y > 0 ? y / vSize : 0;
             const batchPowderCost = (Math.max(0, p1+p2+p3+p4) / 10) * pCost;
-            const batchOilCost = (Math.max(0, vM+vC2+vC3) / 100) * oCost;
+            const totalCarrierVol = vM + vC2 + vC3;
+            const batchOilCost = (totalCarrierVol / 100) * oCost;
             const batchSolventCost = (Math.max(0, vBa+vBb+vEx) / 100) * sCost;
             
             let costPerVial = 0;
@@ -923,7 +1029,6 @@
             }
             setTxt('outCostPerVial', '$' + costPerVial.toFixed(2));
 
-            // State Save
             latestCalculations = { 
                 pow1: p1.toFixed(3), comp1Name: nameC1, baVol: vBa.toFixed(2), baWeight: wBa.toFixed(3), 
                 bbVol: vBb.toFixed(2), bbWeight: wBb.toFixed(3), mainOilName: nameM, totalMass: tMass.toFixed(3), isBlend: isBlend, 
@@ -944,34 +1049,79 @@
 
             if (oralMode === 'weight') {
                 const tv = Math.max(0, getVal('oralWeightTargetVal'));
-                if (oralWeightTarget === 'batch') { tot = tv; fil = tot - api; if (fil < 0) { err = true; fil = 0; } } 
-                else if (oralWeightTarget === 'filler') { fil = tv; tot = api + fil; } 
-                else { if (tv > 1000 || tv <= 0) { err = true; tot = api; } else { tot = (api * 1000) / tv; fil = tot - api; if (fil < 0) { err = true; fil = 0; } } }
+                if (oralWeightTarget === 'batch') { 
+                    tot = tv; 
+                    fil = tot - api; 
+                    if (fil < 0) { err = true; fil = 0; } 
+                } else if (oralWeightTarget === 'filler') { 
+                    fil = tv; 
+                    tot = api + fil; 
+                } else { 
+                    if (tv > 1000 || tv <= 0) { 
+                        err = true; 
+                        tot = api; 
+                    } else { 
+                        tot = (api * 1000) / tv; 
+                        fil = tot - api; 
+                        if (fil < 0) { err = true; fil = 0; } 
+                    } 
+                }
                 setTxt('outOralApiCapsuleEquivalent', "Bulk Dry Blend");
             } else {
                 const req = (Math.max(0, getVal('oralCapApiPerCapsule')) * Math.max(0, getVal('oralCapCount'))) / 1000;
                 tot = (Math.max(0, getVal('oralCapFillWeight')) * Math.max(0, getVal('oralCapCount'))) / 1000;
-                if (api > 0 && api !== req) fil = tot - api; else { api = req; fil = tot - api; }
-                if (fil < 0) { err = true; fil = 0; }
+                
+                if (tot < req) {
+                    err = true;
+                    api = req;
+                    fil = 0;
+                } else {
+                    api = req;
+                    fil = tot - api;
+                }
+                
                 setTxt('outOralApiCapsuleEquivalent', `${Math.max(0, getVal('oralCapCount'))} caps @ ${Math.max(0, getVal('oralCapFillWeight'))}mg`);
             }
 
-            setTxt('outOralTotalApi', api.toFixed(3) + ' g'); setTxt('outOralTotalFiller', fil.toFixed(3) + ' g'); setTxt('outOralTotalBatchSize', tot.toFixed(3) + ' g');
-            setTxt('outOralApiPercentage', (tot > 0 ? (api / tot) * 100 : 0).toFixed(2) + ' %'); setTxt('outOralConcPerGram', (tot > 0 ? (api * 1000) / tot : 0).toFixed(2) + ' mg/g');
+            setTxt('outOralTotalApi', api.toFixed(3) + ' g'); 
+            setTxt('outOralTotalFiller', fil.toFixed(3) + ' g'); 
+            setTxt('outOralTotalBatchSize', tot.toFixed(3) + ' g');
+            setTxt('outOralApiPercentage', (tot > 0 ? (api / tot) * 100 : 0).toFixed(2) + ' %'); 
+            setTxt('outOralConcPerGram', (tot > 0 ? (api * 1000) / tot : 0).toFixed(2) + ' mg/g');
             
             toggleVis('errorAlert', err);
-            if(err) setTxt('errorText', oralMode === 'weight' && oralWeightTarget === 'conc' && Math.max(0, getVal('oralWeightTargetVal')) > 1000 ? "Target concentration cannot exceed 1000 mg/g (pure active API)." : "API weight cannot exceed total dry target blend size.");
+            if(err) {
+                if (oralMode === 'weight' && oralWeightTarget === 'conc' && Math.max(0, getVal('oralWeightTargetVal')) > 1000) {
+                    setTxt('errorText', "Target concentration cannot exceed 1000 mg/g (pure active API).");
+                } else if (oralMode === 'capsule') {
+                    setTxt('errorText', "API per capsule × capsule count exceeds total fill weight.");
+                } else {
+                    setTxt('errorText', "API weight cannot exceed total dry target blend size.");
+                }
+            }
 
             let h = "", r = fil, c = api, s = 1, m = getEl('oralStepsMode')?.value === 'custom' ? Math.max(1, getVal('oralMaxSteps', 99)) : 99;
+            
             if (api > 0 && r > 0 && !err) {
                 h += `<div class="schedule-step transition-all duration-200" onclick="toggleStepCheck(this)" style="border-left: 3px solid var(--powder-color); background: rgba(0,0,0,0.4);"><div class="schedule-step-header" style="color: var(--powder-color);"><span>Initial Active Target Charge</span><span style="font-size:10px;"><input type="checkbox" style="pointer-events:none; accent-color:var(--accent);"></span></div><div>Place exactly <b class="text-white">${api.toFixed(3)}g</b> of pure hormone API inside your mortar bowl.</div></div>`;
+                
                 while (r > 0 && s <= m) {
-                    let a = (r <= c || s === m) ? r : c; let p = c; c += a; r -= a; let f = r <= 0;
+                    let a = (r <= c || s === m) ? r : c; 
+                    let p = c; 
+                    c += a; 
+                    r -= a; 
+                    let f = r <= 0.0001;
+                    
                     h += `<div class="schedule-step transition-all duration-200" onclick="toggleStepCheck(this)" style="border-left: 3px solid ${f ? 'var(--ba-color)' : 'var(--bb-color)'};"><div class="schedule-step-header" style="color: ${f ? 'var(--ba-color)' : 'var(--bb-color)'};"><span>Step ${s}: Blend Multiplier (Ratio 1:1)</span><span style="font-size:10px;"><input type="checkbox" style="pointer-events:none; accent-color:var(--accent);"></span></div><div>Add exactly <b class="text-white">${a.toFixed(3)}g</b> of filler bulking agent to current <b class="text-gray-400">${p.toFixed(3)}g</b> mixture. Triturate thoroughly.</div><div style="font-size:10px; opacity:0.6; display:flex; justify-content:space-between; margin-top:6px;"><span>Combined Weight: ${c.toFixed(3)}g</span><span>Remaining Filler Pool: ${Math.max(0, r).toFixed(3)}g</span></div></div>`;
-                    if (f) break; s++;
+                    
+                    if (f) break; 
+                    s++;
                 }
-            } else if (err) h = `<div style="color: var(--powder-color); font-style:italic; text-align:center; font-size:13px; padding:15px;">Config Error: Adjust weight proportions.</div>`;
-            else h = `<div style="color: #666; font-style:italic; text-align:center; font-size:13px; padding:15px;">Awaiting non-zero active weights.</div>`;
+            } else if (err) {
+                h = `<div style="color: var(--powder-color); font-style:italic; text-align:center; font-size:13px; padding:15px;">Config Error: Adjust weight proportions.</div>`;
+            } else {
+                h = `<div style="color: #666; font-style:italic; text-align:center; font-size:13px; padding:15px;">Awaiting non-zero active weights.</div>`;
+            }
             
             setHtml('oralDilutionStepsRaw', h);
             oralCalculations = { a: api, f: fil, t: tot, p: (tot > 0 ? (api / tot) * 100 : 0), h: h };
@@ -979,58 +1129,141 @@
 
         function updatePieChart(data, customLabels = null) {
             if (typeof Chart === 'undefined') return;
-            const ctxEl = getEl('pieChart'); if (!ctxEl) return;
+            const ctxEl = getEl('pieChart'); 
+            if (!ctxEl) return;
             
             const labels = customLabels || ['API', 'BA', 'BB', 'Extra', 'Main Oil', 'Oil 2', 'Oil 3'];
             const colors = ['#e11d48', '#4ade80', '#facc15', '#f97316', '#c084fc', '#8b5cf6', '#d946ef'];
             const fd = [], fl = [], fc = [];
-            data.forEach((v, i) => { if (v > 0.01) { fd.push(v); fl.push(labels[i]); fc.push(colors[i]); } });
+            
+            data.forEach((v, i) => { 
+                if (v > 0.01) { 
+                    fd.push(v); 
+                    fl.push(labels[i]); 
+                    fc.push(colors[i]); 
+                } 
+            });
             
             if (chart) chart.destroy();
             chart = new Chart(ctxEl.getContext('2d'), { 
-                type: 'doughnut', data: { labels: fl, datasets: [{ data: fd, backgroundColor: fc, borderColor: 'transparent', borderWidth: 2 }] }, 
-                options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 12 }, usePointStyle: true } } } } 
+                type: 'doughnut', 
+                data: { 
+                    labels: fl, 
+                    datasets: [{ 
+                        data: fd, 
+                        backgroundColor: fc, 
+                        borderColor: 'transparent', 
+                        borderWidth: 2 
+                    }] 
+                }, 
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    cutout: '70%', 
+                    plugins: { 
+                        legend: { 
+                            position: 'bottom', 
+                            labels: { 
+                                color: '#94a3b8', 
+                                font: { size: 12 }, 
+                                usePointStyle: true 
+                            } 
+                        } 
+                    } 
+                } 
             });
         }
 
         function openProtocolModal() {
             let h = "";
+            
             if (currentTab === 'oral') {
-                const c = oralCalculations; setTxt('modalTitle', "Geometric Dilution Checklist");
+                const c = oralCalculations; 
+                setTxt('modalTitle', "Geometric Dilution Checklist");
+                
                 h = `<div style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;"><p style="opacity: 0.7; font-size: 13px;">Follow this geometric dilution protocol to ensure active ingredient homogeneity without micro-clustering.</p></div><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 12px; border: 1px solid var(--border); font-size: 12px;"><div>API Target Mass: <b style="color:var(--powder-color);">${(c.a||0).toFixed(3)}g</b></div><div>Filler Target Mass: <b style="color:var(--bb-color);">${(c.f||0).toFixed(3)}g</b></div><div>Target Active Concentration: <b style="color:var(--ba-color);">${(c.p||0).toFixed(2)}%</b></div><div>Total Final Batch Mass: <b style="color:var(--carrier-color);">${(c.t||0).toFixed(3)}g</b></div></div><div class="space-y-4"><div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Phase 1: Environment Sanitation</strong><br>Ensure all ventilation drafts are minimized to prevent active powder drift. Sanitize the mortar bowl, pestle, and scale trays thoroughly.</div></div><div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Phase 2: Master Charge Portions</strong><br>Weigh out exactly <span style="color:var(--powder-color); font-weight:700;">${(c.a||0).toFixed(3)}g</span> of pure active hormone. Weigh out exactly <span style="color:var(--bb-color); font-weight:700;">${(c.f||0).toFixed(3)}g</span> of your dry excipient/bulking agent inside a secondary vessel.</div></div><div style="border-top: 1px solid var(--border); padding-top: 15px; margin-top: 15px;"><span style="font-weight:700; text-transform:uppercase; font-size:11px; color:#aaa; display:block; margin-bottom:12px;">Trituration Checklist</span>${c.h || ''}</div><div class="modal-step-item" style="border-top: 1px solid var(--border); padding-top: 15px; margin-top: 15px;"><input type="checkbox" class="modal-step-checkbox"><div><strong>Phase 4: Sieve Screening</strong><br>Pour the finalized dry mix through an 80-mesh or 100-mesh sifting screen. This breaks down electrostatic clusters to lock in perfect homogeneity.</div></div></div>`;
             } else {
-                const c = latestCalculations; setTxt('modalTitle', "Gravimetric Protocol");
+                const c = latestCalculations; 
+                setTxt('modalTitle', "Gravimetric Protocol");
+                
                 h = `<div style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;"><p style="opacity: 0.7; font-size: 13px;">This gravimetric recipe uses high-precision target masses instead of volumetric expansion lines to eliminate transfer loss.</p></div><div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step 1: Container Tare</strong><br>Place clean borosilicate beaker on scale and hit <b>TARE</b>.</div></div><div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step 2: Active API Weight</strong><br>Weigh out exactly <span style="color:var(--powder-color); font-weight:700;">${c.pow1||0}g</span> of ${c.comp1Name||'Base'}.</div></div>`;
+                
                 if (c.isBlend) {
                     if (c.comp2 && c.comp2.pow > 0) h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div>Weigh out exactly <span style="color:var(--powder-color); font-weight:700;">${c.comp2.pow}g</span> of ${c.comp2.name}.</div></div>`;
                     if (c.comp3 && c.comp3.pow > 0) h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div>Weigh out exactly <span style="color:var(--powder-color); font-weight:700;">${c.comp3.pow}g</span> of ${c.comp3.name}.</div></div>`;
                     if (c.comp4 && c.comp4.pow > 0) h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div>Weigh out exactly <span style="color:var(--powder-color); font-weight:700;">${c.comp4.pow}g</span> of ${c.comp4.name}.</div></div>`;
                 }
+                
                 h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step 3: Solvent Weight Addition</strong><br>Leave beaker on scale. Add Benzyl Alcohol until scale increases by <span style="color:var(--ba-color); font-weight:700;">${c.baWeight||0}g</span> (${c.baVol||0}ml). Add Benzyl Benzoate until scale increases by another <span style="color:var(--bb-color); font-weight:700;">${c.bbWeight||0}g</span> (${c.bbVol||0}ml).</div></div>`;
+                
                 if (c.extraSolvents) h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step 3b: Solvent Addition</strong><br>Add exactly <span style="color:var(--extra-color); font-weight:700;">${c.extraSolvents}</span> to solvent mixture.</div></div>`;
+                
                 h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step 4: Dissolve under Gentle Heat</strong><br>Place clean plastic cling film on beaker top to stop volatile alcohol evaporation. Heat gently at 50-60°C and swirl until liquid is entirely amber and clear.</div></div>`;
 
-                let oilStep = 5, cumTarget = parseFloat(c.totalMass) - parseFloat(c.mainCarrierWeight) - (parseFloat(c.wC2)||0) - (parseFloat(c.wC3)||0);
-                if (c.vC2 > 0) { cumTarget += parseFloat(c.wC2); h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step ${oilStep}a: Add ${c.c2Name}</strong><br>Leave beaker on scale. Pour ${c.c2Name} until scale hits <span style="color:#8b5cf6; font-weight:700;">${cumTarget.toFixed(3)}g</span>.</div></div>`; }
-                if (c.vC3 > 0) { cumTarget += parseFloat(c.wC3); h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step ${oilStep}b: Add ${c.c3Name}</strong><br>Leave beaker on scale. Pour ${c.c3Name} until scale hits <span style="color:#d946ef; font-weight:700;">${cumTarget.toFixed(3)}g</span>.</div></div>`; }
+                let oilStep = 5;
+                let cumWeight = parseFloat(c.pow1) + parseFloat(c.baWeight) + parseFloat(c.bbWeight);
                 
-                h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step ${oilStep}${c.vC2>0?'c':''}: Primary Top-Off Target</strong><br>Pour ${c.mainOilName||'Oil'} directly inside beaker until the scale reads exactly <span style="color:var(--carrier-color); font-weight:700; font-size:18px;">${c.totalMass||0}g</span>. Swirl thoroughly.</div></div>`;
+                if (c.isBlend) {
+                    if (c.comp2 && c.comp2.pow > 0) cumWeight += parseFloat(c.comp2.pow);
+                    if (c.comp3 && c.comp3.pow > 0) cumWeight += parseFloat(c.comp3.pow);
+                    if (c.comp4 && c.comp4.pow > 0) cumWeight += parseFloat(c.comp4.pow);
+                }
+                
+                if (c.vC2 > 0) { 
+                    cumWeight += parseFloat(c.wC2); 
+                    h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step ${oilStep}a: Add ${c.c2Name}</strong><br>Leave beaker on scale. Pour ${c.c2Name} until scale reads <span style="color:#8b5cf6; font-weight:700;">${cumWeight.toFixed(3)}g</span>.</div></div>`; 
+                }
+                
+                if (c.vC3 > 0) { 
+                    cumWeight += parseFloat(c.wC3); 
+                    h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step ${oilStep}b: Add ${c.c3Name}</strong><br>Leave beaker on scale. Pour ${c.c3Name} until scale reads <span style="color:#d946ef; font-weight:700;">${cumWeight.toFixed(3)}g</span>.</div></div>`; 
+                }
+                
+                h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step ${oilStep}${c.vC2>0?(c.vC3>0?'c':'b'):(c.vC3>0?'b':'')}: Primary Top-Off Target</strong><br>Pour ${c.mainOilName||'Oil'} directly inside beaker until the scale reads exactly <span style="color:var(--carrier-color); font-weight:700; font-size:18px;">${c.totalMass||0}g</span>. Swirl thoroughly.</div></div>`;
+                
                 let lossNote = (!c.filterName || c.filterName.startsWith("None")) ? "Proceed directly to clean bottling as no filter loss adjustments were active." : `Draw solutions inside clean syringes and press through ${c.filterName} directly inside autoclaved clean vials.`;
+                
                 h += `<div class="modal-step-item"><input type="checkbox" class="modal-step-checkbox"><div><strong>Step 6: Homogeneous Filtration</strong><br>${lossNote}</div></div>`;
             }
-            setHtml('protocolContent', h); toggleVis('protocolModal', true);
+            
+            setHtml('protocolContent', h); 
+            toggleVis('protocolModal', true);
         }
         
-        function closeProtocolModal() { toggleVis('protocolModal', false); }
+        function closeProtocolModal() { 
+            toggleVis('protocolModal', false); 
+        }
         
         function downloadPDF() { 
-            if(typeof window.jspdf === 'undefined') { alert("PDF library is still loading or blocked. Please wait a moment."); return; }
-            const { jsPDF } = window.jspdf; const doc = new jsPDF('p', 'pt', 'a4'); const cap = getEl('captureArea'); if(!cap) return;
+            if(typeof window.jspdf === 'undefined') { 
+                alert("PDF library is still loading or blocked. Please wait a moment."); 
+                return; 
+            }
+            
+            const { jsPDF } = window.jspdf; 
+            const doc = new jsPDF('p', 'pt', 'a4'); 
+            const cap = getEl('captureArea'); 
+            
+            if(!cap) return;
+            
             cap.style.background = "#050505"; 
-            html2canvas(cap, { scale: 2 }).then(canvas => { doc.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 595, (canvas.height*595)/canvas.width); doc.save(`dinfar_${currentTab}.pdf`); cap.style.background = ""; }); 
+            
+            html2canvas(cap, { scale: 2, useCORS: true, logging: false })
+                .then(canvas => { 
+                    doc.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 595, (canvas.height*595)/canvas.width); 
+                    doc.save(`dinfar_${currentTab}.pdf`); 
+                    cap.style.background = ""; 
+                })
+                .catch(error => {
+                    console.error('PDF generation failed:', error);
+                    alert('Failed to generate PDF. Please try again.');
+                    cap.style.background = "";
+                });
         }
         
-        window.addEventListener('DOMContentLoaded', () => { switchTab('single'); });
+        window.addEventListener('DOMContentLoaded', () => { 
+            switchTab('single'); 
+        });
     </script>
 </body>
 </html>
