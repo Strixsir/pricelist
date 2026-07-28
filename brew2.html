@@ -15,6 +15,7 @@
   --border:rgba(255,255,255,.06); --border-hi:rgba(34,211,238,.35);
   --powder:#f43f5e; --ba:#10b981; --bb:#f59e0b; --oil1:#a78bfa; --oil2:#3b82f6;
   --text:#f1f5f9; --muted:#64748b; --text-dim:#475569;
+  --preset:#f43f5e; --preset-glow:rgba(244,63,94,.15);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
@@ -48,13 +49,9 @@ header{
   font-size:11px;font-weight:700;text-decoration:none;
   transition:all .25s;white-space:nowrap;
 }
-.store-btn{
-  background:var(--accent);border:1px solid var(--accent);color:#000;
-}
+.store-btn{background:var(--accent);border:1px solid var(--accent);color:#000}
 .store-btn:hover{background:var(--accent-2);transform:translateY(-1px);box-shadow:0 4px 14px var(--accent-glow)}
-.donate-btn{
-  background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.4);color:#c4b5fd;
-}
+.donate-btn{background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.4);color:#c4b5fd}
 .donate-btn:hover{background:rgba(167,139,250,.2);transform:translateY(-1px);box-shadow:0 4px 14px rgba(167,139,250,.2)}
 .grid{display:grid;grid-template-columns:1fr 1.15fr;gap:20px;flex:1;min-height:0}
 .panel{
@@ -96,10 +93,7 @@ select{
 }
 input[type="number"]:focus,select:focus{outline:none;border-color:var(--accent);background:#0f0f16;box-shadow:0 0 0 3px var(--accent-glow)}
 
-.seg{
-  display:inline-flex;background:#0a0a0f;padding:3px;border-radius:8px;border:1px solid var(--border);
-  width:fit-content;
-}
+.seg{display:inline-flex;background:#0a0a0f;padding:3px;border-radius:8px;border:1px solid var(--border);width:fit-content}
 .seg button{
   padding:6px 14px;border:none;background:transparent;color:var(--muted);
   font-size:11px;font-weight:600;font-family:inherit;border-radius:6px;cursor:pointer;
@@ -141,30 +135,19 @@ input[type="number"]:focus,select:focus{outline:none;border-color:var(--accent);
 
 .right-col{display:flex;flex-direction:column;gap:14px}
 
-.flask-stats-row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-}
+.flask-stats-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .flask-wrap{
   background:var(--card);border:1px solid var(--border);border-radius:12px;
   padding:14px 16px;
   display:flex;align-items:center;gap:14px;
 }
-.flask-svg{
-  width:60px;height:120px;flex-shrink:0;display:block;
-}
-.flask-svg rect, .flask-svg ellipse, .flask-svg line {
-  transition: all .7s cubic-bezier(.4,0,.2,1);
-}
-.flask-legend{
-  flex:1;display:flex;flex-wrap:wrap;gap:5px;
-}
+.flask-svg{width:60px;height:120px;flex-shrink:0;display:block}
+.flask-svg rect, .flask-svg ellipse, .flask-svg line {transition: all .7s cubic-bezier(.4,0,.2,1)}
+.flask-legend{flex:1;display:flex;flex-wrap:wrap;gap:5px}
 .legend-item{
   display:flex;align-items:center;gap:5px;
   padding:4px 8px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:7px;
-  font-size:10px;
-  transition:all .3s;
+  font-size:10px;transition:all .3s;
 }
 .legend-item:hover{background:rgba(0,0,0,.5);transform:translateX(2px)}
 .legend-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
@@ -178,8 +161,7 @@ input[type="number"]:focus,select:focus{outline:none;border-color:var(--accent);
 }
 .stats-title{
   font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);
-  margin-bottom:4px;
-  display:flex;align-items:center;gap:8px;
+  margin-bottom:4px;display:flex;align-items:center;gap:8px;
 }
 .stats-title .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent-glow)}
 .stat{
@@ -210,9 +192,7 @@ input[type="number"]:focus,select:focus{outline:none;border-color:var(--accent);
   display:flex;justify-content:space-between;align-items:flex-end;
   padding-bottom:10px;border-bottom:1px solid var(--border);
 }
-.recipe-header h3{
-  font-size:15px;font-weight:800;letter-spacing:-.3px;color:var(--text);
-}
+.recipe-header h3{font-size:15px;font-weight:800;letter-spacing:-.3px;color:var(--text)}
 .recipe-header span{font-size:9px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}
 .recipe-list{display:flex;flex-direction:column;gap:6px}
 .recipe-item{
@@ -221,10 +201,7 @@ input[type="number"]:focus,select:focus{outline:none;border-color:var(--accent);
   transition:all .25s;
 }
 .recipe-item:hover{background:rgba(0,0,0,.5);border-color:rgba(255,255,255,.1);transform:translateX(2px)}
-.recipe-item.topoff{
-  border:1px dashed rgba(167,139,250,.3);
-  background:rgba(167,139,250,.04);
-}
+.recipe-item.topoff{border:1px dashed rgba(167,139,250,.3);background:rgba(167,139,250,.04)}
 .recipe-name{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:600}
 .recipe-name .d{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .recipe-val{text-align:right}
@@ -254,6 +231,72 @@ details.eco[open] summary::after{transform:rotate(45deg)}
   padding:10px 12px;background:rgba(244,63,94,.1);border:1px solid var(--powder);border-radius:9px;
   font-size:11px;color:#fda4af;display:flex;gap:8px;align-items:flex-start;
 }
+.alert.info{
+  background:rgba(34,211,238,.08);border-color:rgba(34,211,238,.35);color:#a5f3fc;
+}
+.alert.warn{
+  background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.4);color:#fcd34d;
+}
+
+.preset-card{
+  background:linear-gradient(135deg, rgba(244,63,94,.06), rgba(244,63,94,.02));
+  border:1px solid rgba(244,63,94,.25);
+  border-radius:12px;
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  position:relative;
+  overflow:hidden;
+  transition: border-color .3s, box-shadow .3s;
+}
+.preset-card::before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg, transparent, var(--preset), transparent);
+  opacity:.6;
+}
+.preset-card:hover{border-color:rgba(244,63,94,.4);box-shadow:0 4px 20px rgba(244,63,94,.08)}
+.preset-card:focus-within{border-color:rgba(244,63,94,.5);box-shadow:0 0 0 3px rgba(244,63,94,.15)}
+.preset-card.loaded{
+  border-color:rgba(34,211,238,.5) !important;
+  box-shadow:0 0 0 3px rgba(34,211,238,.2), 0 4px 20px rgba(34,211,238,.15) !important;
+}
+.preset-header{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.preset-label{
+  display:flex;align-items:center;gap:8px;
+  font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--preset);
+}
+.preset-label .bolt{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:20px;height:20px;
+  background:rgba(244,63,94,.15);border:1px solid rgba(244,63,94,.3);border-radius:6px;
+  font-size:11px;
+}
+.preset-count{
+  font-size:9px;color:var(--muted);font-weight:600;letter-spacing:.5px;
+  padding:3px 8px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;
+}
+.preset-select{
+  width:100%;padding:10px 32px 10px 12px;
+  background:#0a0a0f;border:1px solid rgba(244,63,94,.2);border-radius:8px;
+  color:var(--text);font-size:12px;font-weight:600;font-family:inherit;
+  cursor:pointer;transition:all .2s;appearance:none;
+  background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f43f5e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'/%3e%3c/svg%3e");
+  background-repeat:no-repeat;background-position:right 10px center;background-size:12px;
+}
+.preset-select:hover{border-color:rgba(244,63,94,.4);background-color:#0f0f16}
+.preset-select:focus{outline:none;border-color:var(--preset);background-color:#0f0f16;box-shadow:0 0 0 3px rgba(244,63,94,.15)}
+.preset-select optgroup{background:#0a0a0f;color:var(--muted);font-weight:700;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:4px 0}
+.preset-select option{background:#0a0a0f;color:var(--text);padding:6px 8px;font-weight:500}
+.preset-info{
+  display:flex;align-items:center;gap:6px;
+  font-size:9px;color:var(--text-dim);font-weight:500;letter-spacing:.3px;padding-top:2px;
+}
+.preset-info svg{width:10px;height:10px;flex-shrink:0;color:var(--muted)}
 
 @media(max-width:960px){
   .grid{grid-template-columns:1fr}
@@ -282,6 +325,49 @@ details.eco[open] summary::after{transform:rotate(45deg)}
 
   <div class="grid">
     <div class="panel">
+      <div class="preset-card" id="presetCard">
+        <div class="preset-header">
+          <div class="preset-label">
+            <span class="bolt">⚡</span>
+            Fast Preset
+          </div>
+          <span class="preset-count">16 recipes</span>
+        </div>
+        <select id="presetSelect" class="preset-select" onchange="loadPresetRecipe()">
+          <option value="none">-- Pick a preset --</option>
+          <optgroup label="Standard Recipes (1.5% BA / 20% BB)">
+            <option value='{"blend":false,"c":"test-c","mg":200,"ba":1.5,"bb":20,"oil":"mct"}'>Test C (200 mg/ml)</option>
+            <option value='{"blend":false,"c":"tren-a","mg":100,"ba":1.5,"bb":20,"oil":"mct"}'>Tren A (100 mg/ml)</option>
+            <option value='{"blend":false,"c":"tren-e","mg":200,"ba":1.5,"bb":20,"oil":"mct"}'>Tren E (200 mg/ml)</option>
+            <option value='{"blend":false,"c":"npp","mg":100,"ba":1.5,"bb":20,"oil":"mct"}'>NPP (100 mg/ml)</option>
+            <option value='{"blend":false,"c":"test-p","mg":100,"ba":1.5,"bb":20,"oil":"mct"}'>Test P (100 mg/ml)</option>
+          </optgroup>
+          <optgroup label="Optimized Solutions (Low BB / Thinning)">
+            <option value='{"blend":false,"c":"eq","mg":500,"ba":1.5,"bb":18,"oil":"mct"}'>EQ (500 mg/ml)</option>
+            <option value='{"blend":false,"c":"masteron-e","mg":200,"ba":1.5,"bb":15,"oil":"mct"}'>Mast E (200 mg/ml)</option>
+            <option value='{"blend":false,"c":"deca","mg":300,"ba":1.5,"bb":18,"oil":"mct"}'>Deca (300 mg/ml)</option>
+            <option value='{"blend":false,"c":"test-e","mg":250,"ba":1.5,"bb":15,"oil":"mct"}'>Test E (250 mg/ml)</option>
+            <option value='{"blend":false,"c":"primo-e","mg":150,"ba":1.5,"bb":18,"oil":"mct"}'>Primo E (150 mg/ml)</option>
+          </optgroup>
+          <optgroup label="High Concentration Recipes">
+            <option value='{"blend":false,"c":"test-deca","mg":500,"ba":1.5,"bb":24,"oil":"mct"}'>Test D (500 mg/ml)</option>
+            <option value='{"blend":false,"c":"test-undecanoate","mg":200,"ba":1.5,"bb":25,"oil":"mct"}'>Test U (200 mg/ml - MCT)</option>
+            <option value='{"blend":false,"c":"npp","mg":150,"ba":1.5,"bb":24,"oil":"mct"}'>NPP (150 mg/ml)</option>
+            <option value='{"blend":false,"c":"test-c","mg":250,"ba":1.5,"bb":25,"oil":"mct"}'>Test C (250 mg/ml)</option>
+            <option value='{"blend":false,"c":"masteron-e","mg":300,"ba":1.5,"bb":22,"oil":"mct"}'>Mast E (300 mg/ml)</option>
+            <option value='{"blend":false,"c":"test-undecanoate","mg":250,"ba":1.5,"bb":45,"oil":"castor"}'>Test U (250 mg/ml - Castor)</option>
+            <option value='{"blend":false,"c":"test-undecanoate","mg":350,"ba":1.5,"bb":50,"oil":"castor"}'>Test U (350 mg/ml - Castor)</option>
+          </optgroup>
+          <optgroup label="Blend Recipes (Primary Compound Loaded)">
+            <option value='{"blend":true,"c1":"test-p","mg1":30,"c2":"test-phenyl","mg2":60,"c3":"test-iso","mg3":60,"c4":"test-deca","mg4":100,"ba":2,"bb":20,"oil":"gso"}'>Sustanon 250 (4 Compounds)</option>
+          </optgroup>
+        </select>
+        <div class="preset-info">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          Select a recipe to auto-fill compound, concentration, solvents &amp; carrier oil
+        </div>
+      </div>
+
       <div class="card">
         <div class="card-title"><span class="dot"></span>Formulation</div>
 
@@ -529,7 +615,7 @@ details.eco[open] summary::after{transform:rotate(45deg)}
     <div class="panel right-col">
       <div class="alert hidden" id="alert">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-        <div><strong>Error:</strong> <span id="alertText">Adjust inputs.</span></div>
+        <div><strong id="alertTitle">Error:</strong> <span id="alertText">Adjust inputs.</span></div>
       </div>
 
       <div class="flask-stats-row">
@@ -643,10 +729,9 @@ const VISC={ba:5.5,bb:8.3,castor:650,gso:50,sesame:45,mct:28,mig840:11,mig812:30
   olive:80,coconut:55,corn:60,cottonseed:65,soybean:60,sunflower:55,safflower:50,
   peanut:60,almond:55,avocado:70,palm:65,canola:55,flaxseed:50,hemp:55,
   "mineral-light":25,"mineral-heavy":35,ipm:5,ipp:6,jojoba:45};
-const TCO={ba:.015,bb:.015,castor:.065,gso:.035,sesame:.035,mct:.025,mig840:.025,mig812:.025,eo:.015,
-  olive:.04,coconut:.035,corn:.035,cottonseed:.035,soybean:.035,sunflower:.035,safflower:.035,
-  peanut:.035,almond:.035,avocado:.04,palm:.035,canola:.035,flaxseed:.035,hemp:.035,
-  "mineral-light":.02,"mineral-heavy":.025,ipm:.01,ipp:.01,jojoba:.03};
+
+// Track the current alert state so calc() knows when to preserve vs. clear it
+let currentAlertType = null; // null | 'error' | 'info' | 'warn'
 
 let mode='volume', oil2On=false, dispOpen=false, densOpen1=false, densOpen2=false;
 const $=id=>document.getElementById(id);
@@ -667,9 +752,7 @@ function updateDisp(){
 }
 
 function updateOilDensity(n){
-  // Only update density if the user hasn't manually edited it
   if((n===1 && densOpen1) || (n===2 && densOpen2)) return;
-  
   const selId=n===1?'carrier1':'carrier2';
   const densId=n===1?'oilDensity1':'oilDensity2';
   const dens=$(densId);
@@ -713,10 +796,118 @@ function toggleDensEdit(n){
   }
 }
 
+/* ===== Preset Loader ===== */
+function loadPresetRecipe(){
+  const sel = $('presetSelect');
+  const raw = sel.value;
+  if(!raw || raw === 'none'){
+    $('presetCard').classList.remove('loaded');
+    return;
+  }
+
+  let p;
+  try { p = JSON.parse(raw); } catch(e){ return; }
+
+  // --- Compound ---
+  if(p.blend){
+    // Multi-compound blend: load primary compound (c1) only and warn the user
+    if(p.c1 && $('compound').querySelector(`option[value="${p.c1}"]`)){
+      $('compound').value = p.c1;
+    } else if(p.c1) {
+      showPresetAlert('warn', 'Compound not found', `Preset compound "${p.c1}" is not in the dropdown.`);
+      return;
+    }
+    if(typeof p.mg1 === 'number') $('mgml').value = p.mg1;
+
+    const parts = [];
+    if(p.c1) parts.push(`${compoundLabel(p.c1)} @ ${p.mg1}mg/ml`);
+    if(p.c2) parts.push(`${compoundLabel(p.c2)} @ ${p.mg2}mg/ml`);
+    if(p.c3) parts.push(`${compoundLabel(p.c3)} @ ${p.mg3}mg/ml`);
+    if(p.c4) parts.push(`${compoundLabel(p.c4)} @ ${p.mg4}mg/ml`);
+    const total = (p.mg1||0)+(p.mg2||0)+(p.mg3||0)+(p.mg4||0);
+
+    showPresetAlert('warn', 'Blend preset (partial load)',
+      `Only the primary compound (${compoundLabel(p.c1)} @ ${p.mg1}mg/ml) is loaded. Full blend requires ${total} mg/ml total: ${parts.join(' + ')}. This calculator handles single-compound batches — run separate calculations for each compound.`);
+  } else {
+    // Single compound
+    if(p.c){
+      if($('compound').querySelector(`option[value="${p.c}"]`)){
+        $('compound').value = p.c;
+      } else {
+        showPresetAlert('warn', 'Compound not found', `Preset compound "${p.c}" is not in the dropdown.`);
+        return;
+      }
+    }
+    if(typeof p.mg === 'number') $('mgml').value = p.mg;
+  }
+
+  // --- Solvents ---
+  if(typeof p.ba === 'number') $('baPct').value = p.ba;
+  if(typeof p.bb === 'number') $('bbPct').value = p.bb;
+
+  // --- Carrier Oil ---
+  if(p.oil){
+    const oilSel = $('carrier1');
+    if(oilSel.querySelector(`option[value="${p.oil}"]`)){
+      oilSel.value = p.oil;
+      updateOilDensity(1);
+    }
+  }
+
+  // --- Refresh displacement & recalc ---
+  updateDisp();
+  calc();
+
+  // Visual feedback: pulse the preset card
+  const card = $('presetCard');
+  card.classList.add('loaded');
+  setTimeout(()=>{ card.classList.remove('loaded'); }, 1200);
+}
+
+function compoundLabel(val){
+  const opt = $('compound').querySelector(`option[value="${val}"]`);
+  return opt ? opt.textContent : val;
+}
+
+/* ===== Alert Helpers ===== */
+// showPresetAlert: used by preset loader — persists across calc() calls until user changes inputs
+function showPresetAlert(type, title, message){
+  const alertEl = $('alert');
+  alertEl.classList.remove('hidden','info','warn');
+  if(type==='info') alertEl.classList.add('info');
+  else if(type==='warn') alertEl.classList.add('warn');
+  txt('alertTitle', title + ':');
+  txt('alertText', message);
+  currentAlertType = 'preset';
+}
+
+// showError: used by calc() for input errors — cleared automatically on next valid calc
+function showError(message){
+  const alertEl = $('alert');
+  alertEl.classList.remove('hidden','info','warn');
+  txt('alertTitle', 'Error:');
+  txt('alertText', message);
+  currentAlertType = 'error';
+}
+
+function hideAlert(){
+  $('alert').classList.add('hidden');
+  currentAlertType = null;
+}
+
 function calc(){
+  // Any user input change clears a preset alert (user is now editing manually)
+  if(currentAlertType === 'preset'){
+    hideAlert();
+  }
+
   const baP=Math.max(0,Math.min(100,v('baPct')));
   const bbP=Math.max(0,Math.min(100,v('bbPct')));
-  if(baP+bbP>100){showAlert('Solvent percentages exceed 100%.');return}
+  if(baP+bbP>100){
+    showError('Solvent percentages exceed 100%.');
+    renderEmpty();
+    return;
+  }
 
   const c2P=oil2On?Math.max(0,Math.min(100,v('carrier2Pct'))):0;
 
@@ -741,37 +932,40 @@ function calc(){
   const vRem=totalVol-powderVol-vBa-vBb;
 
   let err=false;
-  if(vRem<0){err=true;showAlert('Saturation exceeded. Powder displacement + solvents exceed target volume.')}
-  else hideAlert();
+  if(vRem<0){
+    err=true;
+    showError('Saturation exceeded. Powder displacement + solvents exceed target volume.');
+    renderEmpty();
+    return;
+  }
 
-  const vC2=err?0:vRem*(c2P/100);
-  const vC1=err?0:vRem-vC2;
+  const vC2=vRem*(c2P/100);
+  const vC1=vRem-vC2;
 
   const wBa=vBa*DEN.ba;
   const wBb=vBb*DEN.bb;
-  
+
   const c1Val=$('carrier1').value;
   const c1Dens=densOpen1?v('oilDensity1',.95):getOilDensity('carrier1');
   const wC1=vC1*c1Dens;
-  
+
   let wC2=0;
   if(oil2On&&vC2>0){
-    const c2Val=$('carrier2').value;
     const c2Dens=densOpen2?v('oilDensity2',.87):getOilDensity('carrier2');
     wC2=vC2*c2Dens;
   }
-  
+
   const totalMass=powder+wBa+wBb+wC1+wC2;
 
   const totalLiq=vBa+vBb+vC1+vC2;
   let visc=0;
-  if(!err&&totalLiq>0){
-    const gm=k=>(VISC[k]||50)*Math.exp(-(TCO[k]||.03)*0);
+  if(totalLiq>0){
+    const gm=k=>Math.max(0.001, VISC[k]||50);
     let lv=0;
     if(vBa>0)lv+=vBa*Math.log(gm('ba'));
     if(vBb>0)lv+=vBb*Math.log(gm('bb'));
     if(vC1>0)lv+=vC1*Math.log(gm(c1Val));
-    if(vC2>0)lv+=vC2*Math.log(gm($('carrier2').value));
+    if(vC2>0&&oil2On)lv+=vC2*Math.log(gm($('carrier2').value));
     lv/=totalLiq;
     visc=Math.exp(lv)*Math.exp(mg/1100);
   }
@@ -780,13 +974,16 @@ function calc(){
   const o1Name=selTxt('carrier1');
   const o2Name=selTxt('carrier2');
 
+  // Determine which oil is the actual "top-off" (last oil added to reach volume)
+  const topoffIsOil2 = oil2On && vC2 > 0;
+
   const recipe=[
     {n:cName,v:powder.toFixed(3)+' g',s:`${powderVol.toFixed(2)} ml disp`,c:'var(--powder)',dot:'var(--powder)',topoff:false},
     {n:'Benzyl Alcohol',v:wBa.toFixed(3)+' g',s:vBa.toFixed(2)+' ml',c:'var(--ba)',dot:'var(--ba)',topoff:false},
     {n:'Benzyl Benzoate',v:wBb.toFixed(3)+' g',s:vBb.toFixed(2)+' ml',c:'var(--bb)',dot:'var(--bb)',topoff:false},
-    {n:o1Name,v:wC1.toFixed(3)+' g',s:vC1.toFixed(2)+' ml',c:'var(--oil1)',dot:'var(--oil1)',topoff:true},
+    {n:o1Name,v:wC1.toFixed(3)+' g',s:vC1.toFixed(2)+' ml',c:'var(--oil1)',dot:'var(--oil1)',topoff:!topoffIsOil2},
   ];
-  if(oil2On&&vC2>0)recipe.push({n:o2Name,v:wC2.toFixed(3)+' g',s:vC2.toFixed(2)+' ml',c:'var(--oil2)',dot:'var(--oil2)',topoff:false});
+  if(oil2On&&vC2>0)recipe.push({n:o2Name,v:wC2.toFixed(3)+' g',s:vC2.toFixed(2)+' ml',c:'var(--oil2)',dot:'var(--oil2)',topoff:true});
 
   $('recipeList').innerHTML=recipe.map(r=>`
     <div class="recipe-item${r.topoff?' topoff':''}">
@@ -815,6 +1012,20 @@ function calc(){
     {name:o1Name,vol:vC1,color:'url(#liqOil1)',hex:'#a78bfa'},
     ...(oil2On&&vC2>0?[{name:o2Name,vol:vC2,color:'url(#liqOil2)',hex:'#3b82f6'}]:[])
   ],totalVol);
+}
+
+function renderEmpty(){
+  // Reset output panels when calc() aborts due to invalid input
+  $('recipeList').innerHTML='';
+  txt('totalMass','0.000 g');
+  txt('finalYield','0.00 ml');
+  txt('viscosity','0 cP');
+  $('viscosity').style.color='';
+  txt('costPerVial','$0.00');
+  const g=$('flaskLayers');
+  const leg=$('legend');
+  if(g){ while(g.firstChild)g.removeChild(g.firstChild); }
+  if(leg){ leg.innerHTML='<div style="color:var(--muted);font-size:10px;padding:6px">Invalid inputs</div>'; }
 }
 
 function updateFlask(layers,totalVol){
@@ -872,10 +1083,11 @@ function updateFlask(layers,totalVol){
   });
 }
 
-function showAlert(m){$('alert').classList.remove('hidden');txt('alertText',m)}
-function hideAlert(){$('alert').classList.add('hidden')}
-
-window.addEventListener('DOMContentLoaded',()=>{updateDisp();updateOilDensity(1);updateOilDensity(2);calc()});
+window.addEventListener('DOMContentLoaded',()=>{
+  updateDisp();
+  updateOilDensity(1);
+  calc();
+});
 </script>
 </body>
 </html>
