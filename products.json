@@ -225,5 +225,70 @@
     "labResult": "96+",
     "p100": 400,
     "stock100": 7
+  },
+
+  {
+    "name": "Tren Enanthate 200",
+    "category": "oil",
+    "batch": "",
+    "labLink": "",
+    "labResult": "201 mg/ml",
+    "p100": 135,
+    "stock100": 10
+  },
+  {
+    "name": "Tren Acetate 150",
+    "category": "oil",
+    "batch": "",
+    "labLink": "",
+    "labResult": "150 mg/ml",
+    "p100": 90,
+    "stock100": 10
+  },
+  {
+    "name": "Test Cypionate",
+    "category": "oil",
+    "batch": "",
+    "labLink": "",
+    "labResult": "249 mg/ml",
+    "p100": 54,
+    "stock100": 10
+  },
+  {
+    "name": "Test Decanoate",
+    "category": "oil",
+    "batch": "",
+    "labLink": "",
+    "labResult": "524 mg/ml",
+    "p100": 105,
+    "stock100": 10
+  },
+  {
+    "name": "Nandrolone Decanoate",
+    "category": "oil",
+    "batch": "",
+    "labLink": "",
+    "labResult": "205 mg/ml",
+    "p100": 66,
+    "stock100": 10
+  },
+  {
+    "name": "EQ 250",
+    "category": "oil",
+    "batch": "",
+    "labLink": "",
+    "labResult": "264 mg/ml",
+    "p100": 60,
+    "stock100": 10
+  },
+  {
+    "name": "Boldenone Cypionate",
+    "category": "oil",
+    "batch": "",
+    "labLink": "",
+    "labResult": "200 mg/ml",
+    "p100": 90,
+    "stock100": 10
   }
+
 ]
