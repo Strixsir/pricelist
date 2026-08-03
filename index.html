@@ -262,35 +262,36 @@
                             <th>Lab Test</th>
                             <th>Stock (10G units)</th>
                             <th class="header-red">Retail (10G)</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="addon-list"></tbody>
-                </table>
-            </div>
+            <tbody id="addon-list">
+                <!-- Addons will populate here -->
+            </tbody>
+        </table>
+    </div>
 
-            <!-- Oils Table -->
-            <h2 class="section-title">Finished Oils</h2>
-            <div class="table-wrapper">
-                <table class="price-table oil-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Batch No</th>
-                            <th>Lab Test</th>
-                            <th>Stock (30 ML)</th>
-                            <th class="header-red">Price (30 ML)</th>
-                            <th style="color: #555; font-size: 0.95rem;">What you pay per 10 ML</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="oil-list"></tbody>
-                </table>
-            </div>
-        </div>
+    <!-- Finished Oils Table -->
+    <h2 class="section-title">Finished Oils</h2>
+    <div style="margin-top: -10px; margin-bottom: 15px; background: #fff1f0; padding: 10px; border-left: 5px solid var(--primary-red); color: var(--primary-red); font-size: 1.1rem; font-weight: 900; text-shadow: 0 0 8px rgba(217, 48, 37, 0.4); border-radius: 4px;">
+        ⚠️ Note: Vials are 30 ML, not 10 ML.
+    </div>
+    <div class="table-wrapper">
+        <table class="price-table oil-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Batch No</th>
+                    <th>Lab Test</th>
+                    <th>Stock</th>
+                    <th class="header-red">Price (30 ML)</th>
+                    <th>What you pay per 10 ML</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="oil-list"></tbody>
+        </table>
+    </div>
 
-        <!-- Sticky Cart -->
-        <div class="cart-container">
+    <!-- Sticky Cart -->
+    <div class="cart-container">
             <h2 class="cart-title">Your Selection</h2>
             <ul id="cart-items" class="cart-items">
                 <li class="empty-msg">No items selected yet</li>
