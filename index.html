@@ -37,7 +37,6 @@
             display: inline-block;
         }
 
-        /* Responsive Layout */
         .main-layout {
             display: grid;
             grid-template-columns: 1fr;
@@ -55,7 +54,6 @@
             }
         }
 
-        /* Navigation Tabs */
         .nav-tabs {
             display: flex;
             justify-content: center;
@@ -136,22 +134,33 @@
         button.action-btn:hover:not(:disabled) { color: #174ea6; }
         button.action-btn:disabled { color: var(--disabled-color); text-decoration: none; cursor: not-allowed; font-style: italic; }
 
-        /* Cart */
         .cart-container { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
         .cart-title { font-size: 1.5rem; margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
         .cart-items { list-style: none; padding: 0; margin: 15px 0; }
-        .cart-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #eee; }
+        .cart-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #eee; align-items: center; }
+        .cart-item-details { display: flex; align-items: center; gap: 10px; }
+        .cart-item-info { display: flex; flex-direction: column; }
+        .cart-item-name { font-weight: bold; font-size: 1rem; }
+        .cart-item-batch { font-size: 0.8rem; color: #777; font-family: monospace; }
+        .cart-item-controls { display: flex; align-items: center; gap: 5px; }
+        .qty-btn { width: 24px; height: 24px; border-radius: 50%; border: 1px solid #ccc; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; color: #555; padding: 0; line-height: 1; }
+        .qty-btn:hover { background: #eee; }
+        .qty-display { min-width: 20px; text-align: center; font-size: 0.95rem; font-weight: bold; }
+        .cart-item-price { font-weight: bold; color: #333; text-align: right; }
+        .cart-item-discount { font-size: 0.75rem; color: #137333; font-weight: normal; margin-left: 5px; }
         
         .total-summary { margin-top: 15px; padding-top: 10px; border-top: 1px solid var(--border-color); }
         .total-row { display: flex; justify-content: space-between; font-size: 1rem; color: #555; margin-bottom: 5px; }
+        
+        #min-order-msg { color: var(--primary-red); font-size: 0.9rem; font-weight: bold; text-align: center; margin-top: 10px; display: none; }
 
         .checkout-btn {
-            display: block; width: 100%; background-color: var(--blue-link); color: white; text-align: center; padding: 15px; border-radius: 6px; margin-top: 20px; font-weight: bold; border: none; cursor: pointer; transition: background 0.2s;
+            display: block; width: 100%; background-color: var(--blue-link); color: white; text-align: center; padding: 15px; border-radius: 6px; margin-top: 10px; font-weight: bold; border: none; cursor: pointer; transition: background 0.2s;
         }
         .checkout-btn:hover { background-color: #174ea6; }
+        .checkout-btn:disabled { background-color: var(--disabled-color); cursor: not-allowed; }
         .empty-msg { color: #888; font-style: italic; }
 
-        /* SFX Overlay Styling */
         .sfx-overlay {
             position: fixed; z-index: 2000; pointer-events: none; display: none;
             transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -159,7 +168,6 @@
         .sfx-overlay.active { display: block; }
         .sfx-overlay img { max-width: 300px; max-height: 300px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); display: block; }
 
-        /* Order Modal Styling (Mobile Safe) */
         #order-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); z-index: 1000;
@@ -270,8 +278,6 @@
             </div>
 
             <!-- Oils Table -->
-
-            
             <h2 class="section-title">Finished Oils</h2>
             <div style="margin-top: -10px; margin-bottom: 15px; background: #fff1f0; padding: 10px; border-left: 5px solid var(--primary-red); color: var(--primary-red); font-size: 1.1rem; font-weight: 900; text-shadow: 0 0 8px rgba(217, 48, 37, 0.4); border-radius: 4px;">
         ⚠️ Note: Vials are 30 ML or oil, not 10 ML.
@@ -316,7 +322,8 @@
                 </div>
             </div>
 
-            <button class="checkout-btn" onclick="openCheckoutModal()">Place Order</button>
+            <div id="min-order-msg">Minimum order amount of $200 before shipping is required.</div>
+            <button class="checkout-btn" id="checkout-btn" onclick="openCheckoutModal()">Place Order</button>
         </div>
 
     </div>
@@ -378,6 +385,7 @@
 
     <script>
         const SHIPPING_COST = 35;
+        const MIN_ORDER_AMOUNT = 200; // Added constant for minimum order
         let products = [];
         let cart = []; 
         let currentOrderNum = 0;
@@ -642,6 +650,40 @@
             };
         }
 
+        function changeQty(name, batch, size, delta) {
+            let itemIndex = cart.findIndex(i => i.name === name && i.size === size && i.batch === batch);
+            if (itemIndex > -1) {
+                let item = cart[itemIndex];
+                let productRecord = products.find(p => p.name === name && p.batch === batch);
+                let maxStock = (size === '1kg') ? Infinity : (productRecord ? productRecord.stock100 : 0);
+
+                if (delta > 0) {
+                    if (item.qty >= maxStock) {
+                        alert(`Sorry, we only have ${maxStock} units in stock.`);
+                        return;
+                    }
+                    if (item.category === 'raw' && size === '100g' && item.qty >= 5) {
+                        alert("Maximum 500g allowed for retail bulk discount.");
+                        return;
+                    }
+                    if (item.category === 'addon') {
+                        let allowedIncrements = getRawIncrements();
+                        if (item.qty >= allowedIncrements) {
+                            alert(`Add-on limit reached! Add more Raws to increase this limit.`);
+                            return;
+                        }
+                    }
+                    item.qty += 1;
+                } else if (delta < 0) {
+                    item.qty -= 1;
+                    if (item.qty <= 0) {
+                        cart.splice(itemIndex, 1);
+                    }
+                }
+                updateCartUI();
+            }
+        }
+
         function updateCartUI() {
             enforceAddonLimits(); 
             
@@ -649,153 +691,185 @@
             const subtotalDisplay = document.getElementById('cart-subtotal');
             const totalDisplay = document.getElementById('cart-total');
             const summaryDiv = document.getElementById('cart-summary');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            const minOrderMsg = document.getElementById('min-order-msg');
 
             if (cart.length === 0) {
                 list.innerHTML = '<li class="empty-msg">No items selected yet</li>';
                 summaryDiv.style.display = 'none';
+                checkoutBtn.disabled = true;
+                minOrderMsg.style.display = 'none';
                 return;
             }
 
-            summaryDiv.style.display = 'block';
             let subtotal = 0;
-
-            list.innerHTML = cart.map((item, index) => {
-                let pricing = calculateItemPrice(item);
-                subtotal += pricing.finalTotal;
+            list.innerHTML = cart.map(item => {
+                let priceInfo = calculateItemPrice(item);
+                subtotal += priceInfo.finalTotal;
                 
-                let discountLabel = "";
-                if (pricing.discountPercent > 0) {
-                    let displayPercent = Math.round(pricing.discountPercent * 100);
-                    discountLabel = `<span style="color:var(--primary-red); font-size:0.85rem; font-weight:bold; margin-left:5px;">(-${displayPercent}%)</span>`;
-                }
+                let discountLabel = priceInfo.discountPercent > 0 
+                    ? `<span class="cart-item-discount">(-${priceInfo.discountPercent * 100}%)</span>` 
+                    : '';
 
                 return `
                     <li class="cart-item">
-                        <span>${item.name} (${item.size}) x${item.qty}</span>
-                        <span>$${pricing.finalTotal} ${discountLabel} <button style="color:red; margin-left:10px; text-decoration:none; cursor:pointer;" onclick="removeItem(${index})">×</button></span>
+                        <div class="cart-item-details">
+                            <div class="cart-item-controls">
+                                <button class="qty-btn" onclick="changeQty('${item.name}', '${item.batch}', '${item.size}', -1)">-</button>
+                                <span class="qty-display">${item.qty}</span>
+                                <button class="qty-btn" onclick="changeQty('${item.name}', '${item.batch}', '${item.size}', 1)">+</button>
+                            </div>
+                            <div class="cart-item-info">
+                                <span class="cart-item-name">${item.name} (${item.size})</span>
+                                <span class="cart-item-batch">${item.batch}</span>
+                            </div>
+                        </div>
+                        <div class="cart-item-price">$${priceInfo.finalTotal} ${discountLabel}</div>
                     </li>
                 `;
             }).join('');
 
-            subtotalDisplay.innerText = subtotal.toLocaleString();
-            totalDisplay.innerText = (subtotal + SHIPPING_COST).toLocaleString();
-        }
-
-        function removeItem(index) {
-            cart.splice(index, 1);
-            updateCartUI(); 
+            subtotalDisplay.innerText = subtotal;
+            totalDisplay.innerText = subtotal + SHIPPING_COST;
+            summaryDiv.style.display = 'block';
+            
+            // Check minimum order amount logic
+            if (subtotal < MIN_ORDER_AMOUNT) {
+                checkoutBtn.disabled = true;
+                minOrderMsg.style.display = 'block';
+            } else {
+                checkoutBtn.disabled = false;
+                minOrderMsg.style.display = 'none';
+            }
         }
 
         function openCheckoutModal() {
-            if (cart.length === 0) return alert("Please add items to your selection first.");
-            currentOrderNum = Math.floor(100000 + Math.random() * 900000);
+            if (cart.length === 0) return;
             
-            document.getElementById('ship-name').value = '';
-            document.getElementById('ship-address').value = '';
-            
-            updateOrderText();
+            // Double check minimum order amount just in case
+            let subtotal = 0;
+            cart.forEach(item => {
+                subtotal += calculateItemPrice(item).finalTotal;
+            });
+            if (subtotal < MIN_ORDER_AMOUNT) {
+                alert(`Minimum order amount is $${MIN_ORDER_AMOUNT} before shipping.`);
+                return;
+            }
+
             document.getElementById('order-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            generateOrderNumber();
+            updateOrderText();
+        }
+
+        function closeModal() {
+            document.getElementById('order-modal').style.display = 'none';
+            document.body.style.overflow = '';
+            document.getElementById('copy-status').innerText = "";
+            document.getElementById('email-copy-status').innerText = "";
+        }
+
+        function generateOrderNumber() {
+            if (currentOrderNum === 0) {
+                currentOrderNum = Math.floor(1000 + Math.random() * 9000);
+            }
         }
 
         function toggleCustomCrypto() {
-            const network = document.querySelector('input[name="crypto-network"]:checked').value;
+            const checkedRadio = document.querySelector('input[name="crypto-network"]:checked');
             const customContainer = document.getElementById('custom-crypto-container');
-            if (network === 'Other') {
+            if (checkedRadio && checkedRadio.value === 'Other') {
                 customContainer.style.display = 'block';
             } else {
                 customContainer.style.display = 'none';
-                document.getElementById('custom-crypto-input').value = ''; 
             }
             updateOrderText();
         }
 
         function updateOrderText() {
             const name = document.getElementById('ship-name').value.trim();
-            const addr = document.getElementById('ship-address').value.trim();
-            let cryptoNetwork = document.querySelector('input[name="crypto-network"]:checked').value;
+            const address = document.getElementById('ship-address').value.trim();
+            const checkedRadio = document.querySelector('input[name="crypto-network"]:checked');
+            let crypto = checkedRadio ? checkedRadio.value : "";
             
-            if (cryptoNetwork === 'Other') {
-                const customCrypto = document.getElementById('custom-crypto-input').value.trim();
-                cryptoNetwork = customCrypto ? customCrypto : "OTHER CRYPTO";
+            if (crypto === 'Other') {
+                crypto = document.getElementById('custom-crypto-input').value.trim() || 'Unspecified Other';
             }
             
             let subtotal = 0;
-
-            const itemsText = cart.map(i => {
-                let pricing = calculateItemPrice(i);
-                subtotal += pricing.finalTotal;
+            
+            let orderLines = cart.map(item => {
+                let priceInfo = calculateItemPrice(item);
+                subtotal += priceInfo.finalTotal;
                 
-                let line = `- ${i.name} [Batch: ${i.batch}] (${i.size}) x${i.qty}: $${pricing.finalTotal}`;
-                if (pricing.discountPercent > 0) {
-                    let displayPercent = Math.round(pricing.discountPercent * 100);
-                    line += ` (-${displayPercent}% bulk discount)`;
+                let line = `- ${item.qty}x ${item.name} (${item.size}) [${item.batch}] : $${priceInfo.finalTotal}`;
+                if (priceInfo.discountPercent > 0) {
+                    line += ` (-${priceInfo.discountPercent * 100}%)`;
                 }
                 return line;
-            }).join("\n");
+            }).join('\n');
 
-            const grandTotal = subtotal + SHIPPING_COST;
-
-            const fullText = `ORDER REFERENCE: #${currentOrderNum}
-----------------------------
-ITEMS:
-${itemsText}
-----------------------------
-SUBTOTAL: $${subtotal}
-SHIPPING: $${SHIPPING_COST}
-----------------------------
-GRAND TOTAL: $${grandTotal}
-----------------------------
-SHIPPING INFO:
-Name: ${name || "[REQUIRED]"}
-Address: ${addr || "[REQUIRED]"}
-----------------------------
-${cryptoNetwork} ADDRESS REQUESTED
-You will Receive a ${cryptoNetwork} address in 12 Hours.`;
+            let total = subtotal + SHIPPING_COST;
             
-            document.getElementById('order-text-area').value = fullText;
+            let text = `Order #${currentOrderNum}\n\n`;
+            text += `Items:\n${orderLines}\n\n`;
+            text += `Subtotal: $${subtotal}\n`;
+            text += `Shipping: $${SHIPPING_COST}\n`;
+            text += `Total: $${total}\n\n`;
+            text += `Payment: ${crypto}\n\n`;
+            text += `Shipping Info:\nName: ${name || '[Pending Name]'}\nAddress: ${address || '[Pending Address]'}`;
             
-            const isValid = name !== "" && addr !== "";
-            document.getElementById('btn-copy').disabled = !isValid;
+            document.getElementById('order-text-area').value = text;
+            
+            const btnCopy = document.getElementById('btn-copy');
+            if (name && address && cart.length > 0) {
+                btnCopy.disabled = false;
+            } else {
+                btnCopy.disabled = true;
+            }
         }
 
         function copyOrder() {
-            const name = document.getElementById('ship-name').value.trim();
-            const addr = document.getElementById('ship-address').value.trim();
-            if (!name || !addr) return alert("Please enter shipping name and address.");
-            
-            const network = document.querySelector('input[name="crypto-network"]:checked').value;
-            if (network === 'Other') {
-               const customCrypto = document.getElementById('custom-crypto-input').value.trim();
-               if(!customCrypto) return alert("Please specify the crypto you want to use.");
+            const text = document.getElementById('order-text-area');
+            text.select();
+            text.setSelectionRange(0, 99999);
+            try {
+                document.execCommand("copy");
+                document.getElementById('copy-status').innerText = "✓ Copied! Please email this to the vendor.";
+                setTimeout(() => document.getElementById('copy-status').innerText = "", 3000);
+            } catch (err) {
+                console.error("Failed to copy", err);
+                alert("Failed to copy. Please select the text and copy manually.");
             }
-
-            const textArea = document.getElementById('order-text-area');
-            textArea.select();
-            document.execCommand('copy');
-            const status = document.getElementById('copy-status');
-            status.innerText = "✓ Order copied! Please paste in your email.";
-            setTimeout(() => { status.innerText = ""; }, 4000);
         }
 
         function copyVendorEmail() {
             const emailText = document.getElementById('vendor-email-text').innerText;
-            const tempTextArea = document.createElement("textarea");
-            tempTextArea.value = emailText;
-            document.body.appendChild(tempTextArea);
-            tempTextArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempTextArea);
-            
-            const status = document.getElementById('email-copy-status');
-            status.innerText = "✓ Email copied!";
-            setTimeout(() => { status.innerText = ""; }, 3000);
+            const tempInput = document.createElement("input");
+            tempInput.value = emailText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999);
+            try {
+                document.execCommand("copy");
+                document.getElementById('email-copy-status').innerText = "✓ Email Copied";
+                setTimeout(() => document.getElementById('email-copy-status').innerText = "", 3000);
+            } catch (err) {
+                console.error("Failed to copy", err);
+            }
+            document.body.removeChild(tempInput);
         }
 
-        function closeModal() {
-            document.getElementById('order-modal').style.display = 'none';
+        window.onclick = function(event) {
+            let modal = document.getElementById('order-modal');
+            if (event.target == modal) {
+                closeModal();
+            }
         }
 
+        // Initialize
         loadInventory();
+
     </script>
 </body>
 </html>
