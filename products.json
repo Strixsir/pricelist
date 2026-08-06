@@ -227,6 +227,16 @@
     "stock100": 7
   },
 
+    {
+    "name": "Mast P 100",
+    "category": "oil",
+    "batch": "Okay i guess",
+    "labLink": "at Jano",
+    "labResult": "--",
+    "p100": 99,
+    "stock100": 10
+  },
+
   {
     "name": "Tren Enanthate 200",
     "category": "oil",
@@ -243,6 +253,15 @@
     "labLink": "https://verify.janoshik.com/tests/211322-Sample_3_STMZN4GU25U4",
     "labResult": "150 mg/ml",
     "p100": 90,
+    "stock100": 10
+  },
+  {
+    "name": "Test Enanthate 250",
+    "category": "oil",
+    "batch": "Smooth butter NO PIP issue",
+    "labLink": "At jano",
+    "labResult": "--",
+    "p100": 60,
     "stock100": 10
   },
   {
@@ -270,6 +289,15 @@
     "labLink": "https://verify.janoshik.com/tests/211326-Sample_7_HK4WWN1N2PXB",
     "labResult": "205 mg/ml",
     "p100": 66,
+    "stock100": 10
+  },
+  {
+    "name": "NPP 150",
+    "category": "oil",
+    "batch": "its NPP alright",
+    "labLink": "at Jano",
+    "labResult": "--",
+    "p100": 54,
     "stock100": 10
   },
   {
