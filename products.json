@@ -228,12 +228,12 @@
   },
 
     {
-    "name": "Mast P 125",
+    "name": "Mast P 100",
     "category": "oil",
     "batch": "Okay i guess",
     "labLink": "at Jano",
     "labResult": "--",
-    "p100": 105,
+    "p100": 100,
     "stock100": 10
   },
 
