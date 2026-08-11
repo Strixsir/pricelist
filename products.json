@@ -174,11 +174,21 @@
     "s1k": 0
   },
     {
-    "name": "Mast Prop",
+    "name": "Mast Prop 100g",
     "batch": "MP1",
     "labLink": "https://janoshik.com/tests/212062-Sample_3_C8442ZU5XPFD",
     "labResult": "94%",
-    "p100": 1100,
+    "p100": 1050,
+    "stock100": 2,
+    "p1k": 10000,
+    "s1k": 0
+  },
+      {
+    "name": "Mast Prop 50g (yeah its 50 grams)" ,
+    "batch": "MP1",
+    "labLink": "https://janoshik.com/tests/212062-Sample_3_C8442ZU5XPFD",
+    "labResult": "94%",
+    "p100": 550,
     "stock100": 2,
     "p1k": 10000,
     "s1k": 0
