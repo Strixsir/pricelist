@@ -252,9 +252,18 @@
     "name": "Mast P 100",
     "category": "oil",
     "batch": "Okay i guess",
-    "labLink": "at Jano",
+    "labLink":  "At jano",
     "labResult": "--",
     "p100": 90,
+    "stock100": 10
+  },
+      {
+    "name": "Mast E 200",
+    "category": "oil",
+    "batch": "Meh",
+    "labLink": "at Jano",
+    "labResult": "At jano",
+    "p100": 120,
     "stock100": 10
   },
 
