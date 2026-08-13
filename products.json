@@ -254,7 +254,7 @@
     "batch": "Okay i guess",
     "labLink": "at Jano",
     "labResult": "--",
-    "p100": 100,
+    "p100": 90,
     "stock100": 10
   },
 
@@ -264,7 +264,7 @@
     "batch": "Smooth",
     "labLink": "https://verify.janoshik.com/tests/211320-Sample_1_YZQ47ZXLN7CX",
     "labResult": "201 mg/ml",
-    "p100": 129,
+    "p100": 120,
     "stock100": 10
   },
   {
@@ -291,7 +291,7 @@
     "batch": "Vanilla Cyp",
     "labLink": "https://verify.janoshik.com/tests/211324-Sample_5_A7R3M6ALXVD3",
     "labResult": "249 mg/ml",
-    "p100": 54,
+    "p100": 48,
     "stock100": 10
   },
   {
@@ -300,7 +300,7 @@
     "batch": "Butter Smooth",
     "labLink": "https://verify.janoshik.com/tests/211321-Sample_2_UUWP9MRQBXR8",
     "labResult": "524 mg/ml",
-    "p100": 105,
+    "p100": 99,
     "stock100": 10
   },
   {
@@ -309,7 +309,7 @@
     "batch": "Good ol Deca",
     "labLink": "https://verify.janoshik.com/tests/211326-Sample_7_HK4WWN1N2PXB",
     "labResult": "205 mg/ml",
-    "p100": 60,
+    "p100": 54,
     "stock100": 10
   },
   {
@@ -327,7 +327,7 @@
     "batch": "Smooth",
     "labLink": "https://verify.janoshik.com/tests/211325-Sample_6_64P36R4HB7K7",
     "labResult": "264 mg/ml",
-    "p100": 60,
+    "p100": 54,
     "stock100": 10
   },
   {
