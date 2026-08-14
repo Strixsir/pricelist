@@ -487,12 +487,12 @@
 
             // Oils
             if(oils.length > 0) {
-                // Map now includes the index variable to generate 1.jpg, 2.jpg...
+                // Map now includes the index variable to generate 1.png, 2.png...
                 document.getElementById('oil-list').innerHTML = oils.map((item, index) => `
                     <tr>
                         <td class="sticker-cell">
-                            <!-- Indexed image 1.jpg, 2.jpg... with a dummy fallback provided for visual testing if missing -->
-                            <img src="${index + 1}.jpg" alt="${item.name} logo" class="oil-sticker" onerror="this.onerror=null; this.src='https://placehold.co/112x112/ffffff/1a73e8?text=Img';">
+                            <!-- Indexed image 1.png, 2.png... with a dummy fallback provided for visual testing if missing -->
+                            <img src="${index + 1}.png" alt="${item.name} logo" class="oil-sticker" onerror="this.onerror=null; this.src='https://placehold.co/112x112/ffffff/1a73e8?text=Img';">
                         </td>
                         <td class="compound-name">${item.name}</td>
                         <td class="batch-no">${item.batch}</td>
