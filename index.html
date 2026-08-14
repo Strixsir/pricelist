@@ -113,7 +113,7 @@
 
         .price-table { width: 100%; border-collapse: collapse; background: white; min-width: 800px; }
         .price-table.addon-table { background: var(--addon-bg); min-width: 600px; }
-        .price-table.oil-table { background: var(--oil-bg); min-width: 600px; }
+        .price-table.oil-table { background: var(--oil-bg); min-width: 650px; }
 
         th { background-color: #fcfcfc; padding: 15px; text-align: left; border-bottom: 2px solid var(--border-color); font-weight: 600; white-space: nowrap; }
         .addon-table th { background-color: #fdfaf6; border-bottom: 2px solid #ffecb3; }
@@ -129,6 +129,25 @@
         .batch-no { font-family: monospace; font-size: 0.85rem; color: #666; }
         .lab-link { color: var(--blue-link); text-decoration: none; font-weight: 500; }
         .lab-link:hover { text-decoration: underline; }
+        
+        /* New Sticker CSS for Finished Oils */
+        .sticker-cell {
+            width: 130px;
+            padding-left: 15px;
+            padding-right: 5px;
+            text-align: center;
+        }
+        .oil-sticker {
+            width: 112px;
+            height: 112px;
+            object-fit: contain;
+            border-radius: 14px; /* Soft edges like a sticker, slightly larger for bigger image */
+            background-color: white; /* Fallback for transparent images */
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12)); /* Sticker shadow effect */
+            display: block;
+            margin: 0 auto;
+            border: 2px solid #fff;
+        }
 
         button.action-btn { background: none; border: none; color: var(--blue-link); text-decoration: underline; cursor: pointer; font-size: 0.9rem; padding: 8px 0; white-space: nowrap; }
         button.action-btn:hover:not(:disabled) { color: #174ea6; }
@@ -286,6 +305,7 @@
                 <table class="price-table oil-table">
                     <thead>
                         <tr>
+                            <th class="sticker-cell">Logo</th> <!-- Added New Header for Image -->
                             <th>Name</th>
                             <th>Batch No</th>
                             <th>Lab Test</th>
@@ -467,8 +487,13 @@
 
             // Oils
             if(oils.length > 0) {
-                document.getElementById('oil-list').innerHTML = oils.map(item => `
+                // Map now includes the index variable to generate 1.jpg, 2.jpg...
+                document.getElementById('oil-list').innerHTML = oils.map((item, index) => `
                     <tr>
+                        <td class="sticker-cell">
+                            <!-- Indexed image 1.jpg, 2.jpg... with a dummy fallback provided for visual testing if missing -->
+                            <img src="${index + 1}.jpg" alt="${item.name} logo" class="oil-sticker" onerror="this.onerror=null; this.src='https://placehold.co/112x112/ffffff/1a73e8?text=Img';">
+                        </td>
                         <td class="compound-name">${item.name}</td>
                         <td class="batch-no">${item.batch}</td>
                         <td><a href="${item.labLink}" target="_blank" class="lab-link">${item.labResult || "View Lab"}</a></td>
@@ -483,7 +508,7 @@
                     </tr>
                 `).join('');
             } else {
-                document.getElementById('oil-list').innerHTML = `<tr><td colspan="7" style="text-align:center;">No oils available.</td></tr>`;
+                document.getElementById('oil-list').innerHTML = `<tr><td colspan="8" style="text-align:center;">No oils available.</td></tr>`;
             }
         }
 
