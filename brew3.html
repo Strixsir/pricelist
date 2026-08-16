@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Brew Calc Stolen from Dinfar</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-500-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-600-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-700-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-800-normal.css">
+<style>
+:root{
+  --bg:#f5f0e8;
+  --card:#fffdf8;
+  --card-alt:#f8f4ec;
+  --border:#1a1a1a;
+  --text:#1a1a1a;
+  --text-2:#555;
+  --text-3:#888;
+  --red:#dc2626;
+  --red-soft:#fef2f2;
+  --blue:#2563eb;
+  --blue-soft:#eff6ff;
+  --green:#16a34a;
+  --green-soft:#f0fdf4;
+  --orange:#ea580c;
+  --orange-soft:#fff7ed;
+  --purple:#9333ea;
+  --purple-soft:#faf5ff;
+  --yellow:#ca8a04;
+  --yellow-soft:#fefce8;
+  --shadow:4px 4px 0 #1a1a1a;
+  --shadow-sm:3px 3px 0 #1a1a1a;
+  --shadow-lg:6px 6px 0 #1a1a1a;
+  --radius:0;
+  --mono:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--mono);
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  font-size:14px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  padding:20px;
+}
+
+.app{
+  max-width:1280px;margin:0 auto;
+  display:flex;flex-direction:column;gap:16px;
+}
+
+/* === HEADER === */
+header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 22px;
+  background:var(--card);
+  border:3px solid var(--border);
+  box-shadow:var(--shadow);
+}
+.brand h1{
+  font-size:18px;
+  font-weight:800;
+  letter-spacing:-.3px;
+  color:var(--text);
+}
+.brand h1 span{color:var(--red)}
+.brand p{
+  font-size:11px;
+  color:var(--text-3);
+  margin-top:2px;
+  font-weight:500;
+  letter-spacing:.3px;
+}
+.header-actions{display:flex;gap:10px}
+.header-actions a{
+  padding:8px 16px;
+  font-size:12px;
+  font-weight:700;
+  text-decoration:none;
+  border:3px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  transition:all .15s;
+  box-shadow:var(--shadow-sm);
+}
+.header-actions a:hover{
+  transform:translate(-1px,-1px);
+  box-shadow:5px 5px 0 #1a1a1a;
+}
+.header-actions a:active{
+  transform:translate(2px,2px);
+  box-shadow:1px 1px 0 #1a1a1a;
+}
+.header-actions a.primary{
+  background:var(--blue);
+  color:#fff;
+  border-color:var(--border);
+}
+.header-actions a.primary:hover{background:#1d4ed8}
+
+/* === GRID === */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.panel{
+  background:var(--card);
+  border:3px solid var(--border);
+  padding:16px;
+  display:flex;flex-direction:column;gap:14px;
+  box-shadow:var(--shadow);
+  overflow-y:auto;
+  max-height:calc(100vh - 140px);
+}
+.panel::-webkit-scrollbar{width:10px}
+.panel::-webkit-scrollbar-track{background:var(--bg)}
+.panel::-webkit-scrollbar-thumb{background:var(--border);border:2px solid var(--bg)}
+
+/* === CARDS === */
+.card{
+  background:var(--card-alt);
+  border:3px solid var(--border);
+  padding:14px;
+  display:flex;flex-direction:column;gap:12px;
+  box-shadow:var(--shadow-sm);
+}
+.card-title{
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  color:var(--blue);
+  margin-bottom:2px;
+  display:flex;align-items:center;gap:8px;
+  text-transform:uppercase;
+}
+.card-title::before{
+  content:"▸";
+  color:var(--blue);
+  font-size:14px;
+}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{
+  font-size:10px;
+  font-weight:700;
+  color:var(--text-2);
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+.row{display:grid;gap:10px}
+.row-2{grid-template-columns:1fr 1fr}
+
+input[type="number"],select{
+  width:100%;padding:10px 12px;
+  background:#fff;
+  border:3px solid var(--border);
+  color:var(--text);
+  font-family:inherit;
+  font-size:13px;
+  font-weight:600;
+  appearance:none;
+  transition:all .15s;
+  box-shadow:var(--shadow-sm);
+}
+select{
+  background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1a1a' stroke-width='3'%3e%3cpolyline points='6 9 12 15 18 9'/%3e%3c/svg%3e");
+  background-repeat:no-repeat;background-position:right 10px center;background-size:14px;
+  padding-right:32px;cursor:pointer;
+}
+input[type="number"]:focus,select:focus{
+  outline:none;
+  border-color:var(--blue);
+  box-shadow:4px 4px 0 var(--blue);
+}
+
+.seg{
+  display:inline-flex;
+  background:#fff;
+  border:3px solid var(--border);
+  width:fit-content;
+  box-shadow:var(--shadow-sm);
+}
+.seg button{
+  padding:8px 16px;
+  border:none;background:transparent;
+  color:var(--text-2);
+  font-family:inherit;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+  transition:all .15s;
+  letter-spacing:.5px;
+  border-right:3px solid var(--border);
+}
+.seg button:last-child{border-right:none}
+.seg button:hover:not(.active){background:var(--card-alt)}
+.seg button.active{
+  background:var(--red);
+  color:#fff;
+}
+
+.carrier-row{display:flex;gap:8px;align-items:stretch}
+.carrier-row select{flex:1}
+.compound-row{display:flex;gap:8px;align-items:stretch}
+.compound-row select{flex:1}
+.add-btn{
+  width:40px;height:40px;flex-shrink:0;
+  background:#fff;
+  border:3px solid var(--border);
+  color:var(--green);
+  font-size:20px;
+  font-weight:800;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+  box-shadow:var(--shadow-sm);
+}
+.add-btn:hover{
+  background:var(--green);
+  color:#fff;
+  transform:translate(-1px,-1px);
+  box-shadow:4px 4px 0 #1a1a1a;
+}
+.add-btn:active{
+  transform:translate(2px,2px);
+  box-shadow:1px 1px 0 #1a1a1a;
+}
+.add-btn.active{
+  background:var(--green);
+  color:#fff;
+}
+.add-btn.blend{color:var(--purple)}
+.add-btn.blend:hover{background:var(--purple);color:#fff}
+.add-btn.blend.active{background:var(--purple);color:#fff}
+.add-btn:disabled{opacity:.4;cursor:not-allowed;transform:none !important}
+
+.hidden{display:none !important}
+
+.disp-edit, .dens-edit{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:10px;
+  font-weight:700;
+  color:var(--text-2);
+  cursor:pointer;
+  padding:6px 12px;
+  background:#fff;
+  border:2px dashed var(--border);
+  align-self:flex-start;
+  transition:all .15s;
+  letter-spacing:.5px;
+  text-transform:uppercase;
+}
+.disp-edit:hover, .dens-edit:hover{
+  background:var(--yellow-soft);
+  border-color:var(--yellow);
+  color:var(--yellow);
+}
+.disp-edit svg, .dens-edit svg{width:10px;height:10px}
+.disp-input-wrap, .dens-input-wrap{
+  margin-top:6px;padding:12px;
+  background:#fff;
+  border:3px solid var(--border);
+  box-shadow:var(--shadow-sm);
+  animation:slideIn .2s ease-out;
+}
+@keyframes slideIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+.blend-compound-row{
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr auto;
+  gap:8px;
+  align-items:end;
+  padding:12px;
+  background:var(--purple-soft);
+  border:3px solid var(--border);
+  border-left:6px solid var(--purple);
+  box-shadow:var(--shadow-sm);
+  animation:slideIn .25s ease-out;
+}
+.blend-compound-row .remove-btn{
+  width:40px;height:40px;
+  background:#fff;
+  border:3px solid var(--border);
+  color:var(--red);
+  font-size:18px;
+  font-weight:800;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+  box-shadow:var(--shadow-sm);
+}
+.blend-compound-row .remove-btn:hover{
+  background:var(--red);
+  color:#fff;
+  transform:translate(-1px,-1px);
+  box-shadow:4px 4px 0 #1a1a1a;
+}
+.blend-total{
+  font-size:11px;
+  font-weight:700;
+  padding:12px 14px;
+  background:var(--blue-soft);
+  border:3px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:var(--text);
+  letter-spacing:1px;
+  text-transform:uppercase;
+  box-shadow:var(--shadow-sm);
+}
+.blend-total strong{
+  color:var(--blue);
+  font-size:14px;
+  font-weight:800;
+}
+
+.sec-oil-row{display:grid;grid-template-columns:1.4fr 80px;gap:8px;align-items:end}
+
+.right-col{display:flex;flex-direction:column;gap:14px}
+
+/* === ALERT === */
+.alert{
+  padding:12px 14px;
+  background:var(--red-soft);
+  border:3px solid var(--red);
+  border-left:6px solid var(--red);
+  font-size:12px;
+  color:var(--text);
+  display:flex;gap:10px;align-items:flex-start;
+  box-shadow:var(--shadow-sm);
+  animation:slideIn .25s ease-out;
+}
+.alert strong{
+  font-size:11px;
+  display:block;
+  margin-bottom:3px;
+  letter-spacing:1px;
+  color:var(--red);
+  text-transform:uppercase;
+  font-weight:800;
+}
+.alert.info{background:var(--blue-soft);border-color:var(--blue);border-left-color:var(--blue)}
+.alert.info strong{color:var(--blue)}
+.alert.warn{background:var(--orange-soft);border-color:var(--orange);border-left-color:var(--orange)}
+.alert.warn strong{color:var(--orange)}
+
+/* === FLASK === */
+.flask-stats-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.flask-wrap{
+  background:var(--card-alt);
+  border:3px solid var(--border);
+  padding:14px;
+  display:flex;align-items:center;gap:14px;
+  box-shadow:var(--shadow-sm);
+}
+.flask-svg{width:70px;height:130px;flex-shrink:0;display:block}
+.flask-svg rect, .flask-svg ellipse, .flask-svg line, .flask-svg path{transition:all .5s cubic-bezier(.4,0,.2,1)}
+.flask-legend{flex:1;display:flex;flex-wrap:wrap;gap:6px}
+.legend-item{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 8px;
+  background:#fff;
+  border:2px solid var(--border);
+  font-size:10px;
+  font-weight:600;
+  color:var(--text);
+  transition:all .15s;
+  box-shadow:2px 2px 0 var(--border);
+}
+.legend-item:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--border)}
+.legend-dot{width:10px;height:10px;border:2px solid var(--border);flex-shrink:0}
+.legend-name{color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px}
+.legend-val{color:var(--text);font-weight:700}
+
+/* === STATS === */
+.stats{
+  display:flex;flex-direction:column;gap:8px;
+  background:var(--card-alt);
+  border:3px solid var(--border);
+  padding:14px;
+  box-shadow:var(--shadow-sm);
+}
+.stats-title{
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  color:var(--blue);
+  margin-bottom:4px;
+  text-transform:uppercase;
+}
+.stat{
+  background:#fff;
+  border:3px solid var(--border);
+  padding:10px 14px;
+  display:flex;justify-content:space-between;align-items:center;
+  transition:all .15s;
+  box-shadow:var(--shadow-sm);
+}
+.stat:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #1a1a1a}
+.stat span{
+  font-size:10px;
+  color:var(--text-2);
+  letter-spacing:1px;
+  text-transform:uppercase;
+  font-weight:700;
+}
+.stat strong{
+  font-size:18px;
+  color:var(--text);
+  font-weight:800;
+  font-variant-numeric:tabular-nums;
+}
+.stat.hi{
+  background:var(--red-soft);
+  border-color:var(--red);
+  border-left:6px solid var(--red);
+}
+.stat.hi span{color:var(--red)}
+.stat.hi strong{color:var(--red);font-size:20px}
+
+/* === RECIPE CARD === */
+.recipe-card{
+  background:var(--card-alt);
+  border:3px solid var(--border);
+  border-top:6px solid var(--red);
+  padding:16px;
+  display:flex;flex-direction:column;gap:10px;
+  box-shadow:var(--shadow-sm);
+}
+.recipe-header{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  padding-bottom:10px;
+  border-bottom:3px solid var(--border);
+}
+.recipe-header h3{
+  font-size:14px;
+  font-weight:800;
+  color:var(--text);
+  letter-spacing:-.2px;
+}
+.recipe-header span{
+  font-size:10px;
+  color:var(--text-3);
+  letter-spacing:1px;
+  text-transform:uppercase;
+  font-weight:700;
+}
+.recipe-list{display:flex;flex-direction:column;gap:6px}
+.recipe-item{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:11px 14px;
+  background:#fff;
+  border:3px solid var(--border);
+  border-left:6px solid var(--blue);
+  transition:all .15s;
+  box-shadow:var(--shadow-sm);
+}
+.recipe-item:hover{
+  transform:translate(-1px,-1px);
+  box-shadow:4px 4px 0 #1a1a1a;
+}
+.recipe-item.topoff{
+  border-color:var(--purple);
+  border-left:6px solid var(--purple);
+  background:var(--purple-soft);
+}
+.recipe-name{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;color:var(--text)}
+.recipe-name .d{width:10px;height:10px;border:2px solid var(--border);flex-shrink:0}
+.recipe-val{text-align:right}
+.recipe-val strong{
+  font-size:14px;
+  font-weight:800;
+  display:block;
+  font-variant-numeric:tabular-nums;
+  color:var(--text);
+}
+.recipe-val small{font-size:10px;color:var(--text-3);display:block;margin-top:2px;font-weight:600}
+
+/* === ECONOMICS === */
+details.eco{
+  background:var(--card-alt);
+  border:3px solid var(--border);
+  padding:0;
+  box-shadow:var(--shadow-sm);
+}
+details.eco summary{
+  padding:12px 16px;cursor:pointer;list-style:none;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  color:var(--green);
+  text-transform:uppercase;
+  background:#fff;
+  border-bottom:3px solid var(--border);
+}
+details.eco summary:hover{background:var(--green-soft)}
+details.eco summary::-webkit-details-marker{display:none}
+details.eco summary::after{
+  content:"+";
+  font-size:20px;
+  font-weight:400;
+  color:var(--green);
+  transition:transform .25s;
+}
+details.eco[open] summary::after{transform:rotate(45deg)}
+.eco-body{
+  padding:14px 16px;
+  display:flex;flex-direction:column;gap:12px;
+  background:var(--card-alt);
+}
+.cost-out{
+  margin-top:4px;padding:14px;
+  background:var(--green-soft);
+  border:3px solid var(--green);
+  border-left:6px solid var(--green);
+  display:flex;justify-content:space-between;align-items:center;
+  box-shadow:var(--shadow-sm);
+}
+.cost-out span{
+  font-size:11px;
+  color:var(--text);
+  letter-spacing:1px;
+  text-transform:uppercase;
+  font-weight:700;
+}
+.cost-out strong{
+  color:var(--green);
+  font-size:22px;
+  font-weight:800;
+  font-variant-numeric:tabular-nums;
+}
+
+/* === PRESET CARD === */
+.preset-card{
+  background:var(--card-alt);
+  border:3px solid var(--border);
+  padding:14px;
+  display:flex;flex-direction:column;gap:12px;
+  position:relative;
+  box-shadow:var(--shadow-sm);
+  transition:all .2s;
+}
+.preset-card::before{
+  content:"PRESETS";
+  position:absolute;
+  top:-11px;left:12px;
+  background:var(--orange);
+  color:#fff;
+  padding:2px 10px;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  border:3px solid var(--border);
+}
+.preset-card:hover{
+  transform:translate(-1px,-1px);
+  box-shadow:5px 5px 0 #1a1a1a;
+}
+.preset-card:focus-within{
+  border-color:var(--blue);
+  box-shadow:4px 4px 0 var(--blue);
+}
+.preset-card.loaded{
+  border-color:var(--green);
+  box-shadow:4px 4px 0 var(--green);
+}
+.preset-card.loaded::before{
+  content:"MISSION START";
+  background:var(--green);
+}
+.preset-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px}
+.preset-label{
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  color:var(--orange);
+  text-transform:uppercase;
+}
+.preset-label .bolt{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;
+  background:var(--orange);
+  color:#fff;
+  font-size:12px;
+  border:2px solid var(--border);
+}
+.preset-count{
+  font-size:10px;
+  color:var(--text);
+  padding:3px 10px;
+  background:#fff;
+  border:2px solid var(--border);
+  font-weight:700;
+  box-shadow:2px 2px 0 var(--border);
+}
+.preset-select{
+  width:100%;padding:12px 36px 12px 14px;
+  background:#fff;
+  border:3px solid var(--border);
+  color:var(--text);
+  font-family:inherit;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  appearance:none;
+  background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1a1a' stroke-width='3'%3e%3cpolyline points='6 9 12 15 18 9'/%3e%3c/svg%3e");
+  background-repeat:no-repeat;background-position:right 12px center;background-size:14px;
+  transition:all .15s;
+  box-shadow:var(--shadow-sm);
+}
+.preset-select:hover{border-color:var(--blue)}
+.preset-select:focus{
+  outline:none;
+  border-color:var(--blue);
+  box-shadow:4px 4px 0 var(--blue);
+}
+.preset-info{
+  display:flex;align-items:center;gap:6px;
+  font-size:11px;
+  color:var(--text-3);
+  font-weight:500;
+}
+.preset-info svg{width:12px;height:12px;flex-shrink:0}
+
+@media(max-width:960px){
+  .grid{grid-template-columns:1fr}
+  .flask-stats-row{grid-template-columns:1fr}
+  .blend-compound-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <h1>Brew Calc Stolen from <span>Dinfar</span></h1>
+      <p>Gravimetric Formulation Engine</p>
+    </div>
+    <div class="header-actions">
+      <a href="https://dinfarcalc.vercel.app/donation.html" target="_blank" rel="noopener">Donate to Dinfar- The OG creator</a>
+      <a href="https://strixsir.github.io/pricelist/" class="primary">Store →</a>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="preset-card" id="presetCard">
+        <div class="preset-header">
+          <div class="preset-label">
+            <span class="bolt">⚡</span>
+            PRESETS
+          </div>
+          <span class="preset-count">16 recipes</span>
+        </div>
+        <select id="presetSelect" class="preset-select" onchange="loadPresetRecipe()">
+          <option value="none">-- Pick a preset --</option>
+          <optgroup label="Standard (1.5% BA / 20% BB)">
+            <option value='{"blend":false,"c":"test-c","mg":200,"ba":1.5,"bb":20,"oil":"mct"}'>Test C · 200 mg/ml</option>
+            <option value='{"blend":false,"c":"tren-a","mg":100,"ba":1.5,"bb":20,"oil":"mct"}'>Tren A · 100 mg/ml</option>
+            <option value='{"blend":false,"c":"tren-e","mg":200,"ba":1.5,"bb":20,"oil":"mct"}'>Tren E · 200 mg/ml</option>
+            <option value='{"blend":false,"c":"npp","mg":100,"ba":1.5,"bb":20,"oil":"mct"}'>NPP · 100 mg/ml</option>
+            <option value='{"blend":false,"c":"test-p","mg":100,"ba":1.5,"bb":20,"oil":"mct"}'>Test P · 100 mg/ml</option>
+          </optgroup>
+          <optgroup label="Optimized (Low BB)">
+            <option value='{"blend":false,"c":"eq","mg":500,"ba":1.5,"bb":18,"oil":"mct"}'>EQ · 500 mg/ml</option>
+            <option value='{"blend":false,"c":"masteron-e","mg":200,"ba":1.5,"bb":15,"oil":"mct"}'>Mast E · 200 mg/ml</option>
+            <option value='{"blend":false,"c":"deca","mg":300,"ba":1.5,"bb":18,"oil":"mct"}'>Deca · 300 mg/ml</option>
+            <option value='{"blend":false,"c":"test-e","mg":250,"ba":1.5,"bb":15,"oil":"mct"}'>Test E · 250 mg/ml</option>
+            <option value='{"blend":false,"c":"primo-e","mg":150,"ba":1.5,"bb":18,"oil":"mct"}'>Primo E · 150 mg/ml</option>
+          </optgroup>
+          <optgroup label="High Concentration">
+            <option value='{"blend":false,"c":"test-deca","mg":500,"ba":1.5,"bb":24,"oil":"mct"}'>Test D · 500 mg/ml</option>
+            <option value='{"blend":false,"c":"test-undecanoate","mg":200,"ba":1.5,"bb":25,"oil":"mct"}'>Test U · 200 · MCT</option>
+            <option value='{"blend":false,"c":"npp","mg":150,"ba":1.5,"bb":24,"oil":"mct"}'>NPP · 150 mg/ml</option>
+            <option value='{"blend":false,"c":"test-c","mg":250,"ba":1.5,"bb":25,"oil":"mct"}'>Test C · 250 mg/ml</option>
+            <option value='{"blend":false,"c":"masteron-e","mg":300,"ba":1.5,"bb":22,"oil":"mct"}'>Mast E · 300 mg/ml</option>
+            <option value='{"blend":false,"c":"test-undecanoate","mg":250,"ba":1.5,"bb":45,"oil":"castor"}'>Test U · 250 · Castor</option>
+            <option value='{"blend":false,"c":"test-undecanoate","mg":350,"ba":1.5,"bb":50,"oil":"castor"}'>Test U · 350 · Castor</option>
+          </optgroup>
+          <optgroup label="Blend Recipes">
+            <option value='{"blend":true,"c1":"test-p","mg1":30,"c2":"test-phenyl","mg2":60,"c3":"test-iso","mg3":60,"c4":"test-deca","mg4":100,"ba":2,"bb":20,"oil":"gso"}'>Sustanon 250 · 4 Compounds</option>
+          </optgroup>
+        </select>
+        <div class="preset-info">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          Select a recipe to auto-fill all fields
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Formulation</div>
+
+        <div class="field">
+          <label>Compound 1 (Primary)</label>
+          <div class="compound-row">
+            <select id="compound" onchange="updateDisp(0);calc()">
+              <optgroup label="Testosterones">
+                <option value="test-c">Testosterone Cypionate</option>
+                <option value="test-e">Testosterone Enanthate</option>
+                <option value="test-p">Testosterone Propionate</option>
+                <option value="test-base">Testosterone Base</option>
+                <option value="test-phenyl">Testosterone Phenylpropionate</option>
+                <option value="test-iso">Testosterone Isocaproate</option>
+                <option value="test-deca">Testosterone Decanoate</option>
+                <option value="test-undecanoate">Testosterone Undecanoate</option>
+                <option value="test-susp">Testosterone Suspension</option>
+                <option value="test-ace">Testosterone Acetate</option>
+                <option value="test-buciclate">Testosterone Buciclate</option>
+              </optgroup>
+              <optgroup label="Nandrolones">
+                <option value="deca">Nandrolone Decanoate</option>
+                <option value="npp">Nandrolone Phenylpropionate</option>
+                <option value="nandrolone-base">Nandrolone Base</option>
+                <option value="npp-deca">Nandrolone Cypionate</option>
+                <option value="nandrolone-undecanoate">Nandrolone Undecanoate</option>
+              </optgroup>
+              <optgroup label="Trenbolones">
+                <option value="tren-a">Trenbolone Acetate</option>
+                <option value="tren-e">Trenbolone Enanthate</option>
+                <option value="tren-hex">Trenbolone Hexahydrobenzylcarbonate</option>
+                <option value="tren-base">Trenbolone Base</option>
+                <option value="mTren">Methyltrienolone</option>
+              </optgroup>
+              <optgroup label="DHT Derivatives">
+                <option value="masteron-p">Masteron Propionate</option>
+                <option value="masteron-e">Masteron Enanthate</option>
+                <option value="primo-e">Primobolan Enanthate</option>
+                <option value="primo-ace">Primobolan Acetate</option>
+                <option value="eq">Equipoise</option>
+                <option value="bold-cyp">Boldenone Cypionate</option>
+                <option value="dhb">DHB (1-Test Cyp)</option>
+                <option value="trestolone">Trestolone (MENT)</option>
+                <option value="trestolone-a">Trestolone Acetate</option>
+                <option value="superdrol">Superdrol</option>
+                <option value="halotestin">Halotestin</option>
+                <option value="winstrol">Winstrol</option>
+                <option value="anavar">Anavar</option>
+                <option value="tbol">Turinabol</option>
+                <option value="dbol">Dianabol</option>
+                <option value="anadrol">Anadrol</option>
+                <option value="proviron">Proviron</option>
+              </optgroup>
+              <optgroup label="Hormones & Misc">
+                <option value="progesterone">Progesterone</option>
+                <option value="est-val">Estrogen Valerate</option>
+                <option value="est-cyp">Estrogen Cypionate</option>
+                <option value="est-enan">Estrogen Enanthate</option>
+                <option value="est-ace">Estrogen Acetate</option>
+                <option value="est-udy">Estrogen Undecylenate</option>
+                <option value="dhea">DHEA</option>
+                <option value="7dhea">7-Keto-DHEA</option>
+                <option value="dhea-sulf">DHEA Sulfate</option>
+                <option value="yk11">YK-11</option>
+                <option value="l-carn">L-Carnitine Base</option>
+                <option value="glut">Glutathione Base</option>
+                <option value="hcg">HCG</option>
+                <option value="gh">Growth Hormone</option>
+                <option value="pt-141">PT-141</option>
+                <option value="bpc-157">BPC-157</option>
+                <option value="tb-500">TB-500</option>
+                <option value="cjc-1295">CJC-1295</option>
+                <option value="ipamorelin">Ipamorelin</option>
+                <option value="selank">Selank</option>
+                <option value="semaglutide">Semaglutide</option>
+                <option value="tirzepatide">Tirzepatide</option>
+              </optgroup>
+              <option value="custom">Custom (Manual)</option>
+            </select>
+            <button class="add-btn blend" id="addCompoundBtn" onclick="addBlendCompound()" title="Add compound">+</button>
+          </div>
+        </div>
+
+        <div class="row row-2">
+          <div class="field">
+            <label>Target (mg/ml)</label>
+            <input id="mgml" type="number" min="0" value="250" oninput="calc()">
+          </div>
+          <div class="field">
+            <label>Purity (%)</label>
+            <input id="purity" type="number" min="0" max="100" value="100" oninput="calc()">
+          </div>
+        </div>
+
+        <div id="blendCompoundsContainer" class="hidden" style="display:flex;flex-direction:column;gap:8px;"></div>
+
+        <div id="blendTotalBar" class="blend-total hidden">
+          <span>Total Concentration</span>
+          <strong id="blendTotalMgml">0 mg/ml</strong>
+        </div>
+
+        <button class="disp-edit" id="dispEditBtn" onclick="toggleDispEdit()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <span id="dispEditLabel">Edit displacement</span>
+        </button>
+        <div class="disp-input-wrap hidden" id="dispWrap">
+          <div class="field">
+            <label>Displacement (ml/g) — Compound 1</label>
+            <input id="disp" type="number" min="0" step="0.001" value="0.909" oninput="calc()">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Batch Mode</label>
+          <div class="seg">
+            <button id="btnVol" class="active" onclick="setMode('volume')">Target Volume</button>
+            <button id="btnPow" onclick="setMode('powder')">Fixed Powder</button>
+          </div>
+        </div>
+
+        <div class="field" id="volField">
+          <label>Final Volume (ml)</label>
+          <input id="totalVol" type="number" min="0" value="50" oninput="calc()">
+        </div>
+        <div class="field hidden" id="powField">
+          <label>Available Powder (g) — Compound 1</label>
+          <input id="availPow" type="number" min="0" value="10" oninput="calc()">
+        </div>
+        
+        <!-- NEW TEMPERATURE FIELD -->
+        <div class="field">
+          <label>Temperature (°C)</label>
+          <input id="tempC" type="number" min="0" max="100" step="1" value="25" oninput="calc()">
+        </div>
+
+        <div class="field">
+          <label>Primary Carrier Oil</label>
+          <div class="carrier-row">
+            <select id="carrier1" onchange="updateOilDensity(1);calc()">
+              <optgroup label="Common Oils">
+                <option value="mct" data-density="0.95">MCT Oil (0.95)</option>
+                <option value="gso" data-density="0.92">Grapeseed (0.92)</option>
+                <option value="castor" data-density="0.96">Castor (0.96)</option>
+                <option value="sesame" data-density="0.92">Sesame (0.92)</option>
+                <option value="olive" data-density="0.91">Olive (0.91)</option>
+                <option value="coconut" data-density="0.92">Coconut (0.92)</option>
+              </optgroup>
+              <optgroup label="Specialty Oils">
+                <option value="eo" data-density="0.87">Ethyl Oleate (0.87)</option>
+                <option value="mig840" data-density="0.94">Miglyol 840 (0.94)</option>
+                <option value="mig812" data-density="0.95">Miglyol 812 (0.95)</option>
+                <option value="ipm" data-density="0.85">IPM (0.85)</option>
+                <option value="ipp" data-density="0.85">IPP (0.85)</option>
+                <option value="jojoba" data-density="0.86">Jojoba (0.86)</option>
+              </optgroup>
+              <optgroup label="Vegetable Oils">
+                <option value="corn" data-density="0.92">Corn (0.92)</option>
+                <option value="cottonseed" data-density="0.92">Cottonseed (0.92)</option>
+                <option value="soybean" data-density="0.92">Soybean (0.92)</option>
+                <option value="sunflower" data-density="0.92">Sunflower (0.92)</option>
+                <option value="safflower" data-density="0.92">Safflower (0.92)</option>
+                <option value="peanut" data-density="0.92">Peanut (0.92)</option>
+                <option value="almond" data-density="0.91">Almond (0.91)</option>
+                <option value="avocado" data-density="0.91">Avocado (0.91)</option>
+                <option value="palm" data-density="0.92">Palm (0.92)</option>
+                <option value="canola" data-density="0.92">Canola (0.92)</option>
+                <option value="flaxseed" data-density="0.93">Flaxseed (0.93)</option>
+                <option value="hemp" data-density="0.92">Hemp Seed (0.92)</option>
+              </optgroup>
+              <optgroup label="Mineral & Synthetic">
+                <option value="mineral-light" data-density="0.84">Mineral Light (0.84)</option>
+                <option value="mineral-heavy" data-density="0.88">Mineral Heavy (0.88)</option>
+              </optgroup>
+              <option value="custom">Custom (Manual)</option>
+            </select>
+            <button class="add-btn" id="addOil2" onclick="toggleOil2()" title="Add secondary oil">+</button>
+          </div>
+        </div>
+
+        <button class="dens-edit" id="densEditBtn1" onclick="toggleDensEdit(1)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <span id="densEditLabel1">Edit density</span>
+        </button>
+        <div class="dens-input-wrap hidden" id="densWrap1">
+          <div class="field">
+            <label>Oil Density (g/ml)</label>
+            <input id="oilDensity1" type="number" min="0" step="0.001" value="0.95" oninput="calc()">
+          </div>
+        </div>
+
+        <div class="field hidden" id="oil2Field">
+          <label>Secondary Oil</label>
+          <div class="sec-oil-row">
+            <select id="carrier2" onchange="updateOilDensity(2);calc()">
+              <optgroup label="Common Oils">
+                <option value="mct" data-density="0.95">MCT Oil (0.95)</option>
+                <option value="gso" data-density="0.92">Grapeseed (0.92)</option>
+                <option value="castor" data-density="0.96">Castor (0.96)</option>
+                <option value="sesame" data-density="0.92">Sesame (0.92)</option>
+                <option value="olive" data-density="0.91">Olive (0.91)</option>
+                <option value="coconut" data-density="0.92">Coconut (0.92)</option>
+              </optgroup>
+              <optgroup label="Specialty Oils">
+                <option value="eo" data-density="0.87">Ethyl Oleate (0.87)</option>
+                <option value="mig840" data-density="0.94">Miglyol 840 (0.94)</option>
+                <option value="mig812" data-density="0.95">Miglyol 812 (0.95)</option>
+                <option value="ipm" data-density="0.85">IPM (0.85)</option>
+                <option value="ipp" data-density="0.85">IPP (0.85)</option>
+                <option value="jojoba" data-density="0.86">Jojoba (0.86)</option>
+              </optgroup>
+              <optgroup label="Vegetable Oils">
+                <option value="corn" data-density="0.92">Corn (0.92)</option>
+                <option value="cottonseed" data-density="0.92">Cottonseed (0.92)</option>
+                <option value="soybean" data-density="0.92">Soybean (0.92)</option>
+                <option value="sunflower" data-density="0.92">Sunflower (0.92)</option>
+                <option value="safflower" data-density="0.92">Safflower (0.92)</option>
+                <option value="peanut" data-density="0.92">Peanut (0.92)</option>
+                <option value="almond" data-density="0.91">Almond (0.91)</option>
+                <option value="avocado" data-density="0.91">Avocado (0.91)</option>
+                <option value="palm" data-density="0.92">Palm (0.92)</option>
+                <option value="canola" data-density="0.92">Canola (0.92)</option>
+                <option value="flaxseed" data-density="0.93">Flaxseed (0.93)</option>
+                <option value="hemp" data-density="0.92">Hemp Seed (0.92)</option>
+              </optgroup>
+              <optgroup label="Mineral & Synthetic">
+                <option value="mineral-light" data-density="0.84">Mineral Light (0.84)</option>
+                <option value="mineral-heavy" data-density="0.88">Mineral Heavy (0.88)</option>
+              </optgroup>
+              <option value="custom">Custom (Manual)</option>
+            </select>
+            <div class="field">
+              <label>%</label>
+              <input id="carrier2Pct" type="number" min="0" max="100" value="30" oninput="calc()">
+            </div>
+          </div>
+          <button class="dens-edit" id="densEditBtn2" onclick="toggleDensEdit(2)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <span id="densEditLabel2">Edit density</span>
+          </button>
+          <div class="dens-input-wrap hidden" id="densWrap2">
+            <div class="field">
+              <label>Oil Density (g/ml)</label>
+              <input id="oilDensity2" type="number" min="0" step="0.001" value="0.87" oninput="calc()">
+            </div>
+          </div>
+        </div>
+
+        <div class="row row-2">
+          <div class="field">
+            <label>BA %</label>
+            <input id="baPct" type="number" min="0" max="100" step="0.5" value="2" oninput="calc()">
+          </div>
+          <div class="field">
+            <label>BB %</label>
+            <input id="bbPct" type="number" min="0" max="100" step="1" value="18" oninput="calc()">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel right-col">
+      <div class="alert hidden" id="alert">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <div><strong id="alertTitle">Error:</strong> <span id="alertText">Adjust inputs.</span></div>
+      </div>
+
+      <div class="flask-stats-row">
+        <div class="flask-wrap">
+          <svg class="flask-svg" viewBox="0 0 100 160" id="flaskSvg">
+            <defs>
+              <clipPath id="flaskClip">
+                <path d="M 40 10 L 40 45 L 10 130 Q 10 145 25 145 L 75 145 Q 90 145 90 130 L 60 45 L 60 10 Z"/>
+              </clipPath>
+              <linearGradient id="liqPowder" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#ff6666"/><stop offset="1" stop-color="#dc2626"/>
+              </linearGradient>
+              <linearGradient id="liqPowder2" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#ff9999"/><stop offset="1" stop-color="#ff6666"/>
+              </linearGradient>
+              <linearGradient id="liqPowder3" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#ffcccc"/><stop offset="1" stop-color="#ff9999"/>
+              </linearGradient>
+              <linearGradient id="liqPowder4" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#ffe0e0"/><stop offset="1" stop-color="#ffcccc"/>
+              </linearGradient>
+              <linearGradient id="liqBa" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#4ade80"/><stop offset="1" stop-color="#16a34a"/>
+              </linearGradient>
+              <linearGradient id="liqBb" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#fbbf24"/><stop offset="1" stop-color="#ea580c"/>
+              </linearGradient>
+              <linearGradient id="liqOil1" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#9333ea"/>
+              </linearGradient>
+              <linearGradient id="liqOil2" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#818cf8"/><stop offset="1" stop-color="#4f46e5"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Flask body -->
+            <path d="M 40 10 L 40 45 L 10 130 Q 10 145 25 145 L 75 145 Q 90 145 90 130 L 60 45 L 60 10 Z"
+                  fill="#fff" stroke="#1a1a1a" stroke-width="3"/>
+
+            <!-- Liquid layers -->
+            <g clip-path="url(#flaskClip)" id="flaskLayers"></g>
+
+            <!-- Flask rim -->
+            <ellipse cx="50" cy="10" rx="10" ry="3" fill="#fff" stroke="#1a1a1a" stroke-width="2"/>
+          </svg>
+          <div class="flask-legend" id="legend"></div>
+        </div>
+
+        <div class="stats">
+          <div class="stats-title">Batch Totals</div>
+          <div class="stat hi" id="statMass"><span>Total Mass</span><strong id="totalMass">0.000 g</strong></div>
+          <div class="stat" id="statYield"><span>Final Yield</span><strong id="finalYield">0.00 ml</strong></div>
+          <div class="stat" id="statVisc"><span>Viscosity @Temp</span><strong id="viscosity">0 cP</strong></div>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="recipe-header">
+          <h3>Recipe</h3>
+          <span>Gravimetric</span>
+        </div>
+        <div class="recipe-list" id="recipeList"></div>
+      </div>
+
+      <details class="eco" open>
+        <summary>Batch Economics</summary>
+        <div class="eco-body">
+          <div class="row row-2">
+            <div class="field"><label>Powder $/10g</label><input id="costPowder" type="number" min="0" value="15" oninput="calc()"></div>
+            <div class="field"><label>Oil $/100ml</label><input id="costOil" type="number" min="0" value="10" oninput="calc()"></div>
+          </div>
+          <div class="row row-2">
+            <div class="field"><label>BA/BB $/100ml</label><input id="costSolvent" type="number" min="0" value="12" oninput="calc()"></div>
+            <div class="field"><label>Vial/Hardware $</label><input id="costHardware" type="number" min="0" step="0.1" value="1.50" oninput="calc()"></div>
+          </div>
+          <div class="field">
+            <label>Vial Size (ml)</label>
+            <input id="vialSize" type="number" min="0" value="10" oninput="calc()">
+          </div>
+          <div class="cost-out">
+            <span>Cost Per Vial</span>
+            <strong id="costPerVial">$0.00</strong>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<script>
+const D={
+  "custom":.909,"test-base":.909,"test-p":.916,"test-phenyl":.954,"test-c":.909,"test-e":.943,
+  "test-iso":.935,"test-deca":.962,"test-undecanoate":.970,"test-susp":1.000,
+  "test-ace":.909,"test-buciclate":.975,
+  "tren-base":.841,"tren-a":.848,"tren-e":.909,"tren-hex":.909,"mTren":.855,
+  "nandrolone-base":.890,"deca":.962,"npp":.877,"npp-deca":.940,"nandrolone-undecanoate":.968,
+  "eq":.948,"bold-cyp":.909,"masteron-p":.935,"masteron-e":.962,"primo-e":.952,"primo-ace":.920,
+  "trestolone":.900,"trestolone-a":.901,"dhb":.970,
+  "winstrol":.885,"dbol":.892,"anadrol":.860,"anavar":.900,"tbol":.830,"superdrol":.909,"proviron":.909,
+  "halotestin":.890,
+  "progesterone":.854,"est-val":.910,"est-cyp":.869,"est-enan":.900,"est-ace":.865,"est-udy":.935,
+  "dhea":.893,"7dhea":.840,"dhea-sulf":.850,"yk11":.820,"l-carn":.625,"glut":.694,
+  "hcg":.750,"gh":.720,"pt-141":.680,"bpc-157":.700,"tb-500":.710,"cjc-1295":.730,
+  "ipamorelin":.720,"selank":.740,"semaglutide":.760,"tirzepatide":.770
+};
+
+const DEN={
+  ba:1.044,bb:1.118,
+  castor:.96,gso:.92,sesame:.92,mct:.95,mig840:.94,mig812:.95,eo:.87,
+  olive:.91,coconut:.92,corn:.92,cottonseed:.92,soybean:.92,sunflower:.92,safflower:.92,
+  peanut:.92,almond:.91,avocado:.91,palm:.92,canola:.92,flaxseed:.93,hemp:.92,
+  "mineral-light":.84,"mineral-heavy":.88,ipm:.85,ipp:.85,jojoba:.86,
+  custom:.92
+};
+
+const VISC={
+  ba:5.5,bb:8.3,
+  castor:650,gso:50,sesame:45,mct:28,mig840:11,mig812:30,eo:5.5,
+  olive:80,coconut:55,corn:60,cottonseed:65,soybean:60,sunflower:55,safflower:50,
+  peanut:60,almond:55,avocado:70,palm:65,canola:55,flaxseed:50,hemp:55,
+  "mineral-light":25,"mineral-heavy":35,ipm:5,ipp:6,jojoba:45,
+  custom:50
+};
+
+const TCO={
+  ba:.015,bb:.015,
+  castor:.065,gso:.035,sesame:.035,mct:.025,mig840:.025,mig812:.025,eo:.015,
+  olive:.04,coconut:.035,corn:.035,cottonseed:.035,soybean:.035,sunflower:.035,safflower:.035,
+  peanut:.035,almond:.035,avocado:.04,palm:.035,canola:.035,flaxseed:.035,hemp:.035,
+  "mineral-light":.02,"mineral-heavy":.025,ipm:.01,ipp:.01,jojoba:.03,
+  custom:.03
+};
+
+// NEW: Andrade B constants (K) for temperature correction
+const ANDRADE_B = {
+  ba: 2200, bb: 2600,
+  castor: 6400, gso: 4300, sesame: 4400, mct: 3600, mig840: 3600, mig812: 3600, eo: 2400,
+  olive: 4500, coconut: 4000, corn: 4300, cottonseed: 4400, soybean: 4300, sunflower: 4300, safflower: 4300,
+  peanut: 4400, almond: 4400, avocado: 4500, palm: 4300, canola: 4300, flaxseed: 4300, hemp: 4300,
+  "mineral-light": 3000, "mineral-heavy": 3500, ipm: 2300, ipp: 2300, jojoba: 4500,
+  custom: 4000
+};
+
+const POWDER_GRADS = ['url(#liqPowder)','url(#liqPowder2)','url(#liqPowder3)','url(#liqPowder4)'];
+const POWDER_HEX   = ['#dc2626','#ff6666','#ff9999','#ffcccc'];
+
+let mode='volume', oil2On=false, dispOpen=false, densOpen1=false, densOpen2=false;
+let blendCompounds = [];
+const MAX_BLEND = 3;
+let blendIdCounter = 0;
+
+const $=id=>document.getElementById(id);
+const v=(id,d=0)=>{const e=$(id);if(!e||e.value==="")return d;const n=parseFloat(e.value);return isNaN(n)?d:n};
+const txt=(id,t)=>{const e=$(id);if(e)e.textContent=t};
+const selTxt=(id,def='')=>{const e=$(id);return e&&e.selectedIndex>=0?e.options[e.selectedIndex].text:def};
+const getOilDensity=(selId)=>{
+  const sel=$(selId);
+  if(!sel)return .92;
+  const opt=sel.options[sel.selectedIndex];
+  if(opt&&opt.dataset&&opt.dataset.density)return parseFloat(opt.dataset.density);
+  return .92;
+};
+
+function getCompoundOptionsHTML(){
+  return $('compound').innerHTML;
+}
+
+function updateDisp(compId){
+  let selEl, dispEl;
+  if(compId === 0){
+    selEl = $('compound');
+    dispEl = $('disp');
+  } else {
+    selEl = $(`blend-comp-${compId}`);
+    dispEl = $(`blend-disp-${compId}`);
+  }
+  if(selEl && dispEl && selEl.value !== 'custom' && D[selEl.value]){
+    dispEl.value = D[selEl.value];
+  }
+  calc();
+}
+
+function addBlendCompound(defaults){
+  if(blendCompounds.length >= MAX_BLEND) return;
+  const id = ++blendIdCounter;
+  const displayNum = blendCompounds.length + 2;
+  const bc = {
+    id,
+    compound: (defaults && defaults.c) || 'test-c',
+    mgml: Math.max(0, (defaults && defaults.mg) || 100),
+    purity: Math.max(0.1, Math.min(100, (defaults && defaults.pur) || 100)),
+    disp: (defaults && defaults.disp) || D[(defaults && defaults.c) || 'test-c'] || 0.909
+  };
+  blendCompounds.push(bc);
+  renderBlendCompound(bc, displayNum);
+  updateBlendUI();
+  calc();
+}
+
+function removeBlendCompound(id){
+  blendCompounds = blendCompounds.filter(bc => bc.id !== id);
+  const el = $(`blend-row-${id}`);
+  if(el) el.remove();
+  blendCompounds.forEach((bc, i) => {
+    const lbl = $(`blend-label-${bc.id}`);
+    if(lbl) lbl.textContent = `Compound ${i+2}`;
+  });
+  updateBlendUI();
+  calc();
+}
+
+function renderBlendCompound(bc, displayNum){
+  const container = $('blendCompoundsContainer');
+  const row = document.createElement('div');
+  row.className = 'blend-compound-row';
+  row.id = `blend-row-${bc.id}`;
+  row.innerHTML = `
+    <div class="field">
+      <label id="blend-label-${bc.id}">Compound ${displayNum}</label>
+      <select id="blend-comp-${bc.id}" onchange="updateBlendCompound(${bc.id},'compound');updateDisp(${bc.id});calc()">
+        ${getCompoundOptionsHTML()}
+      </select>
+    </div>
+    <div class="field">
+      <label>mg/ml</label>
+      <input id="blend-mg-${bc.id}" type="number" min="0" value="${bc.mgml}" oninput="updateBlendCompound(${bc.id},'mgml');calc()">
+    </div>
+    <div class="field">
+      <label>Purity %</label>
+      <input id="blend-pur-${bc.id}" type="number" min="0" max="100" value="${bc.purity}" oninput="updateBlendCompound(${bc.id},'purity');calc()">
+    </div>
+    <button class="remove-btn" onclick="removeBlendCompound(${bc.id})" title="Remove">×</button>
+  `;
+  container.appendChild(row);
+  $(`blend-comp-${bc.id}`).value = bc.compound;
+  const hiddenDisp = document.createElement('input');
+  hiddenDisp.type = 'hidden';
+  hiddenDisp.id = `blend-disp-${bc.id}`;
+  hiddenDisp.value = bc.disp;
+  row.appendChild(hiddenDisp);
+}
+
+function updateBlendCompound(id, field){
+  const bc = blendCompounds.find(b => b.id === id);
+  if(!bc) return;
+  if(field === 'compound') bc.compound = $(`blend-comp-${id}`).value;
+  else if(field === 'mgml') bc.mgml = parseFloat($(`blend-mg-${id}`).value) || 0;
+  else if(field === 'purity') bc.purity = parseFloat($(`blend-pur-${id}`).value) || 100;
+}
+
+function updateBlendUI(){
+  const hasBlend = blendCompounds.length > 0;
+  $('blendCompoundsContainer').classList.toggle('hidden', !hasBlend);
+  $('blendTotalBar').classList.toggle('hidden', !hasBlend);
+  $('addCompoundBtn').classList.toggle('active', hasBlend);
+  const atMax = blendCompounds.length >= MAX_BLEND;
+  $('addCompoundBtn').disabled = atMax;
+  $('addCompoundBtn').textContent = atMax ? '✓' : '+';
+  $('addCompoundBtn').title = atMax ? 'Max 4 compounds' : 'Add compound';
+}
+
+function updateOilDensity(n){
+  if((n===1 && densOpen1) || (n===2 && densOpen2)) return;
+  const selId=n===1?'carrier1':'carrier2';
+  const densId=n===1?'oilDensity1':'oilDensity2';
+  const dens=$(densId);
+  if(dens) dens.value=getOilDensity(selId);
+}
+
+function setMode(m){
+  mode=m;
+  $('btnVol').classList.toggle('active',m==='volume');
+  $('btnPow').classList.toggle('active',m==='powder');
+  $('volField').classList.toggle('hidden',m!=='volume');
+  $('powField').classList.toggle('hidden',m!=='powder');
+  calc();
+}
+
+function toggleOil2(){
+  oil2On=!oil2On;
+  $('oil2Field').classList.toggle('hidden',!oil2On);
+  $('addOil2').classList.toggle('active',oil2On);
+  $('addOil2').textContent=oil2On?'−':'+';
+  calc();
+}
+
+function toggleDispEdit(){
+  dispOpen=!dispOpen;
+  $('dispWrap').classList.toggle('hidden',!dispOpen);
+  txt('dispEditLabel', dispOpen?'Hide displacement':'Edit displacement');
+}
+
+function toggleDensEdit(n){
+  if(n===1){
+    densOpen1=!densOpen1;
+    $('densWrap1').classList.toggle('hidden',!densOpen1);
+    txt('densEditLabel1', densOpen1?'Hide density':'Edit density');
+  }else{
+    densOpen2=!densOpen2;
+    $('densWrap2').classList.toggle('hidden',!densOpen2);
+    txt('densEditLabel2', densOpen2?'Hide density':'Edit density');
+  }
+}
+
+function loadPresetRecipe(){
+  const sel = $('presetSelect');
+  const raw = sel.value;
+  if(!raw || raw === 'none'){
+    $('presetCard').classList.remove('loaded');
+    return;
+  }
+
+  let p;
+  try { p = JSON.parse(raw); } catch(e){ return; }
+
+  while(blendCompounds.length > 0){
+    const firstId = blendCompounds[0].id;
+    blendCompounds = blendCompounds.slice(1);
+    const el = $(`blend-row-${firstId}`);
+    if(el) el.remove();
+  }
+
+  const primaryC = p.blend ? p.c1 : p.c;
+  const primaryMg = p.blend ? p.mg1 : p.mg;
+  if(primaryC){
+    if($('compound').querySelector(`option[value="${primaryC}"]`)){
+      $('compound').value = primaryC;
+    } else {
+      showAlert('warn', 'Not Found', `Compound "${primaryC}" not in dropdown.`);
+      return;
+    }
+  }
+  if(typeof primaryMg === 'number') $('mgml').value = primaryMg;
+
+  if(p.blend){
+    [2,3,4].forEach(i => {
+      if(p[`c${i}`]){
+        addBlendCompound({
+          c: p[`c${i}`],
+          mg: p[`mg${i}`],
+          pur: 100,
+          disp: D[p[`c${i}`]] || 0.909
+        });
+      }
+    });
+  }
+
+  if(typeof p.ba === 'number') $('baPct').value = p.ba;
+  if(typeof p.bb === 'number') $('bbPct').value = p.bb;
+
+  if(p.oil){
+    const oilSel = $('carrier1');
+    if(oilSel.querySelector(`option[value="${p.oil}"]`)){
+      oilSel.value = p.oil;
+      updateOilDensity(1);
+    }
+  }
+
+  updateDisp(0);
+  blendCompounds.forEach(bc => updateDisp(bc.id));
+  calc();
+
+  const card = $('presetCard');
+  card.classList.add('loaded');
+  setTimeout(()=>{ card.classList.remove('loaded'); }, 1500);
+}
+
+function showAlert(type, title, message){
+  const alertEl = $('alert');
+  alertEl.classList.remove('hidden','info','warn');
+  if(type==='info') alertEl.classList.add('info');
+  else if(type==='warn') alertEl.classList.add('warn');
+  txt('alertTitle', title + ':');
+  txt('alertText', message);
+}
+
+function hideAlert(){
+  $('alert').classList.add('hidden');
+}
+
+function calc(){
+  hideAlert();
+
+  const baP=Math.max(0,Math.min(100,v('baPct')));
+  const bbP=Math.max(0,Math.min(100,v('bbPct')));
+  if(baP+bbP>100){
+    showAlert('warn', 'Error', 'Solvent percentages exceed 100%.');
+    renderEmpty();
+    return;
+  }
+
+  const c2P=oil2On?Math.max(0,Math.min(100,v('carrier2Pct'))):0;
+
+  const mg1=Math.max(0,v('mgml'));
+  const pur1=Math.max(.1,Math.min(100,v('purity',100)));
+  const disp1=Math.max(0,v('disp',.909));
+
+  let powder1=0, totalVol=0, yieldVol=0;
+  if(mode==='volume'){
+    yieldVol=Math.max(0,v('totalVol'));
+    totalVol=yieldVol;
+    powder1 = mg1>0 ? (totalVol*mg1/1000)/(pur1/100) : 0;
+  } else {
+    powder1=Math.max(0,v('availPow'));
+    totalVol = mg1>0 ? (powder1*(pur1/100)*1000)/mg1 : 0;
+    yieldVol=totalVol;
+  }
+
+  const compoundData = [];
+  let totalPowderVol = powder1 * disp1;
+  let totalPowderMass = powder1;
+
+  compoundData.push({
+    name: selTxt('compound'),
+    mass: powder1,
+    vol: powder1 * disp1,
+    mgml: mg1
+  });
+
+  blendCompounds.forEach((bc) => {
+    const mg = Math.max(0, bc.mgml);
+    const pur = Math.max(0.1, Math.min(100, bc.purity));
+    const dispEl = $(`blend-disp-${bc.id}`);
+    const disp = dispEl ? Math.max(0, parseFloat(dispEl.value) || 0.909) : 0.909;
+    const mass = mg > 0 ? (totalVol * mg / 1000) / (pur / 100) : 0;
+    const vol = mass * disp;
+    totalPowderVol += vol;
+    totalPowderMass += mass;
+    compoundData.push({
+      name: selTxt(`blend-comp-${bc.id}`),
+      mass, vol, mgml: mg
+    });
+  });
+
+  const vBa=totalVol*(baP/100);
+  const vBb=totalVol*(bbP/100);
+  const vRem=totalVol-totalPowderVol-vBa-vBb;
+
+  if(vRem<0){
+    showAlert('warn', 'Error', 'Saturation exceeded. Powder displacement + solvents exceed target volume.');
+    renderEmpty();
+    return;
+  }
+
+  const vC2=vRem*(c2P/100);
+  const vC1=vRem-vC2;
+
+  const wBa=vBa*DEN.ba;
+  const wBb=vBb*DEN.bb;
+
+  const c1Val=$('carrier1').value;
+  const c1Dens=densOpen1?v('oilDensity1',.95):getOilDensity('carrier1');
+  const wC1=vC1*c1Dens;
+
+  let wC2=0;
+  let c2Dens=0.92;
+  if(oil2On&&vC2>0){
+    c2Dens=densOpen2?v('oilDensity2',.87):getOilDensity('carrier2');
+    wC2=vC2*c2Dens;
+  }
+
+  const totalMass=totalPowderMass+wBa+wBb+wC1+wC2;
+
+  const totalMgml = compoundData.reduce((s,c) => s + c.mgml, 0);
+  txt('blendTotalMgml', totalMgml.toFixed(0) + ' mg/ml');
+
+  // --- UPGRADED VISCOISITY MODEL ---
+  const tempC = v('tempC', 25);
+  const T_K = tempC + 273.15;
+  const T_REF_K = 25 + 273.15;
+
+  const totalLiq = vBa + vBb + vC1 + vC2;
+  let visc = 0;
+  
+  if (totalLiq > 0) {
+    const getB = (k) => ANDRADE_B[k] || 4000;
+    
+    let totalMassLiq = 0;
+    const components = [
+      { key: 'ba', vol: vBa, den: DEN.ba },
+      { key: 'bb', vol: vBb, den: DEN.bb },
+      { key: c1Val, vol: vC1, den: c1Dens },
+    ];
+    if (oil2On && vC2 > 0) {
+      components.push({ key: $('carrier2').value, vol: vC2, den: c2Dens });
+    }
+    
+    const activeComps = components.filter(c => c.vol > 0);
+    
+    if (activeComps.length > 0) {
+      // 1. Temperature-correct each neat carrier liquid (Andrade / Arrhenius)
+      activeComps.forEach(c => {
+        c.mass = c.vol * c.den;
+        totalMassLiq += c.mass;
+        
+        const baseV = VISC[c.key] || 50;
+        const B = getB(c.key);
+        c.eta = baseV * Math.exp(B * (1.0 / T_K - 1.0 / T_REF_K));
+        
+        // Convert dynamic (cP) to kinematic (cSt)
+        c.nu = c.eta / c.den;
+        if (c.nu < 0.3) c.nu = 0.3; // Safety floor for VBI log(log) domain
+        
+        // Refutas Viscosity Blending Index (VBI)
+        c.vbi = 14.534 * Math.log(Math.log(c.nu + 0.8)) + 10.975;
+      });
+      
+      // 2. Blend N carrier liquids (Refutas VBI mixing via MASS fractions)
+      let vbiBlend = 0;
+      activeComps.forEach(c => {
+        const massFrac = c.mass / totalMassLiq;
+        vbiBlend += massFrac * c.vbi;
+      });
+      
+      // Inverse VBI to get blended kinematic viscosity
+      let nuBlend = Math.exp(Math.exp((vbiBlend - 10.975) / 14.534)) - 0.8;
+      if (nuBlend < 0.3) nuBlend = 0.3;
+      
+      const rhoBlend = totalMassLiq / totalLiq;
+      let etaBlend = nuBlend * rhoBlend; // Back to dynamic viscosity (cP)
+      
+      // 3. Add DISSOLVED API (Mooney relation)
+      const phi = totalVol > 0 ? totalPowderVol / totalVol : 0; // True volume fraction
+      const solvation = 1.3; // Hydrodynamic swelling factor
+      let phiEff = phi * solvation;
+      
+      let mooneyFactor = 1.0;
+      const crowding = 1.5;
+      const intrinsic = 2.5;
+      
+      // Cap at packing limit to prevent math domain errors and flag non-Newtonian regime
+      if (phiEff >= 0.63) {
+        phiEff = 0.63;
+        showAlert('warn', 'High Concentration', 'API volume fraction exceeds Mooney model limits. Viscosity is capped and likely non-Newtonian (shear thinning).');
+      }
+      
+      const denom = 1.0 - crowding * phiEff;
+      if (denom > 0) {
+        mooneyFactor = Math.exp(intrinsic * phiEff / denom);
+      }
+      
+      visc = etaBlend * mooneyFactor;
+    }
+  }
+  // --- END UPGRADED VISCOISITY MODEL ---
+
+  const o1Name=selTxt('carrier1');
+  const o2Name=selTxt('carrier2');
+
+  const recipe=[];
+  compoundData.forEach((c, i) => {
+    recipe.push({
+      n: c.name,
+      v: c.mass.toFixed(3)+' g',
+      s: `${c.vol.toFixed(2)} ml disp`,
+      c: POWDER_HEX[i] || POWDER_HEX[0],
+      dot: POWDER_HEX[i] || POWDER_HEX[0],
+      topoff: false
+    });
+  });
+  recipe.push({n:'Benzyl Alcohol',v:wBa.toFixed(3)+' g',s:vBa.toFixed(2)+' ml',c:'#16a34a',dot:'#16a34a',topoff:false});
+  recipe.push({n:'Benzyl Benzoate',v:wBb.toFixed(3)+' g',s:vBb.toFixed(2)+' ml',c:'#ea580c',dot:'#ea580c',topoff:false});
+
+  const topoffIsOil2 = oil2On && vC2 > 0;
+  recipe.push({n:o1Name,v:wC1.toFixed(3)+' g',s:vC1.toFixed(2)+' ml',c:'#9333ea',dot:'#9333ea',topoff:!topoffIsOil2});
+  if(oil2On&&vC2>0) recipe.push({n:o2Name,v:wC2.toFixed(3)+' g',s:vC2.toFixed(2)+' ml',c:'#4f46e5',dot:'#4f46e5',topoff:true});
+
+  $('recipeList').innerHTML=recipe.map(r=>`
+    <div class="recipe-item${r.topoff?' topoff':''}">
+      <div class="recipe-name"><span class="d" style="background:${r.dot}"></span>${r.n}</div>
+      <div class="recipe-val"><strong style="color:${r.c}">${r.v}</strong><small>${r.s}</small></div>
+    </div>
+  `).join('');
+
+  txt('totalMass',totalMass.toFixed(3)+' g');
+  txt('finalYield',yieldVol.toFixed(2)+' ml');
+  txt('viscosity','~'+visc.toFixed(1)+' cP');
+  $('viscosity').style.color=visc<35?'#16a34a':visc<65?'#ea580c':'#dc2626';
+
+  const pCost=v('costPowder',15),oCost=v('costOil',10),sCost=v('costSolvent',12),hCost=v('costHardware',1.5),vSize=Math.max(.1,v('vialSize',10));
+  const numVials=yieldVol>0?yieldVol/vSize:0;
+  const batchPowder=(totalPowderMass/10)*pCost;
+  const batchOil=((vC1+vC2)/100)*oCost;
+  const batchSolvent=((vBa+vBb)/100)*sCost;
+  const cpv=numVials>0?((batchPowder+batchOil+batchSolvent)/numVials)+hCost:0;
+  txt('costPerVial','$'+cpv.toFixed(2));
+
+  const flaskLayers = [];
+  compoundData.forEach((c, i) => {
+    if(c.vol > 0){
+      flaskLayers.push({
+        name: c.name,
+        vol: c.vol,
+        color: POWDER_GRADS[i] || POWDER_GRADS[0],
+        hex: POWDER_HEX[i] || POWDER_HEX[0]
+      });
+    }
+  });
+  flaskLayers.push({name:'BA',vol:vBa,color:'url(#liqBa)',hex:'#16a34a'});
+  flaskLayers.push({name:'BB',vol:vBb,color:'url(#liqBb)',hex:'#ea580c'});
+  flaskLayers.push({name:o1Name,vol:vC1,color:'url(#liqOil1)',hex:'#9333ea'});
+  if(oil2On&&vC2>0) flaskLayers.push({name:o2Name,vol:vC2,color:'url(#liqOil2)',hex:'#4f46e5'});
+
+  updateFlask(flaskLayers, totalVol);
+}
+
+function renderEmpty(){
+  $('recipeList').innerHTML='';
+  txt('totalMass','0.000 g');
+  txt('finalYield','0.00 ml');
+  txt('viscosity','0 cP');
+  $('viscosity').style.color='';
+  txt('costPerVial','$0.00');
+  const g=$('flaskLayers');
+  const leg=$('legend');
+  if(g){ while(g.firstChild)g.removeChild(g.firstChild); }
+  if(leg){ leg.innerHTML='<div style="color:#888;font-size:10px;padding:6px;font-weight:600">Invalid inputs</div>'; }
+}
+
+function updateFlask(layers,totalVol){
+  const g=$('flaskLayers');
+  const leg=$('legend');
+  if(!g||!leg)return;
+
+  while(g.firstChild)g.removeChild(g.firstChild);
+  leg.innerHTML='';
+
+  if(totalVol<=0||!isFinite(totalVol)){
+    leg.innerHTML='<div style="color:#888;font-size:10px;padding:6px;font-weight:600">Enter values</div>';
+    return;
+  }
+
+  const yTop=45,yBot=145,hTotal=yBot-yTop;
+
+  let curY=yBot;
+  layers.forEach((l,i)=>{
+    if(l.vol<=0||!isFinite(l.vol))return;
+    const ratio=l.vol/totalVol;
+    const h=ratio*hTotal;
+    if(h<0.3)return;
+    const newY=curY-h;
+
+    const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    rect.setAttribute('x',0);
+    rect.setAttribute('y',newY);
+    rect.setAttribute('width',100);
+    rect.setAttribute('height',h);
+    rect.setAttribute('fill',l.color);
+    g.appendChild(rect);
+
+    if(i<layers.length-1&&h>3){
+      const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.setAttribute('x1',0);line.setAttribute('x2',100);
+      line.setAttribute('y1',newY);line.setAttribute('y2',newY);
+      line.setAttribute('stroke','rgba(0,0,0,.3)');line.setAttribute('stroke-width',1);
+      g.appendChild(line);
+    }
+    curY=newY;
+  });
+
+  layers.forEach(l=>{
+    if(l.vol<=0||!isFinite(l.vol))return;
+    const pct=((l.vol/totalVol)*100).toFixed(1);
+    const item=document.createElement('div');
+    item.className='legend-item';
+    item.innerHTML=`
+      <span class="legend-dot" style="background:${l.hex}"></span>
+      <span class="legend-name">${l.name}</span>
+      <span class="legend-val">${pct}%</span>
+    `;
+    leg.appendChild(item);
+  });
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  updateDisp(0);
+  updateOilDensity(1);
+  calc();
+});
+</script>
+</body>
+</html>
