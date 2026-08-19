@@ -193,6 +193,26 @@
     "p1k": 8500,
     "s1k": 0
   },
+   {
+    "name": "Mast E 100g",
+    "batch": "ME1",
+    "labLink": "https://verify.janoshik.com/tests/224094-Sample_2_K9LAIRJJT32Y",
+    "labResult": "96% +",
+    "p100": 980,
+    "stock100": 5,
+    "p1k": 8500,
+    "s1k": 1
+  },
+      {
+    "name": "Mast E 50g (yeah its 50 grams)" ,
+    "batch": "ME1",
+    "labLink": "https://verify.janoshik.com/tests/224094-Sample_2_K9LAIRJJT32Y",
+    "labResult": "96% +",
+    "p100": 540,
+    "stock100": 5,
+    "p1k": 8500,
+    "s1k": 0
+  },
      {
     "name": "Tren A 10g",
     "category": "addon",
