@@ -193,6 +193,43 @@
     "p1k": 8500,
     "s1k": 0
   },
+     {
+    "name": "Tren A 10g",
+    "category": "addon",
+    "batch": "--",
+    "labLink": "https://verify.janoshik.com/tests/197470-Sample_6_E99C5ZM6NC5S",
+    "labResult": "--",
+    "p100": 70,
+    "stock100": 0
+  },
+   {
+    "name": "Tren E 10g",
+    "category": "addon",
+    "batch": "P1",
+    "labLink": "https://verify.janoshik.com/tests/197470-Sample_6_E99C5ZM6NC5S",
+    "labResult": "--",
+    "p100": 70,
+    "stock100": 0
+  },
+    {
+    "name": "Mast E 10g",
+    "category": "addon",
+    "batch": "--",
+    "labLink": "https://verify.janoshik.com/tests/197470-Sample_6_E99C5ZM6NC5S",
+    "labResult": "--",
+    "p100": 100,
+    "stock100": 0
+  },
+   {
+    "name": "Mast P 10g",
+    "category": "addon",
+    "batch": "--",
+    "labLink": "https://verify.janoshik.com/tests/197470-Sample_6_E99C5ZM6NC5S",
+    "labResult": "--",
+    "p100": 100,
+    "stock100": 0
+  },
+  
   {
     "name": "Proviron",
     "category": "addon",
