@@ -318,8 +318,8 @@
     "name": "Mast E 200",
     "category": "oil",
     "batch": "Did i even pin something Level",
-    "labLink": "at Jano",
-    "labResult": "At jano",
+    "labLink": "https://verify.janoshik.com/tests/197476-Sample_12_M537561RBAXA",
+    "labResult": "206 mg/ml",
     "p100": 129,
     "stock100": 10
         
@@ -347,8 +347,8 @@
     "name": "Test Enanthate 250",
     "category": "oil",
     "batch": "Smooth butter NO PIP issue",
-    "labLink": "At jano",
-    "labResult": "--",
+    "labLink": "https://verify.janoshik.com/tests/223185-Sample_1_YZ78L7DXBHG8",
+    "labResult": "250",
     "p100": 48,
     "stock100": 10
   },
@@ -392,8 +392,8 @@
     "name": "NPP 150",
     "category": "oil",
     "batch": "its NPP alright",
-    "labLink": "at Jano",
-    "labResult": "--",
+    "labLink": "https://verify.janoshik.com/tests/223186-Sample_2_76M8W94GNV89",
+    "labResult": "151",
     "p100": 60,
     "stock100": 10
   },
