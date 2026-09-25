@@ -414,7 +414,26 @@
     "labResult": "200 mg/ml",
     "p100": 90,
     "stock100": 10
+  },
+    {
+    "name": "TNE 75 Anadrol 50 Preworkout Blend",
+    "category": "oil",
+    "batch": "001TNEA",
+    "labLink": "https://verify.janoshik.com/tests/211323-Sample_4_BJ7AF24IP6IA",
+    "labResult": "at jano",
+    "p100": 90,
+    "stock100": 10
+  },
+    {
+    "name": "Proviron 20mg/ml",
+    "category": "oil",
+    "batch": "001P",
+    "labLink": "https://verify.janoshik.com/tests/211323-Sample_4_BJ7AF24IP6IA",
+    "labResult": "at jano",
+    "p100": 90,
+    "stock100": 10
   }
+  
 
 
 
