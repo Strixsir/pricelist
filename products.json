@@ -421,7 +421,7 @@
     "batch": "001TNEA",
     "labLink": "https://verify.janoshik.com/tests/211323-Sample_4_BJ7AF24IP6IA",
     "labResult": "at jano",
-    "p100": 90,
+    "p100": 20,
     "stock100": 10
   },
     {
@@ -430,7 +430,7 @@
     "batch": "001P",
     "labLink": "https://verify.janoshik.com/tests/211323-Sample_4_BJ7AF24IP6IA",
     "labResult": "at jano",
-    "p100": 90,
+    "p100": 25,
     "stock100": 10
   }
   
