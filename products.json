@@ -163,12 +163,32 @@
     "p1k": 6500,
     "s1k": 1
   },
+    {
+    "name": "Tren Ent 50g",
+    "batch": "TRE1",
+    "labLink": "https://verify.janoshik.com/tests/197466-Sample_2_4PUFV66V7DBT",
+    "labResult": "98+ %",
+    "p100": 400,
+    "stock100": 10,
+    "p1k": 6500,
+    "s1k": 1
+  },
   {
     "name": "Tren Ace",
     "batch": "TRA1",
     "labLink": "https://verify.janoshik.com/tests/197469-Sample_5_995NZMN5LEAF",
     "labResult": "88.5 %",
     "p100": 750,
+    "stock100": 10,
+    "p1k": 6500,
+    "s1k": 1
+  },
+    {
+    "name": "Tren Ace 50g",
+    "batch": "TRA1",
+    "labLink": "https://verify.janoshik.com/tests/197469-Sample_5_995NZMN5LEAF",
+    "labResult": "88.5 %",
+    "p100": 400,
     "stock100": 10,
     "p1k": 6500,
     "s1k": 1
