@@ -141,9 +141,9 @@
             width: 112px;
             height: 112px;
             object-fit: contain;
-            border-radius: 14px;
-            background-color: white; 
-            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12)); 
+            border-radius: 14px; /* Soft edges like a sticker, slightly larger for bigger image */
+            background-color: white; /* Fallback for transparent images */
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12)); /* Sticker shadow effect */
             display: block;
             margin: 0 auto;
             border: 2px solid #fff;
@@ -201,18 +201,17 @@
 
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; color: #444; }
-        .form-input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; transition: border-color 0.2s; }
-        .form-input:focus { outline: none; border-color: var(--blue-link); }
+        .form-input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
 
         .copy-group { margin-top: 20px; padding-top: 20px; border-top: 2px solid #f0f0f0; }
         #order-text-area { width: 100%; height: 220px; resize: none; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; font-size: 0.85rem; background: #f9f9f9; box-sizing: border-box; padding: 10px; margin-bottom: 10px; }
 
         .primary-actions { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 15px; }
-        .btn-copy { background: #34a853; color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
+        .btn-copy { background: #34a853; color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
         
         .close-icon { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; font-weight: bold; color: #aaa; cursor: pointer; transition: color 0.2s ease; line-height: 1; }
         .close-icon:hover { color: var(--primary-red); }
-        .btn-copy:disabled { background: #ccc; color: #777; cursor: not-allowed; }
+        .btn-copy:disabled { background: #ccc; cursor: not-allowed; }
         .success-msg { font-size: 0.8rem; color: #34a853; text-align: center; height: 1.2em; margin-top: 5px; font-weight: bold; }
 
         @media (max-width: 600px) {
@@ -300,13 +299,13 @@
             <!-- Oils Table -->
             <h2 class="section-title">Finished Oils</h2>
             <div style="margin-top: -10px; margin-bottom: 15px; background: #fff1f0; padding: 10px; border-left: 5px solid var(--primary-red); color: var(--primary-red); font-size: 1.1rem; font-weight: 900; text-shadow: 0 0 8px rgba(217, 48, 37, 0.4); border-radius: 4px;">
-                ⚠️ Note: Vials are 30 ML of oil, not 10 ML.
-            </div>
+        ⚠️ Note: Vials are 30 ML or oil, not 10 ML.
+    </div>
             <div class="table-wrapper">
                 <table class="price-table oil-table">
                     <thead>
                         <tr>
-                            <th class="sticker-cell">Logo</th>
+                            <th class="sticker-cell">Logo</th> <!-- Added New Header for Image -->
                             <th>Name</th>
                             <th>Batch No</th>
                             <th>Lab Test</th>
@@ -344,7 +343,7 @@
             </div>
 
             <div id="min-order-msg">Minimum order amount of $200 before shipping is required.</div>
-            <button class="checkout-btn" id="checkout-btn" onclick="openCheckoutModal()" disabled>Place Order</button>
+            <button class="checkout-btn" id="checkout-btn" onclick="openCheckoutModal()">Place Order</button>
         </div>
 
     </div>
@@ -353,7 +352,7 @@
     <div id="order-modal">
         <div class="modal-content">
             <span class="close-icon" onclick="closeModal()">&times;</span>
-            <h3 style="margin-top:0; padding-right: 30px;">Complete Your Order</h3>
+            <h3 style="margin-top:0; padding-right: 30px;"> Complete Your Order</h3>
             
             <div class="modal-instruction">
                 <div class="email-copy-wrapper">
@@ -365,25 +364,17 @@
             </div>
             
             <div class="form-group">
-                <label>Name: <span style="color: var(--primary-red);">*</span></label>
+                <label>  Name:</label>
                 <input type="text" id="ship-name" class="form-input" placeholder="First & Last Name" oninput="updateOrderText()">
             </div>
-            
-            <!-- Mandatory Validated Email Field -->
             <div class="form-group">
-                <label>Email: <span style="color: var(--primary-red);">*</span></label>
-                <input type="email" id="ship-email" class="form-input" placeholder="your-email@example.com" oninput="updateOrderText()">
-                <div id="email-error" style="color: var(--primary-red); font-size: 0.8rem; margin-top: 5px; display: none;">Please enter a valid email address.</div>
-            </div>
-
-            <div class="form-group">
-                <label>Address: <span style="color: var(--primary-red);">*</span></label>
+                <label>  Address:</label>
                 <div style="color: var(--primary-red); font-size: 0.8rem; margin-bottom: 5px;">* Only enter Real name and address, Else parcel will be lost</div>
                 <textarea id="ship-address" class="form-input" style="height: 60px" placeholder="Street, City, State, ZIP, Country" oninput="updateOrderText()"></textarea>
             </div>
 
             <div class="form-group">
-                <label>Select Crypto Network: <span style="color: var(--primary-red);">*</span></label>
+                <label> Select Crypto Network:</label>
                 <div style="display: flex; gap: 15px; margin-top: 5px; font-size: 0.9rem;">
                     <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="USDT TRC 20" checked onchange="toggleCustomCrypto()"> USDT TRC 20</label>
                     <label style="cursor: pointer;"><input type="radio" name="crypto-network" value="USDT ERC 20" onchange="toggleCustomCrypto()"> USDT ERC 20</label>
@@ -396,7 +387,7 @@
             </div>
 
             <div class="copy-group">
-                <label>Final Order Block:</label>
+                <label> Final Order Block:</label>
                 <textarea id="order-text-area" readonly></textarea>
                 
                 <div class="primary-actions">
@@ -414,7 +405,7 @@
 
     <script>
         const SHIPPING_COST = 35;
-        const MIN_ORDER_AMOUNT = 200;
+        const MIN_ORDER_AMOUNT = 200; // Added constant for minimum order
         let products = [];
         let cart = []; 
         let currentOrderNum = 0;
@@ -427,12 +418,12 @@
         let animationTimeout = null;
 
         const fallbackProducts = [
-            { "name": "TNE", "batch": "B-2311", "labLink": "#", "labResult": "99.5%", "p100": 220, "stock100": 15, "p1k": 1400, "s1k": 1 },
-            { "name": "TP",  "batch": "B-2312", "labLink": "#", "labResult": "98.9%", "p100": 240, "stock100": 8,  "p1k": 1450, "s1k": 1 },
-            { "name": "TC",  "batch": "B-2313", "labLink": "#", "labResult": "99.1%", "p100": 260, "stock100": 20, "p1k": 1500, "s1k": 1 },
-            { "name": "Anavar", "category": "addon", "batch": "A-2301", "labLink": "#", "labResult": "99.2%", "p100": 60, "stock100": 20 },
-            { "name": "Anadrol", "category": "addon", "batch": "A-2302", "labLink": "#", "labResult": "98.7%", "p100": 50, "stock100": 20 },
-            { "name": "Test E Oil", "category": "oil", "batch": "O-2301", "labLink": "#", "labResult": "250mg/ml", "p100": 45, "stock100": 10 }
+            { "name": "TNE", "batch": "B-2311", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.5%", "p100": 220, "stock100": 15, "p1k": 1400, "s1k": 1 },
+            { "name": "TP",  "batch": "B-2312", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.9%", "p100": 240, "stock100": 8,  "p1k": 1450, "s1k": 1 },
+            { "name": "TC",  "batch": "B-2313", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.1%", "p100": 260, "stock100": 20, "p1k": 1500, "s1k": 1 },
+            { "name": "Anavar", "category": "addon", "batch": "A-2301", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "99.2%", "p100": 60, "stock100": 20 },
+            { "name": "Anadrol", "category": "addon", "batch": "A-2302", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "98.7%", "p100": 50, "stock100": 20 },
+            { "name": "Test E Oil", "category": "oil", "batch": "O-2301", "labLink": "YOUR_LAB_LINK_HERE", "labResult": "250mg/ml", "p100": 45, "stock100": 10 }
         ];
 
         async function loadInventory() {
@@ -496,9 +487,11 @@
 
             // Oils
             if(oils.length > 0) {
+                // Map now includes the index variable to generate 1.png, 2.png...
                 document.getElementById('oil-list').innerHTML = oils.map((item, index) => `
                     <tr>
                         <td class="sticker-cell">
+                            <!-- Indexed image 1.png, 2.png... with a dummy fallback provided for visual testing if missing -->
                             <img src="${index + 1}.png" alt="${item.name} logo" class="oil-sticker" onerror="this.onerror=null; this.src='https://placehold.co/112x112/ffffff/1a73e8?text=Img';">
                         </td>
                         <td class="compound-name">${item.name}</td>
@@ -765,6 +758,7 @@
             totalDisplay.innerText = subtotal + SHIPPING_COST;
             summaryDiv.style.display = 'block';
             
+            // Check minimum order amount logic
             if (subtotal < MIN_ORDER_AMOUNT) {
                 checkoutBtn.disabled = true;
                 minOrderMsg.style.display = 'block';
@@ -777,6 +771,7 @@
         function openCheckoutModal() {
             if (cart.length === 0) return;
             
+            // Double check minimum order amount just in case
             let subtotal = 0;
             cart.forEach(item => {
                 subtotal += calculateItemPrice(item).finalTotal;
@@ -787,7 +782,7 @@
             }
 
             document.getElementById('order-modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
             generateOrderNumber();
             updateOrderText();
         }
@@ -797,12 +792,6 @@
             document.body.style.overflow = '';
             document.getElementById('copy-status').innerText = "";
             document.getElementById('email-copy-status').innerText = "";
-            
-            // Reset validation states on close
-            const emailInput = document.getElementById('ship-email');
-            const emailError = document.getElementById('email-error');
-            emailInput.style.borderColor = "#ccc";
-            emailError.style.display = "none";
         }
 
         function generateOrderNumber() {
@@ -828,23 +817,6 @@
             const checkedRadio = document.querySelector('input[name="crypto-network"]:checked');
             let crypto = checkedRadio ? checkedRadio.value : "";
             
-            // Email Validation Block
-            const emailInput = document.getElementById('ship-email');
-            const emailError = document.getElementById('email-error');
-            const email = emailInput.value.trim();
-            
-            // Standard Regex for validating standard emails (e.g. user@domain.com)
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
-            const isValidEmail = emailPattern.test(email);
-
-            if (email.length > 0 && !isValidEmail) {
-                emailInput.style.borderColor = "var(--primary-red)";
-                emailError.style.display = "block";
-            } else {
-                emailInput.style.borderColor = "#ccc";
-                emailError.style.display = "none";
-            }
-
             if (crypto === 'Other') {
                 crypto = document.getElementById('custom-crypto-input').value.trim() || 'Unspecified Other';
             }
@@ -870,14 +842,12 @@
             text += `Shipping: $${SHIPPING_COST}\n`;
             text += `Total: $${total}\n\n`;
             text += `Payment: ${crypto}\n\n`;
-            text += `Shipping Info:\nName: ${name || '[Pending Name]'}\nEmail: ${email || '[Pending Email]'}\nAddress: ${address || '[Pending Address]'}`;
+            text += `Shipping Info:\nName: ${name || '[Pending Name]'}\nAddress: ${address || '[Pending Address]'}`;
             
             document.getElementById('order-text-area').value = text;
             
             const btnCopy = document.getElementById('btn-copy');
-            
-            // The user must provide a Name, valid Email formatting, and an Address to proceed.
-            if (name && isValidEmail && address && cart.length > 0) {
+            if (name && address && cart.length > 0) {
                 btnCopy.disabled = false;
             } else {
                 btnCopy.disabled = true;
