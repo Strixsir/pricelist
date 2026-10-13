@@ -328,9 +328,9 @@
     {
     "name": "Mast P 100",
     "category": "oil",
-    "batch": "Okay i guess",
-    "labLink":  "At jano",
-    "labResult": "--",
+    "batch": "makes you horny",
+    "labLink":  "https://verify.janoshik.com/tests/238103-Sample_3_T4XGN3D85G8D",
+    "labResult": "97 mg/ml",
     "p100": 90,
     "stock100": 10
   },
@@ -361,6 +361,15 @@
     "labLink": "https://verify.janoshik.com/tests/211322-Sample_3_STMZN4GU25U4",
     "labResult": "150 mg/ml",
     "p100": 90,
+    "stock100": 10
+  },
+  {
+    "name": "Test propionate 100",
+    "category": "oil",
+    "batch": "Short Ester",
+    "labLink": "https://verify.janoshik.com/tests/238101-Sample_1_KMRGFWYBBHZ6",
+    "labResult": "108 mg/ml",
+    "p100": 35,
     "stock100": 10
   },
   {
@@ -400,12 +409,12 @@
     "stock100": 10
   },
    {
-    "name": "Sustanon 300",
+    "name": "Sustanon 250",
     "category": "oil",
     "batch": "50% Castor/50% MCT",
-    "labLink": "https://verify.janoshik.com/tests/211323-Sample_4_BJ7AF24IP6IA",
-    "labResult": "at jano",
-    "p100": 90,
+    "labLink": "https://verify.janoshik.com/tests/241620-Sample_4_5ARZS5Q27U4H",
+    "labResult": "260 mg/ml",
+    "p100": 60,
     "stock100": 10
   },
   {
@@ -439,17 +448,17 @@
     "name": "TNE 75 Anadrol 50 Preworkout Blend",
     "category": "oil",
     "batch": "001TNEA Castor",
-    "labLink": "https://verify.janoshik.com/tests/211323-Sample_4_BJ7AF24IP6IA",
-    "labResult": "at jano",
+    "labLink": "https://verify.janoshik.com/tests/238102-Sample_2_YSGDAW4GY3XD",
+    "labResult": "71 mg TNE/ 50 mg Anadrol per ml",
     "p100": 60,
     "stock100": 10
   },
     {
-    "name": "Proviron 20mg/ml",
+    "name": "Proviron 17mg/ml",
     "category": "oil",
     "batch": "001P Castor",
-    "labLink": "https://verify.janoshik.com/tests/211323-Sample_4_BJ7AF24IP6IA",
-    "labResult": "at jano",
+    "labLink": "https://verify.janoshik.com/tests/241621-Sample_5_48T9N7Z7RI1W",
+    "labResult": "17",
     "p100": 72,
     "stock100": 10
   }
