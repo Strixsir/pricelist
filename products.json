@@ -10,6 +10,17 @@
     "p1k": 1250,
     "s1k": 1
   },
+    
+  {
+    "name": "Test Phenyl Prop",
+    "batch": "TTC-PP-12",
+    "labLink": "https://verify.janoshik.com/tests/202518-testosterone_pp_BLSIF27U3QRJ",
+    "labResult": "95.45%",
+    "p100": 240,
+    "stock100": 20,
+    "p1k": 1450,
+    "s1k": 1
+  },
   
 
   {
@@ -354,15 +365,7 @@
     "p100": 90,
     "stock100": 10
   },
-  {
-    "name": "Test propionate 100",
-    "category": "oil",
-    "batch": "Short Ester",
-    "labLink": "https://verify.janoshik.com/tests/238101-Sample_1_KMRGFWYBBHZ6",
-    "labResult": "108 mg/ml",
-    "p100": 35,
-    "stock100": 10
-  },
+
   {
     "name": "Test Enanthate 250",
     "category": "oil",
@@ -453,18 +456,15 @@
     "p100": 72,
     "stock100": 10
   },
-  
   {
-    "name": "Test Phenyl Prop",
-    "batch": "TTC-PP-12",
-    "labLink": "https://verify.janoshik.com/tests/202518-testosterone_pp_BLSIF27U3QRJ",
-    "labResult": "95.45%",
-    "p100": 240,
-    "stock100": 20,
-    "p1k": 1450,
-    "s1k": 1
+    "name": "Test propionate 100",
+    "category": "oil",
+    "batch": "Short Ester",
+    "labLink": "https://verify.janoshik.com/tests/238101-Sample_1_KMRGFWYBBHZ6",
+    "labResult": "108 mg/ml",
+    "p100": 35,
+    "stock100": 10
   }
-
 
 
 
