@@ -22,16 +22,7 @@
     "p1k": 1450,
     "s1k": 1
   },
-  {
-    "name": "Test Phenyl Prop",
-    "batch": "TTC-PP-12",
-    "labLink": "https://verify.janoshik.com/tests/202518-testosterone_pp_BLSIF27U3QRJ",
-    "labResult": "95.45%",
-    "p100": 240,
-    "stock100": 20,
-    "p1k": 1450,
-    "s1k": 1
-  },
+
   {
     "name": "Test Cyp",
     "batch": "TTC-FP-126",
@@ -461,9 +452,18 @@
     "labResult": "17",
     "p100": 72,
     "stock100": 10
-  }
+  },
   
-
+  {
+    "name": "Test Phenyl Prop",
+    "batch": "TTC-PP-12",
+    "labLink": "https://verify.janoshik.com/tests/202518-testosterone_pp_BLSIF27U3QRJ",
+    "labResult": "95.45%",
+    "p100": 240,
+    "stock100": 20,
+    "p1k": 1450,
+    "s1k": 1
+  }
 
 
 
