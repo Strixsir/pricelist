@@ -135,6 +135,7 @@
     "p1k": 2800,
     "s1k": 0
   }, 
+  
   {
     "name": "Dbol",
     "batch": "C_1Db",
@@ -280,6 +281,15 @@
     "labResult": "96+",
     "p100": 100,
     "stock100": 0
+  },
+    {
+    "name": "DHT No Ester",
+    "category": "addon",
+    "batch": "DHT001",
+    "labLink": "https://verify.janoshik.com/tests/240923-Sample_3_C71X3HNF61GH",
+    "labResult": "98+",
+    "p100": 60,
+    "stock100": 100
   },
   {
     "name": "Anavar",
