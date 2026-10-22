@@ -157,6 +157,16 @@
     "s1k": 0
   },
   {
+    "name": "Tren base/No Ester",
+    "batch": "TRB1",
+    "labLink": "https://verify.janoshik.com/tests/243261-Sample_2_WGIKCT9R38X7",
+    "labResult": "98+ %",
+    "p100": 800,
+    "stock100": 10,
+    "p1k": 6400,
+    "s1k": 1
+  },
+  {
     "name": "Tren Ent",
     "batch": "TRE1",
     "labLink": "https://verify.janoshik.com/tests/197466-Sample_2_4PUFV66V7DBT",
@@ -307,6 +317,15 @@
     "labLink": "https://verify.janoshik.com/tests/209876-TEST_UNDEC_320MGML_2WTEZ8CA7IMR",
     "labResult": "96+ %",
     "p100": 60,
+    "stock100": 18
+  },
+    {
+    "name": "tren Base",
+    "category": "addon",
+    "batch": "--",
+    "labLink": "https://verify.janoshik.com/tests/243260-Sample_1_5AEWZJQUU6VI",
+    "labResult": "98+ %",
+    "p100": 80,
     "stock100": 18
   },
   {
