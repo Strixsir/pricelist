@@ -493,6 +493,15 @@
     "labResult": "108 mg/ml",
     "p100": 35,
     "stock100": 10
+  },
+    {
+    "name": "TREN Base 50 mg/ml",
+    "category": "oil",
+    "batch": "TRB1",
+    "labLink": "https://verify.janoshik.com/tests/238101-Sample_1_KMRGFWYBBHZ6",
+    "labResult": "AT JANO",
+    "p100": 60,
+    "stock100": 10
   }
 
 
