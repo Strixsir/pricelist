@@ -166,6 +166,17 @@
     "p1k": 6400,
     "s1k": 1
   },
+
+  {
+    "name": "Tren base/No Ester 50g",
+    "batch": "TRB1",
+    "labLink": "https://verify.janoshik.com/tests/243261-Sample_2_WGIKCT9R38X7",
+    "labResult": "98+ %",
+    "p100": 440,
+    "stock100": 10,
+    "p1k": 6400,
+    "s1k": 1
+  },
   {
     "name": "Tren Ent",
     "batch": "TRE1",
