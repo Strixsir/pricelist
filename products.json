@@ -513,6 +513,16 @@
     "labResult": "AT JANO",
     "p100": 60,
     "stock100": 10
+  },
+    
+    {
+    "name": "Darwin -    Tren Base 30/ TNE 30/ Halo 6/Tbol 30",
+    "category": "oil",
+    "batch": "D1",
+    "labLink": "https://verify.janoshik.com/tests/238101-Sample_1_KMRGFWYBBHZ6",
+    "labResult": "AT JANO",
+    "p100": 72,
+    "stock100": 10
   }
 
 
