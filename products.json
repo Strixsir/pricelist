@@ -156,6 +156,16 @@
     "p1k": 2800,
     "s1k": 0
   },
+    {
+    "name": "Turinabol",
+    "batch": "TB1",
+    "labLink": "https://verify.janoshik.com/tests/202518-testosterone_pp_BLSIF27U3QRJ",
+    "labResult": "AT JANO",
+    "p100": 900,
+    "stock100": 20,
+    "p1k": 7.5k,
+    "s1k": 1
+  },
   {
     "name": "Tren base/No Ester",
     "batch": "TRB1",
