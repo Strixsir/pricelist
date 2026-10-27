@@ -121,7 +121,7 @@
     "labResult": "AT JANO",
     "p100": 900,
     "stock100": 20,
-    "p1k": 7.5,
+    "p1k": 7500,
     "s1k": 1
   },
 
@@ -301,6 +301,15 @@
     "labLink": "https://verify.janoshik.com/tests/197470-Sample_6_E99C5ZM6NC5S",
     "labResult": "--",
     "p100": 100,
+    "stock100": 5
+  },
+  {
+    "name": "Turinabol 10g",
+    "category": "addon",
+    "batch": "--",
+    "labLink": "https://verify.janoshik.com/tests/197470-Sample_6_E99C5ZM6NC5S",
+    "labResult": "--",
+    "p100": 90,
     "stock100": 5
   },
   
